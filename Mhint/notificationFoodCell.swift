@@ -1,5 +1,5 @@
 //
-//  shoppingListCell.swift
+//  notificationFoodCell.swift
 //  Mhint
 //
 //  Created by Andrea Merli on 23/05/17.
@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import SwiftyGif
 import UIKit
 
-class BaseCellChooseListShopping: UICollectionViewCell {
+class BaseCellChooseNotificationFood: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -24,7 +25,7 @@ class BaseCellChooseListShopping: UICollectionViewCell {
     
 }
 
-class CustomCellChooseListShopping: BaseCellChooseListShopping {
+class CustomCellChooseNotificationFood: BaseCellChooseNotificationFood {
     
     var checkImageBtn: UIImageView = {
         var imageIngredient: UIImageView!
@@ -33,26 +34,18 @@ class CustomCellChooseListShopping: BaseCellChooseListShopping {
         return imageIngredient
     }()
     
-    let titleDiet: UILabel = {
+    let titleNotification: UILabel = {
         var label = UILabel()
         label.textColor = .black
         label.font = UIFont(name: "AvenirLTStd-Heavy", size: 13)
         return label
     }()
     
-    let quantityDiet: UILabel = {
-        var label = UILabel()
-        label.textColor = .black
-        label.textAlignment = .right
-        label.font = UIFont(name: "AvenirLTStd-Heavy", size: 12)
-        return label
-    }()
-    
     override func setupViews() {
         super.setupViews()
         self.addSubview(checkImageBtn)
-        self.addSubview(titleDiet)
-        self.addSubview(quantityDiet)
+        
+        self.addSubview(titleNotification)
     }
     
 }

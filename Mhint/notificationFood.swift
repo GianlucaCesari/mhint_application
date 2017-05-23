@@ -1,5 +1,5 @@
 //
-//  shoppingList.swift
+//  notificationFood.swift
 //  Mhint
 //
 //  Created by Andrea Merli on 23/05/17.
@@ -9,23 +9,23 @@
 import Foundation
 import UIKit
 
-class ShoppingListController: UICollectionViewController, UICollectionViewDelegateFlowLayout{
+class NotificationFoodController: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     
-    let cellId = "cellShoppingList"
+    let cellId = "cellNotificationFood"
     
     let heightCell = GlobalSize().widthScreen*0.15
     let widthCollectionView = GlobalSize().widthScreen*0.8
     
-    let shoppingList = ["Salmon", "Banane", "Mele", "Pere", "Pasta", "Pomodoro", "Zucchine", "Uova", "Sushi"]
-    let shoppingListQuantity = ["4kg", "4", "3", "61.5 tsp", "1kg", "10", "4", "6", "tanto"]
+    let daysInWeek = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
     
+    var arrayImageHidden = [Bool]()
     let btnNextPage = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
-        GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "Shopping List")
+        GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "Weekly notification")
         header()
         nextPage()
         
@@ -46,7 +46,7 @@ class ShoppingListController: UICollectionViewController, UICollectionViewDelega
         collectionView?.delegate = self
         collectionView?.dataSource = self
         collectionView?.frame = CGRect(x: GlobalSize().widthScreen*0.1, y: GlobalSize().heightScreen*0.33, width: widthCollectionView, height: GlobalSize().heightScreen*0.52)
-        collectionView?.register(CustomCellChooseListShopping.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.register(CustomCellChooseNotificationFood.self, forCellWithReuseIdentifier: cellId)
         collectionView?.showsHorizontalScrollIndicator = false
         collectionView?.showsVerticalScrollIndicator = false
     }
@@ -54,20 +54,26 @@ class ShoppingListController: UICollectionViewController, UICollectionViewDelega
     
     //COLLECTIONVIEW
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return shoppingList.count
+        return daysInWeek.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CustomCellChooseListShopping
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CustomCellChooseNotificationFood
         
-        cell.titleDiet.text = shoppingList[indexPath.row].capitalized
-        cell.titleDiet.frame = CGRect(x: heightCell+(heightCell/2)-20, y: 0, width: widthCollectionView, height: heightCell)
+        cell.titleNotification.text = daysInWeek[indexPath.row].capitalized
+        cell.titleNotification.frame = CGRect(x: heightCell+(heightCell/2)-20, y: 0, width: widthCollectionView, height: heightCell)
         
-        cell.quantityDiet.frame = CGRect(x: widthCollectionView-(heightCell*2)-30, y: 0, width: heightCell*2, height: heightCell)
-        cell.quantityDiet.text = shoppingListQuantity[indexPath.row].capitalized
-        
-        let imageGreen = UIImage(named: "check-true")
         cell.checkImageBtn.frame = CGRect(x: heightCell*0.1, y: heightCell*0.15, width: heightCell*0.8, height: heightCell*0.8)
+        if arrayImageHidden.count < (indexPath.row + 1) {
+            arrayImageHidden.append(false)
+        }
+        var stringImage = String()
+        if arrayImageHidden[indexPath.row] == true {
+            stringImage = "check-true"
+        } else {
+            stringImage = "check-false"
+        }
+        let imageGreen = UIImage(named: stringImage)
         cell.checkImageBtn.image = imageGreen
         
         return cell
@@ -76,11 +82,40 @@ class ShoppingListController: UICollectionViewController, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: widthCollectionView, height: heightCell)
     }
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        for x in 0..<arrayImageHidden.count {
+            let cell = collectionView.cellForItem(at: IndexPath(row: x, section: 0)) as! CustomCellChooseNotificationFood
+            let imageGreen = UIImage(named: "check-false")
+            cell.checkImageBtn.image = imageGreen
+            arrayImageHidden[x] = false
+        }
+        
+        let cell = collectionView.cellForItem(at: indexPath) as! CustomCellChooseNotificationFood
+        
+        var boolImage = Bool()
+        var stringImage = String()
+        if arrayImageHidden[indexPath.row] == true {
+            boolImage = false
+            stringImage = "check-false"
+        } else {
+            boolImage = true
+            stringImage = "check-true"
+        }
+        
+        let imageGreen = UIImage(named: "check-true")
+        cell.checkImageBtn.image = imageGreen
+        
+        arrayImageHidden[indexPath.row] = boolImage
+        
+        nextPage()
+        
+    }
     //COLLECTIONVIEW
     
     //BOTTONE NEXT PAGE
     func nextPage() {
-        btnNextPage.setTitle("Ready go on", for: .normal)
+        btnNextPage.setTitle("Oooooooow, that's all", for: .normal)
         btnNextPage.setTitleColor(.black, for: .normal)
         btnNextPage.titleLabel?.font = UIFont(name: "AvenirLTStd-Heavy", size: GlobalSize().widthScreen*0.03)
         btnNextPage.titleLabel?.textAlignment = .center
@@ -90,8 +125,8 @@ class ShoppingListController: UICollectionViewController, UICollectionViewDelega
     }
     
     func goToDiet() {
-        let newViewController = NotificationFoodController(collectionViewLayout: layout)
-        self.navigationController?.pushViewController(newViewController, animated: true)
+//        let newViewController = NotificationFoodController(collectionViewLayout: layout)
+//        self.navigationController?.pushViewController(newViewController, animated: true)
     }
     
     //HEADER
@@ -108,7 +143,7 @@ class ShoppingListController: UICollectionViewController, UICollectionViewDelega
         
         
         let titleListView = UILabel()
-        titleListView.text = "This is your shopping list".uppercased()
+        titleListView.text = "When do you want get notificated ?".uppercased()
         titleListView.textColor = GlobalColor().colorBlack
         titleListView.textAlignment = .center
         titleListView.addTextSpacing()
@@ -120,5 +155,5 @@ class ShoppingListController: UICollectionViewController, UICollectionViewDelega
     func back(sender: UIBarButtonItem) {
         _ = navigationController?.popViewController(animated: true)
     }
-    
+
 }

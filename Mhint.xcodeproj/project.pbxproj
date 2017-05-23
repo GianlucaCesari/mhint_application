@@ -15,6 +15,8 @@
 		1609621C1EC0EC8000C5B4B0 /* indexSettingEditProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1609621B1EC0EC8000C5B4B0 /* indexSettingEditProfile.swift */; };
 		1609621F1EC1970F00C5B4B0 /* cellEditProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1609621E1EC1970F00C5B4B0 /* cellEditProfile.swift */; };
 		160962211EC2755D00C5B4B0 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 160962201EC2755D00C5B4B0 /* HealthKit.framework */; };
+		1620D9141ED47B420045873A /* notificationFood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1620D9131ED47B420045873A /* notificationFood.swift */; };
+		1620D9161ED47D5E0045873A /* notificationFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1620D9151ED47D5E0045873A /* notificationFoodCell.swift */; };
 		1635E76A1EBF5D040079E64E /* CellSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1635E7691EBF5D040079E64E /* CellSettings.swift */; };
 		1635E7721EBF9D320079E64E /* indexSocialSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1635E7711EBF9D320079E64E /* indexSocialSetting.swift */; };
 		1635E7741EBF9D570079E64E /* indexBotSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1635E7731EBF9D570079E64E /* indexBotSetting.swift */; };
@@ -80,6 +82,8 @@
 		1609621B1EC0EC8000C5B4B0 /* indexSettingEditProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = indexSettingEditProfile.swift; path = Mhint/indexSettingEditProfile.swift; sourceTree = "<group>"; };
 		1609621E1EC1970F00C5B4B0 /* cellEditProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = cellEditProfile.swift; path = Mhint/cellEditProfile.swift; sourceTree = "<group>"; };
 		160962201EC2755D00C5B4B0 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		1620D9131ED47B420045873A /* notificationFood.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = notificationFood.swift; path = Mhint/notificationFood.swift; sourceTree = "<group>"; };
+		1620D9151ED47D5E0045873A /* notificationFoodCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = notificationFoodCell.swift; path = Mhint/notificationFoodCell.swift; sourceTree = "<group>"; };
 		1635E7691EBF5D040079E64E /* CellSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CellSettings.swift; path = Mhint/CellSettings.swift; sourceTree = "<group>"; };
 		1635E7711EBF9D320079E64E /* indexSocialSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = indexSocialSetting.swift; path = Mhint/indexSocialSetting.swift; sourceTree = "<group>"; };
 		1635E7731EBF9D570079E64E /* indexBotSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = indexBotSetting.swift; path = Mhint/indexBotSetting.swift; sourceTree = "<group>"; };
@@ -171,6 +175,28 @@
 			name = "Edit Profile";
 			sourceTree = "<group>";
 		};
+		1620D9111ED47AE30045873A /* Setting Food */ = {
+			isa = PBXGroup;
+			children = (
+				168B943E1ED0644600372475 /* Food.swift */,
+				168B94391ED061E900372475 /* 2 - Diet */,
+				165458C01ED2E34700088A22 /* 3 - Eat Out */,
+				169381E91ED33545002B0784 /* 4 - List Recipes */,
+				166AFC991ED47077008FF8F4 /* 5 - Shopping list */,
+				1620D9121ED47B090045873A /* 6 - Notification */,
+				168B94361ECEEC9F00372475 /* Cell */,
+			);
+			name = "Setting Food";
+			sourceTree = "<group>";
+		};
+		1620D9121ED47B090045873A /* 6 - Notification */ = {
+			isa = PBXGroup;
+			children = (
+				1620D9131ED47B420045873A /* notificationFood.swift */,
+			);
+			name = "6 - Notification";
+			sourceTree = "<group>";
+		};
 		1635E7681EBF5CD80079E64E /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -234,12 +260,7 @@
 		167EF2311ECE49DE008A82B9 /* Food */ = {
 			isa = PBXGroup;
 			children = (
-				168B943E1ED0644600372475 /* Food.swift */,
-				168B94391ED061E900372475 /* 2 - Diet */,
-				165458C01ED2E34700088A22 /* 3 - Eat Out */,
-				169381E91ED33545002B0784 /* 4 - List Recipes */,
-				166AFC991ED47077008FF8F4 /* 5 - Shopping list */,
-				168B94361ECEEC9F00372475 /* Cell */,
+				1620D9111ED47AE30045873A /* Setting Food */,
 			);
 			name = Food;
 			sourceTree = "<group>";
@@ -252,6 +273,7 @@
 				166AFC9A1ED471CC008FF8F4 /* shoppingListCell.swift */,
 				165458C11ED2E4B500088A22 /* eatOutCell.swift */,
 				166AFC951ED42128008FF8F4 /* listRecipesCell.swift */,
+				1620D9151ED47D5E0045873A /* notificationFoodCell.swift */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -716,6 +738,7 @@
 				169381E81ED3353F002B0784 /* listRecipes.swift in Sources */,
 				168B94351ECEEC9C00372475 /* foodCell.swift in Sources */,
 				16D917BD1EA7C1A80049394A /* GlobalColor.swift in Sources */,
+				1620D9141ED47B420045873A /* notificationFood.swift in Sources */,
 				1635E7721EBF9D320079E64E /* indexSocialSetting.swift in Sources */,
 				16FFCF211EA28285005A4A59 /* Chat.swift in Sources */,
 				16E91A291EA8DD1800C4EEFE /* GlobalUser.swift in Sources */,
@@ -727,6 +750,7 @@
 				160962161EC07B1A00C5B4B0 /* GlobalVariable.swift in Sources */,
 				168B943B1ED0642E00372475 /* Emergency.swift in Sources */,
 				1635E76A1EBF5D040079E64E /* CellSettings.swift in Sources */,
+				1620D9161ED47D5E0045873A /* notificationFoodCell.swift in Sources */,
 				1609621F1EC1970F00C5B4B0 /* cellEditProfile.swift in Sources */,
 				168B94381ED061E600372475 /* Diet.swift in Sources */,
 				168B94411ED0657000372475 /* Teaching.swift in Sources */,
