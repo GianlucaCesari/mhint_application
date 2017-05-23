@@ -1,0 +1,6 @@
+framework module Pods_MhintUITests {
+  umbrella header "Pods-MhintUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

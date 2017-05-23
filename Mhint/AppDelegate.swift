@@ -8,39 +8,116 @@
 
 import UIKit
 
+//LOGIN
+import FBSDKCoreKit
+import GoogleSignIn
+import TwitterKit
+import Fabric
+import Firebase
+
+//MENU
+import AKSideMenu
+
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSideMenuDelegate {
 
     var window: UIWindow?
-
-
+    var chatController = ChatController()
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        let layout = UICollectionViewFlowLayout.init()
+        layout.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
+        layout.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
+        chatController = ChatController(collectionViewLayout: layout)
+        
+        GlobalUser().start()//ISTANZIA
+        
+        //MENU
+        let navigationController = UINavigationController(rootViewController: chatController)
+        let leftMenuViewController = LeftMenuViewController()
+        let rightMenuViewController = LeftMenuViewController()
+        let sideMenuViewController: AKSideMenu = AKSideMenu(contentViewController: navigationController, leftMenuViewController: leftMenuViewController, rightMenuViewController: rightMenuViewController)
+        sideMenuViewController.panGestureRightEnabled = false
+        sideMenuViewController.menuPreferredStatusBarStyle = .lightContent
+        sideMenuViewController.delegate = self
+        sideMenuViewController.contentViewShadowColor = .darkGray
+        sideMenuViewController.contentViewShadowOffset = CGSize(width: 0, height: 0)
+        sideMenuViewController.contentViewShadowOpacity = 0.4
+        sideMenuViewController.contentViewShadowRadius = 12
+        sideMenuViewController.contentViewShadowEnabled = true
+        window = UIWindow(frame: UIScreen.main.bounds)
+        self.window!.rootViewController = sideMenuViewController
+        self.window!.backgroundColor = .white
+        self.window?.makeKeyAndVisible()
+        
+        //SOCIAL
+        FIRApp.configure() //FIREBASE
+        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions) //FACEBOOK
+        GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()?.options.clientID //GOOGLE
+        GIDSignIn.sharedInstance().delegate = self //GOOGLE
+        Fabric.with([Twitter.self]) //TWITTER
+        
         return true
     }
 
-    func applicationWillResignActive(_ application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        if error != nil {
+            ChatController().generateButton(buttonMessage: "Facebook;Twitter;Google")
+            print("Error Google: ", error)
+            return
+        }
+        
+        let image:String = String(describing: user.profile.imageURL(withDimension: 120))
+        let name:String = (user.profile.name + " " + user.profile.familyName) as String
+        
+        GlobalFunc().saveUserProfile(value: name, description: "fullNameGoogle")
+        if saveData.string(forKey: "nameProfile") == nil {
+            saveData.set(name, forKey: "nameProfile")
+            GlobalUser.fullNameGoogle = name
+        }
+        
+        if saveData.string(forKey: "imageProfile") == nil {
+            GlobalUser.imageProfileGoogle = image
+            saveData.set(image, forKey: "imageProfile")
+            GlobalFunc().saveUserProfile(value: image, description: "imageProfileGoogle")
+        }
+        
+        GlobalUser.emailGoogle = user.profile.email ?? ""
+        GlobalFunc().saveUserProfile(value: user.profile.email ?? "", description: "emailGoogle")
+        
+        guard let idTokenGoogle = user.authentication.idToken else {return}
+        guard let accessToken = user.authentication.accessToken else { return }
+        let credentials = FIRGoogleAuthProvider.credential(withIDToken: idTokenGoogle, accessToken: accessToken)
+        
+        //FIREBASE
+        FIRAuth.auth()?.signIn(with: credentials, completion: {(user, err) in
+            if err != nil{
+                print("Error Google on Firebase")
+                return
+            }
+            ChatController.loginGoogleBool = true
+            print("Successfully Google on Firebase")
+        })
     }
+    
+    func applicationWillResignActive(_ application: UIApplication) {}
+    func applicationDidEnterBackground(_ application: UIApplication) {}
+    func applicationWillEnterForeground(_ application: UIApplication) {}
+    func applicationDidBecomeActive(_ application: UIApplication) {}
+    func applicationWillTerminate(_ application: UIApplication) {}
 
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    //LOGIN
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        let handle = FBSDKApplicationDelegate.sharedInstance().application(app, open: url, sourceApplication: options [UIApplicationOpenURLOptionsKey.sourceApplication] as! String!, annotation: [UIApplicationOpenURLOptionsKey.annotation])
+        GIDSignIn.sharedInstance().handle(url, sourceApplication:options [UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: [UIApplicationOpenURLOptionsKey.annotation])
+        return handle
     }
-
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-    }
-
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    }
-
-
+    
+    //MENU
+    open func sideMenu(_ sideMenu: AKSideMenu, willShowMenuViewController menuViewController: UIViewController) {}
+    open func sideMenu(_ sideMenu: AKSideMenu, didShowMenuViewController menuViewController: UIViewController) {}
+    open func sideMenu(_ sideMenu: AKSideMenu, willHideMenuViewController menuViewController: UIViewController) {}
+    open func sideMenu(_ sideMenu: AKSideMenu, didHideMenuViewController menuViewController: UIViewController) {}
+    
 }
 

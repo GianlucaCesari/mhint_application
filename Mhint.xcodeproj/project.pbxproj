@@ -7,13 +7,51 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		16002CC71EB085EC0069C11F /* GlobalSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16002CC61EB085EC0069C11F /* GlobalSize.swift */; };
+		1601E1E91ECC7123004B9122 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1601E1E81ECC7123004B9122 /* GoogleService-Info.plist */; };
+		160962161EC07B1A00C5B4B0 /* GlobalVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160962151EC07B1A00C5B4B0 /* GlobalVariable.swift */; };
+		160962181EC089F600C5B4B0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 160962171EC089F600C5B4B0 /* MapKit.framework */; };
+		1609621A1EC0A90D00C5B4B0 /* load.gif in Resources */ = {isa = PBXBuildFile; fileRef = 160962191EC0A90D00C5B4B0 /* load.gif */; };
+		1609621C1EC0EC8000C5B4B0 /* indexSettingEditProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1609621B1EC0EC8000C5B4B0 /* indexSettingEditProfile.swift */; };
+		1609621F1EC1970F00C5B4B0 /* cellEditProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1609621E1EC1970F00C5B4B0 /* cellEditProfile.swift */; };
+		160962211EC2755D00C5B4B0 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 160962201EC2755D00C5B4B0 /* HealthKit.framework */; };
+		1635E76A1EBF5D040079E64E /* CellSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1635E7691EBF5D040079E64E /* CellSettings.swift */; };
+		1635E7721EBF9D320079E64E /* indexSocialSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1635E7711EBF9D320079E64E /* indexSocialSetting.swift */; };
+		1635E7741EBF9D570079E64E /* indexBotSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1635E7731EBF9D570079E64E /* indexBotSetting.swift */; };
+		1635E7771EBF9F900079E64E /* CellChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1635E7761EBF9F900079E64E /* CellChat.swift */; };
+		165458BF1ED2E34200088A22 /* EatOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165458BE1ED2E34200088A22 /* EatOut.swift */; };
+		165458C21ED2E4B500088A22 /* eatOutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165458C11ED2E4B500088A22 /* eatOutCell.swift */; };
+		166AFC961ED42128008FF8F4 /* listRecipesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166AFC951ED42128008FF8F4 /* listRecipesCell.swift */; };
+		166AFC981ED4706F008FF8F4 /* shoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166AFC971ED4706F008FF8F4 /* shoppingList.swift */; };
+		166AFC9B1ED471CC008FF8F4 /* shoppingListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166AFC9A1ED471CC008FF8F4 /* shoppingListCell.swift */; };
+		168B94351ECEEC9C00372475 /* foodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168B94341ECEEC9C00372475 /* foodCell.swift */; };
+		168B94381ED061E600372475 /* Diet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168B94371ED061E600372475 /* Diet.swift */; };
+		168B943B1ED0642E00372475 /* Emergency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168B943A1ED0642E00372475 /* Emergency.swift */; };
+		168B943D1ED0643C00372475 /* Minth4you.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168B943C1ED0643C00372475 /* Minth4you.swift */; };
+		168B943F1ED0644600372475 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168B943E1ED0644600372475 /* Food.swift */; };
+		168B94411ED0657000372475 /* Teaching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168B94401ED0657000372475 /* Teaching.swift */; };
+		168B94431ED08DF800372475 /* dietCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168B94421ED08DF800372475 /* dietCell.swift */; };
+		169381E81ED3353F002B0784 /* listRecipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169381E71ED3353F002B0784 /* listRecipes.swift */; };
+		169D5DB71EBCA8D90020436F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 169D5DB61EBCA8D90020436F /* Assets.xcassets */; };
+		16D917BB1EA7C1940049394A /* GlobalFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D917BA1EA7C1940049394A /* GlobalFunction.swift */; };
+		16D917BD1EA7C1A80049394A /* GlobalColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D917BC1EA7C1A80049394A /* GlobalColor.swift */; };
+		16D917BF1EA7C4220049394A /* setColorInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D917BE1EA7C4220049394A /* setColorInterface.swift */; };
+		16E91A261EA898E900C4EEFE /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E91A251EA898E900C4EEFE /* Settings.swift */; };
+		16E91A291EA8DD1800C4EEFE /* GlobalUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E91A281EA8DD1800C4EEFE /* GlobalUser.swift */; };
+		16F95DB91EA7FD5B007C64F0 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F95DB81EA7FD5B007C64F0 /* Menu.swift */; };
 		16FFCF1F1EA28285005A4A59 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FFCF1E1EA28285005A4A59 /* AppDelegate.swift */; };
-		16FFCF211EA28285005A4A59 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FFCF201EA28285005A4A59 /* ViewController.swift */; };
-		16FFCF241EA28285005A4A59 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16FFCF221EA28285005A4A59 /* Main.storyboard */; };
-		16FFCF261EA28285005A4A59 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16FFCF251EA28285005A4A59 /* Assets.xcassets */; };
+		16FFCF211EA28285005A4A59 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FFCF201EA28285005A4A59 /* Chat.swift */; };
 		16FFCF291EA28285005A4A59 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16FFCF271EA28285005A4A59 /* LaunchScreen.storyboard */; };
 		16FFCF341EA28285005A4A59 /* MhintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FFCF331EA28285005A4A59 /* MhintTests.swift */; };
 		16FFCF3F1EA28285005A4A59 /* MhintUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FFCF3E1EA28285005A4A59 /* MhintUITests.swift */; };
+		16FFCF511EA284AD005A4A59 /* AvenirLTStd-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 16FFCF4C1EA284AD005A4A59 /* AvenirLTStd-Black.otf */; };
+		16FFCF521EA284AD005A4A59 /* AvenirLTStd-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 16FFCF4D1EA284AD005A4A59 /* AvenirLTStd-Book.otf */; };
+		16FFCF531EA284AD005A4A59 /* AvenirLTStd-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = 16FFCF4E1EA284AD005A4A59 /* AvenirLTStd-Heavy.otf */; };
+		16FFCF541EA284AD005A4A59 /* AvenirLTStd-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 16FFCF4F1EA284AD005A4A59 /* AvenirLTStd-Light.otf */; };
+		16FFCF551EA284AD005A4A59 /* AvenirLTStd-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 16FFCF501EA284AD005A4A59 /* AvenirLTStd-Medium.otf */; };
+		24E55129CE9EFEECD6F424BA /* Pods_MhintUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B72F63FE4B207186F53B62 /* Pods_MhintUITests.framework */; };
+		8331DB63C562F7929F5F1439 /* Pods_Mhint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3E260A3705318002BFE6E8 /* Pods_Mhint.framework */; };
+		980E41088CBE4DABC19A1DB4 /* Pods_MhintTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 268FB687E93765EDC33E154F /* Pods_MhintTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,11 +72,42 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		16002CC61EB085EC0069C11F /* GlobalSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalSize.swift; sourceTree = "<group>"; };
+		1601E1E81ECC7123004B9122 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		160962151EC07B1A00C5B4B0 /* GlobalVariable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalVariable.swift; sourceTree = "<group>"; };
+		160962171EC089F600C5B4B0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		160962191EC0A90D00C5B4B0 /* load.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = load.gif; sourceTree = "<group>"; };
+		1609621B1EC0EC8000C5B4B0 /* indexSettingEditProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = indexSettingEditProfile.swift; path = Mhint/indexSettingEditProfile.swift; sourceTree = "<group>"; };
+		1609621E1EC1970F00C5B4B0 /* cellEditProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = cellEditProfile.swift; path = Mhint/cellEditProfile.swift; sourceTree = "<group>"; };
+		160962201EC2755D00C5B4B0 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		1635E7691EBF5D040079E64E /* CellSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CellSettings.swift; path = Mhint/CellSettings.swift; sourceTree = "<group>"; };
+		1635E7711EBF9D320079E64E /* indexSocialSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = indexSocialSetting.swift; path = Mhint/indexSocialSetting.swift; sourceTree = "<group>"; };
+		1635E7731EBF9D570079E64E /* indexBotSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = indexBotSetting.swift; path = Mhint/indexBotSetting.swift; sourceTree = "<group>"; };
+		1635E7761EBF9F900079E64E /* CellChat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellChat.swift; sourceTree = "<group>"; };
+		165458BE1ED2E34200088A22 /* EatOut.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EatOut.swift; path = Mhint/EatOut.swift; sourceTree = "<group>"; };
+		165458C11ED2E4B500088A22 /* eatOutCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = eatOutCell.swift; path = Mhint/eatOutCell.swift; sourceTree = "<group>"; };
+		166AFC951ED42128008FF8F4 /* listRecipesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = listRecipesCell.swift; path = Mhint/listRecipesCell.swift; sourceTree = "<group>"; };
+		166AFC971ED4706F008FF8F4 /* shoppingList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = shoppingList.swift; path = Mhint/shoppingList.swift; sourceTree = "<group>"; };
+		166AFC9A1ED471CC008FF8F4 /* shoppingListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = shoppingListCell.swift; path = Mhint/shoppingListCell.swift; sourceTree = "<group>"; };
+		168B94341ECEEC9C00372475 /* foodCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = foodCell.swift; path = Mhint/foodCell.swift; sourceTree = "<group>"; };
+		168B94371ED061E600372475 /* Diet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Diet.swift; path = Mhint/Diet.swift; sourceTree = "<group>"; };
+		168B943A1ED0642E00372475 /* Emergency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Emergency.swift; path = Mhint/Emergency.swift; sourceTree = "<group>"; };
+		168B943C1ED0643C00372475 /* Minth4you.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Minth4you.swift; path = Mhint/Minth4you.swift; sourceTree = "<group>"; };
+		168B943E1ED0644600372475 /* Food.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Food.swift; path = Mhint/Food.swift; sourceTree = "<group>"; };
+		168B94401ED0657000372475 /* Teaching.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Teaching.swift; path = Mhint/Teaching.swift; sourceTree = "<group>"; };
+		168B94421ED08DF800372475 /* dietCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = dietCell.swift; path = Mhint/dietCell.swift; sourceTree = "<group>"; };
+		169381E71ED3353F002B0784 /* listRecipes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = listRecipes.swift; path = Mhint/listRecipes.swift; sourceTree = "<group>"; };
+		1695A4731EA291CB005667F4 /* Mhint.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mhint.entitlements; sourceTree = "<group>"; };
+		169D5DB61EBCA8D90020436F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		16D917BA1EA7C1940049394A /* GlobalFunction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalFunction.swift; sourceTree = "<group>"; };
+		16D917BC1EA7C1A80049394A /* GlobalColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalColor.swift; sourceTree = "<group>"; };
+		16D917BE1EA7C4220049394A /* setColorInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = setColorInterface.swift; sourceTree = "<group>"; };
+		16E91A251EA898E900C4EEFE /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Settings.swift; path = Mhint/Settings.swift; sourceTree = "<group>"; };
+		16E91A281EA8DD1800C4EEFE /* GlobalUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalUser.swift; sourceTree = "<group>"; };
+		16F95DB81EA7FD5B007C64F0 /* Menu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		16FFCF1B1EA28285005A4A59 /* Mhint.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mhint.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		16FFCF1E1EA28285005A4A59 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		16FFCF201EA28285005A4A59 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		16FFCF231EA28285005A4A59 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		16FFCF251EA28285005A4A59 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		16FFCF201EA28285005A4A59 /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		16FFCF281EA28285005A4A59 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		16FFCF2A1EA28285005A4A59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		16FFCF2F1EA28285005A4A59 /* MhintTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MhintTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -47,6 +116,20 @@
 		16FFCF3A1EA28285005A4A59 /* MhintUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MhintUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		16FFCF3E1EA28285005A4A59 /* MhintUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MhintUITests.swift; sourceTree = "<group>"; };
 		16FFCF401EA28285005A4A59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		16FFCF4C1EA284AD005A4A59 /* AvenirLTStd-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Black.otf"; sourceTree = "<group>"; };
+		16FFCF4D1EA284AD005A4A59 /* AvenirLTStd-Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Book.otf"; sourceTree = "<group>"; };
+		16FFCF4E1EA284AD005A4A59 /* AvenirLTStd-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Heavy.otf"; sourceTree = "<group>"; };
+		16FFCF4F1EA284AD005A4A59 /* AvenirLTStd-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Light.otf"; sourceTree = "<group>"; };
+		16FFCF501EA284AD005A4A59 /* AvenirLTStd-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Medium.otf"; sourceTree = "<group>"; };
+		268FB687E93765EDC33E154F /* Pods_MhintTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MhintTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D3E260A3705318002BFE6E8 /* Pods_Mhint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mhint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		50ED0B0BC04AC2BEE5F2A675 /* Pods-MhintTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MhintTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MhintTests/Pods-MhintTests.debug.xcconfig"; sourceTree = "<group>"; };
+		66317E44FE10363323285E8A /* Pods-MhintTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MhintTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MhintTests/Pods-MhintTests.release.xcconfig"; sourceTree = "<group>"; };
+		6BA00CCA66FF6CEF76FD604C /* Pods-Mhint.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mhint.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mhint/Pods-Mhint.debug.xcconfig"; sourceTree = "<group>"; };
+		83B72F63FE4B207186F53B62 /* Pods_MhintUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MhintUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DAA7D70AA062ECFC4AA5FCD /* Pods-Mhint.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mhint.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mhint/Pods-Mhint.release.xcconfig"; sourceTree = "<group>"; };
+		8DDD08B493CA182D01617965 /* Pods-MhintUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MhintUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MhintUITests/Pods-MhintUITests.release.xcconfig"; sourceTree = "<group>"; };
+		DB0BAE6A5CC0A9CA9B54C0BA /* Pods-MhintUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MhintUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MhintUITests/Pods-MhintUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +137,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				160962211EC2755D00C5B4B0 /* HealthKit.framework in Frameworks */,
+				160962181EC089F600C5B4B0 /* MapKit.framework in Frameworks */,
+				8331DB63C562F7929F5F1439 /* Pods_Mhint.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +147,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				980E41088CBE4DABC19A1DB4 /* Pods_MhintTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,12 +155,149 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24E55129CE9EFEECD6F424BA /* Pods_MhintUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1609621D1EC0EC8600C5B4B0 /* Edit Profile */ = {
+			isa = PBXGroup;
+			children = (
+				1609621B1EC0EC8000C5B4B0 /* indexSettingEditProfile.swift */,
+				1609621E1EC1970F00C5B4B0 /* cellEditProfile.swift */,
+			);
+			name = "Edit Profile";
+			sourceTree = "<group>";
+		};
+		1635E7681EBF5CD80079E64E /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				16E91A251EA898E900C4EEFE /* Settings.swift */,
+				1635E7691EBF5D040079E64E /* CellSettings.swift */,
+				1609621D1EC0EC8600C5B4B0 /* Edit Profile */,
+				1635E76C1EBF9BFB0079E64E /* Bots */,
+				1635E76B1EBF9BEE0079E64E /* Social */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
+		1635E76B1EBF9BEE0079E64E /* Social */ = {
+			isa = PBXGroup;
+			children = (
+				1635E7711EBF9D320079E64E /* indexSocialSetting.swift */,
+			);
+			name = Social;
+			sourceTree = "<group>";
+		};
+		1635E76C1EBF9BFB0079E64E /* Bots */ = {
+			isa = PBXGroup;
+			children = (
+				1635E7731EBF9D570079E64E /* indexBotSetting.swift */,
+			);
+			name = Bots;
+			sourceTree = "<group>";
+		};
+		1635E7751EBF9F800079E64E /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				1635E7761EBF9F900079E64E /* CellChat.swift */,
+			);
+			name = Chat;
+			sourceTree = "<group>";
+		};
+		1653DBC51ECA00FC00512D2B /* Teach */ = {
+			isa = PBXGroup;
+			children = (
+				168B94401ED0657000372475 /* Teaching.swift */,
+			);
+			name = Teach;
+			sourceTree = "<group>";
+		};
+		165458C01ED2E34700088A22 /* 3 - Eat Out */ = {
+			isa = PBXGroup;
+			children = (
+				165458BE1ED2E34200088A22 /* EatOut.swift */,
+			);
+			name = "3 - Eat Out";
+			sourceTree = "<group>";
+		};
+		166AFC991ED47077008FF8F4 /* 5 - Shopping list */ = {
+			isa = PBXGroup;
+			children = (
+				166AFC971ED4706F008FF8F4 /* shoppingList.swift */,
+			);
+			name = "5 - Shopping list";
+			sourceTree = "<group>";
+		};
+		167EF2311ECE49DE008A82B9 /* Food */ = {
+			isa = PBXGroup;
+			children = (
+				168B943E1ED0644600372475 /* Food.swift */,
+				168B94391ED061E900372475 /* 2 - Diet */,
+				165458C01ED2E34700088A22 /* 3 - Eat Out */,
+				169381E91ED33545002B0784 /* 4 - List Recipes */,
+				166AFC991ED47077008FF8F4 /* 5 - Shopping list */,
+				168B94361ECEEC9F00372475 /* Cell */,
+			);
+			name = Food;
+			sourceTree = "<group>";
+		};
+		168B94361ECEEC9F00372475 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				168B94341ECEEC9C00372475 /* foodCell.swift */,
+				168B94421ED08DF800372475 /* dietCell.swift */,
+				166AFC9A1ED471CC008FF8F4 /* shoppingListCell.swift */,
+				165458C11ED2E4B500088A22 /* eatOutCell.swift */,
+				166AFC951ED42128008FF8F4 /* listRecipesCell.swift */,
+			);
+			name = Cell;
+			sourceTree = "<group>";
+		};
+		168B94391ED061E900372475 /* 2 - Diet */ = {
+			isa = PBXGroup;
+			children = (
+				168B94371ED061E600372475 /* Diet.swift */,
+			);
+			name = "2 - Diet";
+			sourceTree = "<group>";
+		};
+		169381E91ED33545002B0784 /* 4 - List Recipes */ = {
+			isa = PBXGroup;
+			children = (
+				169381E71ED3353F002B0784 /* listRecipes.swift */,
+			);
+			name = "4 - List Recipes";
+			sourceTree = "<group>";
+		};
+		16E91A271EA89B0500C4EEFE /* Global Class */ = {
+			isa = PBXGroup;
+			children = (
+				16D917BA1EA7C1940049394A /* GlobalFunction.swift */,
+				16D917BC1EA7C1A80049394A /* GlobalColor.swift */,
+				16002CC61EB085EC0069C11F /* GlobalSize.swift */,
+				16E91A281EA8DD1800C4EEFE /* GlobalUser.swift */,
+				160962151EC07B1A00C5B4B0 /* GlobalVariable.swift */,
+				16D917BE1EA7C4220049394A /* setColorInterface.swift */,
+			);
+			name = "Global Class";
+			sourceTree = "<group>";
+		};
+		16E91A2A1EA8E2F300C4EEFE /* Sections */ = {
+			isa = PBXGroup;
+			children = (
+				1635E7681EBF5CD80079E64E /* Settings */,
+				167EF2311ECE49DE008A82B9 /* Food */,
+				168B943A1ED0642E00372475 /* Emergency.swift */,
+				168B943C1ED0643C00372475 /* Minth4you.swift */,
+				1653DBC51ECA00FC00512D2B /* Teach */,
+			);
+			name = Sections;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		16FFCF121EA28285005A4A59 = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +305,8 @@
 				16FFCF321EA28285005A4A59 /* MhintTests */,
 				16FFCF3D1EA28285005A4A59 /* MhintUITests */,
 				16FFCF1C1EA28285005A4A59 /* Products */,
+				E4E09DB73907C4F6BEEE8FED /* Pods */,
+				1BD997BAE28D6AFE8CEF97DA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -97,12 +323,19 @@
 		16FFCF1D1EA28285005A4A59 /* Mhint */ = {
 			isa = PBXGroup;
 			children = (
+				16E91A271EA89B0500C4EEFE /* Global Class */,
+				1695A4731EA291CB005667F4 /* Mhint.entitlements */,
 				16FFCF1E1EA28285005A4A59 /* AppDelegate.swift */,
-				16FFCF201EA28285005A4A59 /* ViewController.swift */,
-				16FFCF221EA28285005A4A59 /* Main.storyboard */,
-				16FFCF251EA28285005A4A59 /* Assets.xcassets */,
+				16E91A2A1EA8E2F300C4EEFE /* Sections */,
+				16F95DB81EA7FD5B007C64F0 /* Menu.swift */,
+				16FFCF201EA28285005A4A59 /* Chat.swift */,
+				1635E7751EBF9F800079E64E /* Chat */,
+				169D5DB61EBCA8D90020436F /* Assets.xcassets */,
 				16FFCF271EA28285005A4A59 /* LaunchScreen.storyboard */,
 				16FFCF2A1EA28285005A4A59 /* Info.plist */,
+				1601E1E81ECC7123004B9122 /* GoogleService-Info.plist */,
+				160962191EC0A90D00C5B4B0 /* load.gif */,
+				16FFCF561EA284B6005A4A59 /* Fonts */,
 			);
 			path = Mhint;
 			sourceTree = "<group>";
@@ -125,6 +358,43 @@
 			path = MhintUITests;
 			sourceTree = "<group>";
 		};
+		16FFCF561EA284B6005A4A59 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				16FFCF4C1EA284AD005A4A59 /* AvenirLTStd-Black.otf */,
+				16FFCF4D1EA284AD005A4A59 /* AvenirLTStd-Book.otf */,
+				16FFCF4E1EA284AD005A4A59 /* AvenirLTStd-Heavy.otf */,
+				16FFCF4F1EA284AD005A4A59 /* AvenirLTStd-Light.otf */,
+				16FFCF501EA284AD005A4A59 /* AvenirLTStd-Medium.otf */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
+		1BD997BAE28D6AFE8CEF97DA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				160962201EC2755D00C5B4B0 /* HealthKit.framework */,
+				160962171EC089F600C5B4B0 /* MapKit.framework */,
+				4D3E260A3705318002BFE6E8 /* Pods_Mhint.framework */,
+				268FB687E93765EDC33E154F /* Pods_MhintTests.framework */,
+				83B72F63FE4B207186F53B62 /* Pods_MhintUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E4E09DB73907C4F6BEEE8FED /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6BA00CCA66FF6CEF76FD604C /* Pods-Mhint.debug.xcconfig */,
+				8DAA7D70AA062ECFC4AA5FCD /* Pods-Mhint.release.xcconfig */,
+				50ED0B0BC04AC2BEE5F2A675 /* Pods-MhintTests.debug.xcconfig */,
+				66317E44FE10363323285E8A /* Pods-MhintTests.release.xcconfig */,
+				DB0BAE6A5CC0A9CA9B54C0BA /* Pods-MhintUITests.debug.xcconfig */,
+				8DDD08B493CA182D01617965 /* Pods-MhintUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -132,9 +402,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 16FFCF431EA28285005A4A59 /* Build configuration list for PBXNativeTarget "Mhint" */;
 			buildPhases = (
+				5F4A76A126BF36F15FD50F76 /* [CP] Check Pods Manifest.lock */,
 				16FFCF171EA28285005A4A59 /* Sources */,
 				16FFCF181EA28285005A4A59 /* Frameworks */,
 				16FFCF191EA28285005A4A59 /* Resources */,
+				88F67803491FB205C4994DE8 /* [CP] Embed Pods Frameworks */,
+				AEF3CFD327141476229F53EC /* [CP] Copy Pods Resources */,
+				1660BE5B1EA67EA200DE9E55 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -149,9 +423,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 16FFCF461EA28285005A4A59 /* Build configuration list for PBXNativeTarget "MhintTests" */;
 			buildPhases = (
+				27BD0862F9307820CFD127E5 /* [CP] Check Pods Manifest.lock */,
 				16FFCF2B1EA28285005A4A59 /* Sources */,
 				16FFCF2C1EA28285005A4A59 /* Frameworks */,
 				16FFCF2D1EA28285005A4A59 /* Resources */,
+				944186AD83A4EF5B8551A8D1 /* [CP] Embed Pods Frameworks */,
+				022F631144758C562003A04F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -167,9 +444,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 16FFCF491EA28285005A4A59 /* Build configuration list for PBXNativeTarget "MhintUITests" */;
 			buildPhases = (
+				4782D576D611DFA4C646B53F /* [CP] Check Pods Manifest.lock */,
 				16FFCF361EA28285005A4A59 /* Sources */,
 				16FFCF371EA28285005A4A59 /* Frameworks */,
 				16FFCF381EA28285005A4A59 /* Resources */,
+				28EE34E55394FC8C4C835B9C /* [CP] Embed Pods Frameworks */,
+				28CBCCABB899115445E2424A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -195,6 +475,17 @@
 						CreatedOnToolsVersion = 8.2;
 						DevelopmentTeam = L4KF22FNCY;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.HealthKit = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
+						};
 					};
 					16FFCF2E1EA28285005A4A59 = {
 						CreatedOnToolsVersion = 8.2;
@@ -235,9 +526,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				16FFCF531EA284AD005A4A59 /* AvenirLTStd-Heavy.otf in Resources */,
+				16FFCF541EA284AD005A4A59 /* AvenirLTStd-Light.otf in Resources */,
+				1601E1E91ECC7123004B9122 /* GoogleService-Info.plist in Resources */,
 				16FFCF291EA28285005A4A59 /* LaunchScreen.storyboard in Resources */,
-				16FFCF261EA28285005A4A59 /* Assets.xcassets in Resources */,
-				16FFCF241EA28285005A4A59 /* Main.storyboard in Resources */,
+				16FFCF511EA284AD005A4A59 /* AvenirLTStd-Black.otf in Resources */,
+				16FFCF521EA284AD005A4A59 /* AvenirLTStd-Book.otf in Resources */,
+				169D5DB71EBCA8D90020436F /* Assets.xcassets in Resources */,
+				1609621A1EC0A90D00C5B4B0 /* load.gif in Resources */,
+				16FFCF551EA284AD005A4A59 /* AvenirLTStd-Medium.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,12 +554,190 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		022F631144758C562003A04F /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MhintTests/Pods-MhintTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1660BE5B1EA67EA200DE9E55 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 0e23e61ea70191cfd98f3adb987a8c13c486ca9e b11e25892452bf53929679b6ac7edeee2f071d37dae82fadabb86cecafdb11ee";
+		};
+		27BD0862F9307820CFD127E5 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		28CBCCABB899115445E2424A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MhintUITests/Pods-MhintUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		28EE34E55394FC8C4C835B9C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MhintUITests/Pods-MhintUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4782D576D611DFA4C646B53F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		5F4A76A126BF36F15FD50F76 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		88F67803491FB205C4994DE8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mhint/Pods-Mhint-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		944186AD83A4EF5B8551A8D1 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MhintTests/Pods-MhintTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AEF3CFD327141476229F53EC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mhint/Pods-Mhint-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		16FFCF171EA28285005A4A59 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				16FFCF211EA28285005A4A59 /* ViewController.swift in Sources */,
+				165458C21ED2E4B500088A22 /* eatOutCell.swift in Sources */,
+				16002CC71EB085EC0069C11F /* GlobalSize.swift in Sources */,
+				16F95DB91EA7FD5B007C64F0 /* Menu.swift in Sources */,
+				169381E81ED3353F002B0784 /* listRecipes.swift in Sources */,
+				168B94351ECEEC9C00372475 /* foodCell.swift in Sources */,
+				16D917BD1EA7C1A80049394A /* GlobalColor.swift in Sources */,
+				1635E7721EBF9D320079E64E /* indexSocialSetting.swift in Sources */,
+				16FFCF211EA28285005A4A59 /* Chat.swift in Sources */,
+				16E91A291EA8DD1800C4EEFE /* GlobalUser.swift in Sources */,
+				166AFC961ED42128008FF8F4 /* listRecipesCell.swift in Sources */,
+				168B943D1ED0643C00372475 /* Minth4you.swift in Sources */,
+				168B94431ED08DF800372475 /* dietCell.swift in Sources */,
+				165458BF1ED2E34200088A22 /* EatOut.swift in Sources */,
+				16D917BB1EA7C1940049394A /* GlobalFunction.swift in Sources */,
+				160962161EC07B1A00C5B4B0 /* GlobalVariable.swift in Sources */,
+				168B943B1ED0642E00372475 /* Emergency.swift in Sources */,
+				1635E76A1EBF5D040079E64E /* CellSettings.swift in Sources */,
+				1609621F1EC1970F00C5B4B0 /* cellEditProfile.swift in Sources */,
+				168B94381ED061E600372475 /* Diet.swift in Sources */,
+				168B94411ED0657000372475 /* Teaching.swift in Sources */,
+				1635E7771EBF9F900079E64E /* CellChat.swift in Sources */,
+				1635E7741EBF9D570079E64E /* indexBotSetting.swift in Sources */,
+				1609621C1EC0EC8000C5B4B0 /* indexSettingEditProfile.swift in Sources */,
+				16E91A261EA898E900C4EEFE /* Settings.swift in Sources */,
+				168B943F1ED0644600372475 /* Food.swift in Sources */,
+				166AFC981ED4706F008FF8F4 /* shoppingList.swift in Sources */,
+				166AFC9B1ED471CC008FF8F4 /* shoppingListCell.swift in Sources */,
+				16D917BF1EA7C4220049394A /* setColorInterface.swift in Sources */,
 				16FFCF1F1EA28285005A4A59 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -299,14 +774,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		16FFCF221EA28285005A4A59 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				16FFCF231EA28285005A4A59 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		16FFCF271EA28285005A4A59 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -411,32 +878,40 @@
 		};
 		16FFCF441EA28285005A4A59 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6BA00CCA66FF6CEF76FD604C /* Pods-Mhint.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Mhint/Mhint.entitlements;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = L4KF22FNCY;
 				INFOPLIST_FILE = Mhint/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gianlucacesari.Mhint;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		16FFCF451EA28285005A4A59 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8DAA7D70AA062ECFC4AA5FCD /* Pods-Mhint.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Mhint/Mhint.entitlements;
 				DEVELOPMENT_TEAM = L4KF22FNCY;
 				INFOPLIST_FILE = Mhint/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gianlucacesari.Mhint;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
 		16FFCF471EA28285005A4A59 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 50ED0B0BC04AC2BEE5F2A675 /* Pods-MhintTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -452,6 +927,7 @@
 		};
 		16FFCF481EA28285005A4A59 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 66317E44FE10363323285E8A /* Pods-MhintTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -467,6 +943,7 @@
 		};
 		16FFCF4A1EA28285005A4A59 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DB0BAE6A5CC0A9CA9B54C0BA /* Pods-MhintUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = L4KF22FNCY;
@@ -481,6 +958,7 @@
 		};
 		16FFCF4B1EA28285005A4A59 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8DDD08B493CA182D01617965 /* Pods-MhintUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = L4KF22FNCY;
@@ -512,6 +990,7 @@
 				16FFCF451EA28285005A4A59 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		16FFCF461EA28285005A4A59 /* Build configuration list for PBXNativeTarget "MhintTests" */ = {
 			isa = XCConfigurationList;
@@ -520,6 +999,7 @@
 				16FFCF481EA28285005A4A59 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		16FFCF491EA28285005A4A59 /* Build configuration list for PBXNativeTarget "MhintUITests" */ = {
 			isa = XCConfigurationList;
@@ -528,6 +1008,7 @@
 				16FFCF4B1EA28285005A4A59 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
