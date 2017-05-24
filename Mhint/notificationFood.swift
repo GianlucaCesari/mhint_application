@@ -27,7 +27,6 @@ class NotificationFoodController: UICollectionViewController, UICollectionViewDe
         
         GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "Weekly notification")
         header()
-        nextPage()
         
         let btnMenu = UIButton.init(type: .custom)
         let imgMenu = UIImage(named: "arrowLeft")
@@ -125,8 +124,9 @@ class NotificationFoodController: UICollectionViewController, UICollectionViewDe
     }
     
     func goToDiet() {
-//        let newViewController = NotificationFoodController(collectionViewLayout: layout)
-//        self.navigationController?.pushViewController(newViewController, animated: true)
+        saveData.set(true, forKey: "HomeFood")
+        let newViewController = HomeFoodController(collectionViewLayout: layout)
+        self.navigationController?.pushViewController(newViewController, animated: true)
     }
     
     //HEADER
