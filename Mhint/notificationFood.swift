@@ -13,7 +13,7 @@ class NotificationFoodController: UICollectionViewController, UICollectionViewDe
     
     let cellId = "cellNotificationFood"
     
-    let heightCell = GlobalSize().widthScreen*0.15
+    let heightCell = GlobalSize().widthScreen*0.14
     let widthCollectionView = GlobalSize().widthScreen*0.8
     
     let daysInWeek = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]

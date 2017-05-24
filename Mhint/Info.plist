@@ -80,15 +80,15 @@
 		</dict>
 	</dict>
 	<key>NSHealthShareUsageDescription</key>
-	<string></string>
+	<string>This permission generate a custom diet for you from Mhint</string>
 	<key>NSHealthUpdateUsageDescription</key>
-	<string></string>
+	<string>This permission generate a custom diet for you from Mhint</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string></string>
+	<string>This permission generate a custom experience for you from Mhint</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>This permission generate a custom experience for you from Mhint</string>
 	<key>NSContactsUsageDescription</key>
-	<string></string>
+	<string>This permission generate a custom emergency for you from Mhint</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AvenirLTStd-Black.otf</string>

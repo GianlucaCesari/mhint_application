@@ -87,7 +87,6 @@ class ListRecipesController: UICollectionViewController, UICollectionViewDelegat
             cell.typeMeal.text = "breakfast".uppercased()
             
             let indexImage = indexPath.row - indexDailyMeal
-//            print("Image-break \(indexPath.row): ", indexImage)
             
             cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: nil)
             cell.descriptionRecipes.text = dailyMealRecipes[indexImage].capitalized
@@ -106,7 +105,6 @@ class ListRecipesController: UICollectionViewController, UICollectionViewDelegat
             cell.typeMeal.text = "lunch".uppercased()
             
             let indexImage = indexPath.row - indexDailyMeal
-//            print("Image-break \(indexPath.row): ", indexImage)
             
             cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: nil)
             cell.descriptionRecipes.text = dailyMealRecipes[indexImage].capitalized
@@ -124,13 +122,10 @@ class ListRecipesController: UICollectionViewController, UICollectionViewDelegat
             cell.typeMeal.text = "dinner".uppercased()
             
             let indexImage = indexPath.row - indexDailyMeal
-//            print("Image-break \(indexPath.row): ", indexImage)
             
             cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: nil)
             cell.descriptionRecipes.text = dailyMealRecipes[indexImage].capitalized
-            
         }
-        
         return cell
     }
     
