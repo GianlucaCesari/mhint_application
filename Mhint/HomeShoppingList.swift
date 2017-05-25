@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import UserNotifications
 import UIKit
 
-class HomeShoppingListController: UICollectionViewController, UICollectionViewDelegateFlowLayout{
+class HomeShoppingListController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UNUserNotificationCenterDelegate{
     
     let cellId = "cellShoppingList"
     
@@ -59,6 +60,9 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         collectionView?.showsHorizontalScrollIndicator = false
         collectionView?.showsVerticalScrollIndicator = false
         
+        if UIApplication.shared.applicationIconBadgeNumber > 0 {
+            UIApplication.shared.applicationIconBadgeNumber = 0
+        }
     }
     
     

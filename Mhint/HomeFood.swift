@@ -216,6 +216,8 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
             HomeFoodController.dayToGo = (7 - today) + (notification + 1)
         } else if today < notification {
             HomeFoodController.dayToGo = 7 - today
+        } else if today == notification {
+            HomeFoodController.dayToGo = 0
         }
         
         HomeFoodController.progressBarStop = 1-(HomeFoodController.dayToGo/10)

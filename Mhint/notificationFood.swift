@@ -8,15 +8,18 @@
 
 import Foundation
 import UIKit
+import UserNotifications
 
-class NotificationFoodController: UICollectionViewController, UICollectionViewDelegateFlowLayout{
+class NotificationFoodController: UICollectionViewController, UICollectionViewDelegateFlowLayout,UNUserNotificationCenterDelegate{
     
     let cellId = "cellNotificationFood"
     
     let heightCell = GlobalSize().widthScreen*0.14
     let widthCollectionView = GlobalSize().widthScreen*0.8
     
-    let daysInWeek = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+    let daysInWeek = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+    
+    var indexWeek:Int!
     
     var arrayImageHidden = [Bool]()
     let btnNextPage = UIButton()
@@ -103,7 +106,7 @@ class NotificationFoodController: UICollectionViewController, UICollectionViewDe
         cell.checkImageBtn.image = imageGreen
         
         arrayImageHidden[indexPath.row] = boolImage
-        
+        indexWeek = indexPath.row
         nextPage()
     }
     //COLLECTIONVIEW
@@ -120,10 +123,34 @@ class NotificationFoodController: UICollectionViewController, UICollectionViewDe
     }
     
     func goToDiet() {
-        saveData.set(1, forKey: "notificationDay")
+        saveData.set(indexWeek, forKey: "notificationDay")
         saveData.set(true, forKey: "HomeFood")
         let newViewController = HomeFoodController(collectionViewLayout: layout)
         self.navigationController?.pushViewController(newViewController, animated: true)
+        setNotificationShoppingList()
+    }
+    
+    func setNotificationShoppingList () {
+        let content = UNMutableNotificationContent()
+        content.title = "It's time to go grocery-shopping!"
+        content.body = "Click here to see your grocery list."
+        content.sound = UNNotificationSound.default()
+        content.badge = 1
+        
+        var dateComponents = DateComponents()
+        dateComponents.weekday = saveData.integer(forKey: "notificationDay")+1
+        dateComponents.hour = 12
+        dateComponents.minute = 00
+        let trigger = UNCalendarNotificationTrigger.init(dateMatching: (dateComponents), repeats: true)
+        let request = UNNotificationRequest(identifier:"SampleRequest", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().delegate = self
+        UNUserNotificationCenter.current().add(request){(error) in
+            if (error != nil){
+                print(error?.localizedDescription as Any)
+            }
+        }
+        
     }
     
     //HEADER

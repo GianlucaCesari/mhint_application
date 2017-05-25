@@ -86,11 +86,11 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
         switch indexPath.row {
         case 0: //HOME
             let foodView:UIViewController?
-                if saveData.bool(forKey: "HomeFood") == true {
-                    foodView = HomeFoodController(collectionViewLayout: layout)
-                } else {
+//                if saveData.bool(forKey: "HomeFood") == true {
+//                    foodView = HomeFoodController(collectionViewLayout: layout)
+//                } else {
                     foodView = FoodController(collectionViewLayout: layout)
-                }
+//                }
                 self.sideMenuViewController!.setContentViewController(UINavigationController.init(rootViewController: foodView!), animated: true)
                 self.sideMenuViewController!.hideMenuViewController()
             

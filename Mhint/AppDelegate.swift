@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import UserNotifications
 //LOGIN
 import FBSDKCoreKit
 import GoogleSignIn
@@ -24,6 +24,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
     var window: UIWindow?
     var chatController = ChatController()
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in }
+        
+        
         
         let layout = UICollectionViewFlowLayout.init()
         layout.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
