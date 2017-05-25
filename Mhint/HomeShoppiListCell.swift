@@ -48,11 +48,20 @@ class CustomCellChooseHomeShoppingList: BaseCellChooseHomeShoppingList {
         return label
     }()
     
+    let lineGetItem: UIView = {
+       var line = UIView()
+        line.backgroundColor = .lightGray
+        line.alpha = 0
+        return line
+    }()
+    
     override func setupViews() {
         super.setupViews()
-        self.addSubview(checkImageBtn)
+        
         self.addSubview(titleDiet)
         self.addSubview(quantityDiet)
+        self.addSubview(lineGetItem)
+        self.addSubview(checkImageBtn)
     }
     
 }

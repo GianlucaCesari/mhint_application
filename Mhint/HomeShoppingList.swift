@@ -48,8 +48,8 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         
         let layout:UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
         layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 2
-        layout.sectionInset = UIEdgeInsetsMake(-60, 0, 0, 0)
+        layout.minimumLineSpacing = 0
+        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
         layout.itemSize = CGSize(width: widthCollectionView, height: heightCell)
         collectionView?.collectionViewLayout = layout
         collectionView?.backgroundColor = GlobalColor().backgroundCollectionView
@@ -74,21 +74,27 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CustomCellChooseHomeShoppingList
         
-//        cell.titleDiet.text = shoppingList[indexPath.row].capitalized
-//        cell.titleDiet.frame = CGRect(x: heightCell+(heightCell/2)-20, y: 0, width: widthCollectionView, height: heightCell)
-//        
-//        cell.quantityDiet.frame = CGRect(x: widthCollectionView-(heightCell*2)-30, y: 0, width: heightCell*2, height: heightCell)
-//        cell.quantityDiet.text = shoppingListQuantity[indexPath.row].capitalized
-//        
-//        let imageGreen = UIImage(named: "check-true")
-//        cell.checkImageBtn.frame = CGRect(x: heightCell*0.1, y: heightCell*0.15, width: heightCell*0.8, height: heightCell*0.8)
-//        cell.checkImageBtn.image = imageGreen
+        cell.titleDiet.text = shoppingList[indexPath.row].capitalized
+        cell.titleDiet.frame = CGRect(x: heightCell+(heightCell/2)-20, y: 0, width: widthCollectionView, height: heightCell)
+        
+        cell.quantityDiet.frame = CGRect(x: widthCollectionView-(heightCell*2)-30, y: 0, width: heightCell*2, height: heightCell)
+        cell.quantityDiet.text = shoppingListQuantity[indexPath.row].capitalized
+        
+        let imageGreen = UIImage(named: "check-false")
+        cell.checkImageBtn.frame = CGRect(x: GlobalSize().widthScreen*0.04, y: heightCell*0.2, width: GlobalSize().heightScreen*0.05, height: GlobalSize().heightScreen*0.05)
+        cell.checkImageBtn.image = imageGreen
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: widthCollectionView, height: heightCell)
+    }
+    //CLICK CELL
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CustomCellChooseHomeShoppingList
+        cell.lineGetItem.alpha = 1
+        cell.lineGetItem.frame = CGRect(x: 0, y: heightCell*0.48, width: widthCollectionView, height: heightCell*0.01)
     }
     //COLLECTIONVIEW
     

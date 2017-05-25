@@ -425,11 +425,12 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         if ChatController().sectionNeed == false {
             archiveMessages?.insert("Wow now what do you wanna do ?", at: 1)
             archiveMessages?.insert("Stop;Help & Needs", at: 2)
+            self.activateResponse()
         } else {
             ChatController.boolResponeWithoutButton = true
             archiveMessages?.insert("That's all", at: 1)
+            self.activateResponse()
         }
-        self.activateResponse()
     }
     //FOOD SECTION
     
