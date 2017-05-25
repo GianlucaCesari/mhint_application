@@ -14,8 +14,8 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
     
     let cellId = "cellShoppingList"
     
-    let shoppingList = GlobalVariable.listItem
-    let shoppingListQuantity = GlobalVariable.listItemQuantity
+    var shoppingList = GlobalVariable.listItem
+    var shoppingListQuantity = GlobalVariable.listItemQuantity
     
     var arrayImageHidden = [Bool]()
     
@@ -170,8 +170,22 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         save.backgroundColor = GlobalColor().greenSea
         save.setTitleColor(.white, for: .normal)
         save.titleLabel?.font = UIFont(name: "AvenirLTStd-Heavy", size: 16)
-        //save.addTarget(self, action: #selector(), for: .touchUpInside)
+        save.addTarget(self, action: #selector(clearShoppingList), for: .touchUpInside)
         self.view.addSubview(save)
+    }
+    
+    func clearShoppingList() {
+        let controller = UIAlertController(title: "Clear Shopping List", message: "Do you want remove all item ?", preferredStyle: .alert)
+        controller.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.default, handler: nil))
+        let settingsAction = UIAlertAction(title: "Yes", style: .default) { (_) -> Void in
+            GlobalVariable.listItem.removeAll()
+            GlobalVariable.listItemQuantity.removeAll()
+            self.shoppingList.removeAll()
+            self.shoppingListQuantity.removeAll()
+            self.collectionView?.reloadData()
+        }
+        controller.addAction(settingsAction)
+        self.present(controller, animated: true, completion: nil)
     }
     
     func loadingShoppingList() {
