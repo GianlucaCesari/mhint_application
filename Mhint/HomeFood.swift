@@ -228,7 +228,7 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
             HomeFoodController.dayToGo = 0
         }
         
-        HomeFoodController.progressBarStop = (HomeFoodController.dayToGo/7)
+        HomeFoodController.progressBarStop = 1-(HomeFoodController.dayToGo/7)
         
         var dayToShopping: Date {
             return (Calendar.current as NSCalendar).date(byAdding: .day, value: Int(HomeFoodController.dayToGo), to: Date(), options: [])!
