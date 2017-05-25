@@ -11,6 +11,14 @@ import UIKit
 
 class HomeShoppingListController: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     
+    let cellId = "cellShoppingList"
+    
+    let shoppingList = ["Salmon", "Banane", "Mele", "Pere", "Pasta", "Pomodoro", "Zucchine", "Uova", "Sushi"]
+    let shoppingListQuantity = ["4kg", "4", "3", "61.5 tsp", "1kg", "10", "4", "6", "tanto"]
+    
+    let heightCell = GlobalSize().widthScreen*0.15
+    let widthCollectionView = GlobalSize().widthScreen*0.8
+    
     let loadingShoppingBar = UIProgressView()
     var progressBarTimer:Timer!
     var progressBarStop:Float! = 0.0
@@ -31,7 +39,68 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         loadingShoppingList()
         header()
         
+        addItemShoppingList()
+        
         collectionView?.backgroundColor = .white
+        
+        saveShoppingList()
+        
+        let layout:UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 2
+        layout.sectionInset = UIEdgeInsetsMake(-50, 0, 0, 0)
+        layout.itemSize = CGSize(width: widthCollectionView, height: heightCell)
+        collectionView?.collectionViewLayout = layout
+        collectionView?.backgroundColor = GlobalColor().backgroundCollectionView
+        collectionView?.delegate = self
+        collectionView?.dataSource = self
+        collectionView?.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: GlobalSize().heightScreen*0.28, width: widthCollectionView, height: GlobalSize().heightScreen*0.72)
+        collectionView?.register(CustomCellChooseHomeFood.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.showsHorizontalScrollIndicator = false
+        collectionView?.showsVerticalScrollIndicator = false
+        
+    }
+    
+    
+    //COLLECTIONVIEW
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return shoppingList.count
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CustomCellChooseListShopping
+        
+        cell.titleDiet.text = shoppingList[indexPath.row].capitalized
+        cell.titleDiet.frame = CGRect(x: heightCell+(heightCell/2)-20, y: 0, width: widthCollectionView, height: heightCell)
+        
+        cell.quantityDiet.frame = CGRect(x: widthCollectionView-(heightCell*2)-30, y: 0, width: heightCell*2, height: heightCell)
+        cell.quantityDiet.text = shoppingListQuantity[indexPath.row].capitalized
+        
+        let imageGreen = UIImage(named: "check-true")
+        cell.checkImageBtn.frame = CGRect(x: heightCell*0.1, y: heightCell*0.15, width: heightCell*0.8, height: heightCell*0.8)
+        cell.checkImageBtn.image = imageGreen
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: widthCollectionView, height: heightCell)
+    }
+    //COLLECTIONVIEW
+    
+    
+    func addItemShoppingList() {
+        let addBackground = UIButton()
+        addBackground.backgroundColor = GlobalColor().backgroundCollectionView
+        addBackground.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.28, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
+        self.view.addSubview(addBackground)
+        
+        
+        var imageIngredient = UIImageView()
+        let img = UIImage(named: "check-plus")
+        imageIngredient = UIImageView(image: img)
+        imageIngredient.frame = CGRect(x: GlobalSize().widthScreen*0.04, y: GlobalSize().heightScreen*0.305, width: GlobalSize().heightScreen*0.05, height: GlobalSize().heightScreen*0.05)
+        self.view.addSubview(imageIngredient)
         
     }
     
@@ -42,6 +111,17 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         } else {
             loadingShoppingBar.progress += 0.01
         }
+    }
+    
+    func saveShoppingList() {
+        let save = UIButton()
+        save.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.9, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
+        save.setTitle("Shop Now", for: .normal)
+        save.backgroundColor = GlobalColor().greenSea
+        save.setTitleColor(.white, for: .normal)
+        save.titleLabel?.font = UIFont(name: "AvenirLTStd-Heavy", size: 16)
+        //save.addTarget(self, action: #selector(), for: .touchUpInside)
+        self.view.addSubview(save)
     }
     
     func loadingShoppingList() {

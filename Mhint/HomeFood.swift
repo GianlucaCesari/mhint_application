@@ -212,22 +212,13 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         let today:Float = Float(getDayOfWeek(result)!)
         let notification:Float = Float(saveData.integer(forKey: "notificationDay"))
         
-        print("Today: ", result)
-        print("Today week: ", today)
-        
-        print("Day Notification: ", notification)
-        
         if today > notification {
             HomeFoodController.dayToGo = (7 - today) + (notification + 1)
         } else if today < notification {
             HomeFoodController.dayToGo = 7 - today
         }
         
-        print("Giorni alla Notification: ", HomeFoodController.dayToGo)
-        
         HomeFoodController.progressBarStop = 1-(HomeFoodController.dayToGo/10)
-        
-        print("Loading: ", HomeFoodController.progressBarStop)
         
         var dayToShopping: Date {
             return (Calendar.current as NSCalendar).date(byAdding: .day, value: Int(HomeFoodController.dayToGo), to: Date(), options: [])!
@@ -239,7 +230,6 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         var monthDay = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."]
         
         HomeFoodController.dateToGo = "\(day) \(monthDay[month])"
-        
         HomeFoodController.weekToGo = weekDay[Int(notification)]
         
     }
