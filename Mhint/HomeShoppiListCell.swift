@@ -50,7 +50,7 @@ class CustomCellChooseHomeShoppingList: BaseCellChooseHomeShoppingList {
     
     let lineGetItem: UIView = {
        var line = UIView()
-        line.backgroundColor = .lightGray
+        line.backgroundColor = .black
         line.alpha = 0
         return line
     }()

@@ -42,9 +42,6 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         self.view.backgroundColor = .white
         
         globalFunction.navBar(nav: navigationItem, s: self, show: true) //navigation bar
-//        
-//        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-//        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         
         getDayAtShopping()
         header()
@@ -216,9 +213,6 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
     
         let today:Float = Float(getDayOfWeek(result)!)
         let notification:Float = Float(saveData.integer(forKey: "notificationDay"))
-        
-        print("Giorno di questa settimana: ",today)
-        print("Giorno della notifica della settimana: ", notification)
         
         if today > notification {
             HomeFoodController.dayToGo = (7 - today) + notification

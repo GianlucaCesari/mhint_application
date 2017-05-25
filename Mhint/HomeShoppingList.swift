@@ -14,8 +14,10 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
     
     let cellId = "cellShoppingList"
     
-    let shoppingList = ["Salmon", "Banane", "Mele", "Pere", "Pasta", "Pomodoro", "Zucchine", "Uova", "Sushi"]
-    let shoppingListQuantity = ["4kg", "4", "3", "61.5 tsp", "1kg", "10", "4", "6", "tanto"]
+    let shoppingList = GlobalVariable.listItem
+    let shoppingListQuantity = GlobalVariable.listItemQuantity
+    
+    var arrayImageHidden = [Bool]()
     
     let heightCell = GlobalSize().widthScreen*0.15
     let widthCollectionView = GlobalSize().widthScreen
@@ -55,7 +57,7 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         collectionView?.backgroundColor = GlobalColor().backgroundCollectionView
         collectionView?.delegate = self
         collectionView?.dataSource = self
-        collectionView?.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.38, width: widthCollectionView, height: GlobalSize().heightScreen*0.52)
+        collectionView?.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.285, width: widthCollectionView, height: GlobalSize().heightScreen*0.61)
         collectionView?.register(CustomCellChooseHomeShoppingList.self, forCellWithReuseIdentifier: cellId)
         collectionView?.showsHorizontalScrollIndicator = false
         collectionView?.showsVerticalScrollIndicator = false
@@ -84,6 +86,13 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         cell.checkImageBtn.frame = CGRect(x: GlobalSize().widthScreen*0.04, y: heightCell*0.2, width: GlobalSize().heightScreen*0.05, height: GlobalSize().heightScreen*0.05)
         cell.checkImageBtn.image = imageGreen
         
+        cell.lineGetItem.alpha = 0
+        cell.lineGetItem.frame = CGRect(x: 0, y: heightCell*0.475, width: widthCollectionView, height: heightCell*0.03)
+        
+        if arrayImageHidden.count < (indexPath.row + 1) {
+            arrayImageHidden.append(false)
+        }
+        
         return cell
     }
     
@@ -92,9 +101,32 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
     }
     //CLICK CELL
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CustomCellChooseHomeShoppingList
-        cell.lineGetItem.alpha = 1
-        cell.lineGetItem.frame = CGRect(x: 0, y: heightCell*0.48, width: widthCollectionView, height: heightCell*0.01)
+        let cell = collectionView.cellForItem(at: indexPath) as! CustomCellChooseHomeShoppingList
+        
+        var boolImage = Bool()
+        var stringImage = String()
+        if arrayImageHidden[indexPath.row] == true {
+            boolImage = false
+            stringImage = "check-false"
+            cell.quantityDiet.textColor = .black
+            cell.titleDiet.textColor = .black
+            cell.quantityDiet.alpha = 1
+            cell.titleDiet.alpha = 1
+            cell.lineGetItem.alpha = 0
+        } else {
+            boolImage = true
+            stringImage = "check-true"
+            cell.quantityDiet.textColor = .lightGray
+            cell.titleDiet.textColor = .lightGray
+            cell.quantityDiet.alpha = 0.6
+            cell.titleDiet.alpha = 0.6
+            cell.lineGetItem.alpha = 0.1
+        }
+        
+        let imageGreen = UIImage(named: stringImage)
+        cell.checkImageBtn.image = imageGreen
+        arrayImageHidden[indexPath.row] = boolImage
+        
     }
     //COLLECTIONVIEW
     
@@ -102,9 +134,9 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
     func addItemShoppingList() {
         let addBackground = UIButton()
         addBackground.backgroundColor = GlobalColor().backgroundCollectionView
+        //addBackground(self, action: #selector(alertAddItem), for: .touchUpInside)
         addBackground.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.28, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
         self.view.addSubview(addBackground)
-        
         
         var imageIngredient = UIImageView()
         let img = UIImage(named: "check-plus")
@@ -112,6 +144,14 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         imageIngredient.frame = CGRect(x: GlobalSize().widthScreen*0.04, y: GlobalSize().heightScreen*0.305, width: GlobalSize().heightScreen*0.05, height: GlobalSize().heightScreen*0.05)
         self.view.addSubview(imageIngredient)
         
+        let btnAlert = UILabel()
+        btnAlert.text = "Add Item"
+        btnAlert.textColor = .black
+        btnAlert.alpha = 0.2
+        btnAlert.font = UIFont(name: "AvenirLTStd-Heavy", size: 13)
+        btnAlert.textAlignment = .left
+        btnAlert.frame = CGRect(x: GlobalSize().widthScreen*0.15, y: GlobalSize().heightScreen*0.305, width: GlobalSize().widthScreen*0.3, height: GlobalSize().heightScreen*0.05)
+        self.view.addSubview(btnAlert)
     }
     
     func loadingShoppingBarFunction() {

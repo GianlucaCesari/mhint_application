@@ -16,8 +16,8 @@ class ShoppingListController: UICollectionViewController, UICollectionViewDelega
     let heightCell = GlobalSize().widthScreen*0.15
     let widthCollectionView = GlobalSize().widthScreen*0.8
     
-    let shoppingList = ["Salmon", "Banane", "Mele", "Pere", "Pasta", "Pomodoro", "Zucchine", "Uova", "Sushi"]
-    let shoppingListQuantity = ["4kg", "4", "3", "61.5 tsp", "1kg", "10", "4", "6", "tanto"]
+    let shoppingList = GlobalVariable.listItem
+    let shoppingListQuantity = GlobalVariable.listItemQuantity
     
     let btnNextPage = UIButton()
     
