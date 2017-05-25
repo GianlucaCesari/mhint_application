@@ -17,7 +17,7 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
     let shoppingListQuantity = ["4kg", "4", "3", "61.5 tsp", "1kg", "10", "4", "6", "tanto"]
     
     let heightCell = GlobalSize().widthScreen*0.15
-    let widthCollectionView = GlobalSize().widthScreen*0.8
+    let widthCollectionView = GlobalSize().widthScreen
     
     let loadingShoppingBar = UIProgressView()
     var progressBarTimer:Timer!
@@ -48,14 +48,14 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         let layout:UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 2
-        layout.sectionInset = UIEdgeInsetsMake(-50, 0, 0, 0)
+        layout.sectionInset = UIEdgeInsetsMake(-60, 0, 0, 0)
         layout.itemSize = CGSize(width: widthCollectionView, height: heightCell)
         collectionView?.collectionViewLayout = layout
         collectionView?.backgroundColor = GlobalColor().backgroundCollectionView
         collectionView?.delegate = self
         collectionView?.dataSource = self
-        collectionView?.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: GlobalSize().heightScreen*0.28, width: widthCollectionView, height: GlobalSize().heightScreen*0.72)
-        collectionView?.register(CustomCellChooseHomeFood.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.38, width: widthCollectionView, height: GlobalSize().heightScreen*0.52)
+        collectionView?.register(CustomCellChooseHomeShoppingList.self, forCellWithReuseIdentifier: cellId)
         collectionView?.showsHorizontalScrollIndicator = false
         collectionView?.showsVerticalScrollIndicator = false
         
@@ -68,17 +68,17 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CustomCellChooseListShopping
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CustomCellChooseHomeShoppingList
         
-        cell.titleDiet.text = shoppingList[indexPath.row].capitalized
-        cell.titleDiet.frame = CGRect(x: heightCell+(heightCell/2)-20, y: 0, width: widthCollectionView, height: heightCell)
-        
-        cell.quantityDiet.frame = CGRect(x: widthCollectionView-(heightCell*2)-30, y: 0, width: heightCell*2, height: heightCell)
-        cell.quantityDiet.text = shoppingListQuantity[indexPath.row].capitalized
-        
-        let imageGreen = UIImage(named: "check-true")
-        cell.checkImageBtn.frame = CGRect(x: heightCell*0.1, y: heightCell*0.15, width: heightCell*0.8, height: heightCell*0.8)
-        cell.checkImageBtn.image = imageGreen
+//        cell.titleDiet.text = shoppingList[indexPath.row].capitalized
+//        cell.titleDiet.frame = CGRect(x: heightCell+(heightCell/2)-20, y: 0, width: widthCollectionView, height: heightCell)
+//        
+//        cell.quantityDiet.frame = CGRect(x: widthCollectionView-(heightCell*2)-30, y: 0, width: heightCell*2, height: heightCell)
+//        cell.quantityDiet.text = shoppingListQuantity[indexPath.row].capitalized
+//        
+//        let imageGreen = UIImage(named: "check-true")
+//        cell.checkImageBtn.frame = CGRect(x: heightCell*0.1, y: heightCell*0.15, width: heightCell*0.8, height: heightCell*0.8)
+//        cell.checkImageBtn.image = imageGreen
         
         return cell
     }
