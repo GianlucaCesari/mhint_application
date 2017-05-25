@@ -92,13 +92,6 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             sideMenuViewController?.panGestureLeftEnabled = false //DA DISATTIVARE ALLA PRIMA APERTURA DELL'APP
         }
         
-        //POSIZIONE
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.startUpdatingLocation()
-        locationManager.requestAlwaysAuthorization()
-        
         UIApplication.shared.statusBarView?.backgroundColor = .white//BACKGROUND STATUS BAR WHITE
         
         GlobalFunc().checkInternet(s: self)//INTERNET
@@ -558,6 +551,14 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     //END CHAT
     func endChat() {
+        
+        //POSIZIONE
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.startUpdatingLocation()
+        locationManager.requestAlwaysAuthorization()
+        
         sideMenuViewController?.panGestureLeftEnabled = true //DA ATTIVARE ALLA FINE DELLA CHAT
         GlobalFunc().navBarMenu(nav: navigationItem, s: self) //MOSTRA IL MENU, DEVE ESSERE FATTO ALLA FINE DELLA CHAT
         saveData.set(1, forKey: "welcomeFinish")
