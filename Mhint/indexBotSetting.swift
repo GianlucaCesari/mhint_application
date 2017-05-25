@@ -20,7 +20,6 @@ class botController: UIViewController{
         btnMenu.setImage(imgMenu, for: .normal)
         btnMenu.addTarget(self, action: #selector(self.back(sender:)), for: .touchUpInside)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: btnMenu)
-        
     }
     
     func back(sender: UIBarButtonItem) {

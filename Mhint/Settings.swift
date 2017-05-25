@@ -8,7 +8,7 @@
 import UIKit
 import SwiftyGif
 
-class SettingsController: UICollectionViewController, UICollectionViewDelegateFlowLayout{
+class SettingsController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate{
     
     //CLASSI ESTERNE2
     let globalColor = GlobalColor()

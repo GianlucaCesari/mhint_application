@@ -13,7 +13,7 @@ import HealthKit //SALUTE
 import Contacts //CONTACTS
 import Alamofire //REQUEST INTERNET
 
-class GlobalFunc: UIView{
+class GlobalFunc: UIView, UIGestureRecognizerDelegate{
     
     var globalSize = GlobalSize()
     var themeColor:Bool = true
@@ -44,6 +44,10 @@ class GlobalFunc: UIView{
     
     //NAVIGATION BAR TOP CHAT
     func navBar(nav: UINavigationItem, s: UIViewController, show: Bool) {
+        
+        
+        s.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        s.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         
         let view = UIView(frame: CGRect(x: 0.0, y: 0.0, width: UIScreen.main.bounds.size.width, height: 20.0))
         view.backgroundColor = .white
@@ -103,19 +107,13 @@ class GlobalFunc: UIView{
         btnMenu.titleLabel?.font = UIFont(name: "AvenirLTStd-Medium", size: 12)
         btnMenu.frame = CGRect(x: 0, y: 0, width: globalSize.sizeIconMenuBar, height: globalSize.sizeIconMenuBar)
         viewChatController = s
-        btnMenu.addTarget(s, action: #selector(goToChat), for: .touchUpInside)
+        //btnMenu.addTarget(s, action: #selector(goToChat(sender:)), for: .touchUpInside)
         nav.rightBarButtonItem = UIBarButtonItem(customView: btnMenu)
-    }
-    
-    func goToChat(sender: UIButton) {
-        print("cadibafad")
-        let newViewController = ChatController(collectionViewLayout: layout)
-        viewChatController.navigationController?.pushViewController(newViewController, animated: true)
     }
     
     //NAVIGATION BAR INSIDE VIEW
     func navBarSubView(nav: UINavigationItem, s: UIViewController, title: String) {
-        navBarRightChat(nav: nav, s: s)
+        //navBarRightChat(nav: nav, s: s)
         
         let titleLabel = UILabel()
         let attributes: [NSString : AnyObject] = [NSFontAttributeName as NSString: UIFont(name: "AvenirLTStd-Heavy", size: 13)!, NSKernAttributeName as NSString : 1.15 as AnyObject]
