@@ -140,7 +140,6 @@ class FoodController: UICollectionViewController, UICollectionViewDelegateFlowLa
         description.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: GlobalSize().heightScreen*0.18, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.1)
         self.view.addSubview(description)
         
-        
         let titleListView = UILabel()
         titleListView.text = "SELEZIONA I TUOI CIBI PREFERITI"
         titleListView.textColor = self.globalColor.colorBlack

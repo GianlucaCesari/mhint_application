@@ -108,7 +108,7 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
         btnMenu.frame = CGRect(x: 0, y: 0, width: globalSize.sizeIconMenuBar, height: globalSize.sizeIconMenuBar)
         viewChatController = s
         //btnMenu.addTarget(s, action: #selector(goToChat(sender:)), for: .touchUpInside)
-        nav.rightBarButtonItem = UIBarButtonItem(customView: btnMenu)
+        //nav.rightBarButtonItem = UIBarButtonItem(customView: btnMenu)
     }
     
     //NAVIGATION BAR INSIDE VIEW

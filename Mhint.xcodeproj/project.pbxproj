@@ -23,6 +23,7 @@
 		1635E7721EBF9D320079E64E /* indexSocialSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1635E7711EBF9D320079E64E /* indexSocialSetting.swift */; };
 		1635E7741EBF9D570079E64E /* indexBotSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1635E7731EBF9D570079E64E /* indexBotSetting.swift */; };
 		1635E7771EBF9F900079E64E /* CellChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1635E7761EBF9F900079E64E /* CellChat.swift */; };
+		163CA14D1ED7213500B10700 /* HomeShoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163CA14C1ED7213500B10700 /* HomeShoppingList.swift */; };
 		165458BF1ED2E34200088A22 /* EatOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165458BE1ED2E34200088A22 /* EatOut.swift */; };
 		165458C21ED2E4B500088A22 /* eatOutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165458C11ED2E4B500088A22 /* eatOutCell.swift */; };
 		166AFC961ED42128008FF8F4 /* listRecipesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166AFC951ED42128008FF8F4 /* listRecipesCell.swift */; };
@@ -92,6 +93,7 @@
 		1635E7711EBF9D320079E64E /* indexSocialSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = indexSocialSetting.swift; path = Mhint/indexSocialSetting.swift; sourceTree = "<group>"; };
 		1635E7731EBF9D570079E64E /* indexBotSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = indexBotSetting.swift; path = Mhint/indexBotSetting.swift; sourceTree = "<group>"; };
 		1635E7761EBF9F900079E64E /* CellChat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellChat.swift; sourceTree = "<group>"; };
+		163CA14C1ED7213500B10700 /* HomeShoppingList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeShoppingList.swift; path = Mhint/HomeShoppingList.swift; sourceTree = "<group>"; };
 		165458BE1ED2E34200088A22 /* EatOut.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EatOut.swift; path = Mhint/EatOut.swift; sourceTree = "<group>"; };
 		165458C11ED2E4B500088A22 /* eatOutCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = eatOutCell.swift; path = Mhint/eatOutCell.swift; sourceTree = "<group>"; };
 		166AFC951ED42128008FF8F4 /* listRecipesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = listRecipesCell.swift; path = Mhint/listRecipesCell.swift; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 			isa = PBXGroup;
 			children = (
 				161F55701ED5C2DE004D6786 /* HomeFood.swift */,
+				163CA14C1ED7213500B10700 /* HomeShoppingList.swift */,
 				161F55721ED5DEFF004D6786 /* HomeFoodCell.swift */,
 				1620D9111ED47AE30045873A /* Setting Food */,
 			);
@@ -770,6 +773,7 @@
 				166AFC981ED4706F008FF8F4 /* shoppingList.swift in Sources */,
 				166AFC9B1ED471CC008FF8F4 /* shoppingListCell.swift in Sources */,
 				16D917BF1EA7C4220049394A /* setColorInterface.swift in Sources */,
+				163CA14D1ED7213500B10700 /* HomeShoppingList.swift in Sources */,
 				16FFCF1F1EA28285005A4A59 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

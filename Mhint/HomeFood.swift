@@ -33,6 +33,7 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
     var progressBarStop:Float! = 0.8
     
     var dayToGo:Float!
+    var dateToGo:String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -170,7 +171,7 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         self.view.addSubview(description)
         
         let titleListView = UILabel()
-        titleListView.text = "\(dayToGo) days to go | 12 Apr."
+        titleListView.text = "\(Int(dayToGo!)) days to go | \(dateToGo)"
         titleListView.textColor = self.globalColor.colorBlack
         titleListView.textAlignment = .left
         titleListView.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.028)
@@ -201,27 +202,35 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         let result = formatter.string(from: date)
-        
-        print("Today: ", result)
-        print(getDayOfWeek(result)!)
-        
+    
         let today:Float = Float(getDayOfWeek(result)!)
         let notification:Float = Float(saveData.integer(forKey: "notificationDay"))
         
+        print("Today: ", result)
         print("Today week: ", today)
         
+        print("Day Notification: ", notification)
+        
         if today > notification {
-            
-            dayToGo = (6 - today) + notification
-            
+            dayToGo = (7 - today) + (notification + 1)
         } else if today < notification {
-            
-            dayToGo = 6 - today
-            
+            dayToGo = 7 - today
         }
         
+        print("Giorni alla Notification: ", dayToGo)
+        
         progressBarStop = 1-(dayToGo/10)
-        print(progressBarStop)
+        
+        print("Loading: ", progressBarStop)
+        
+        var dayToShopping: Date {
+            return (Calendar.current as NSCalendar).date(byAdding: .day, value: Int(dayToGo!), to: Date(), options: [])!
+        }
+        let calendar = Calendar.current
+        let month = calendar.component(.month, from: dayToShopping)
+        let day = calendar.component(.day, from: dayToShopping)
+        var weekDay = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."]
+        dateToGo = "\(day) \(weekDay[month])"
         
     }
     
@@ -230,7 +239,8 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         formatter.dateFormat = "yyyy-MM-dd"
         guard let todayDate = formatter.date(from: today) else { return nil }
         let myCalendar = Calendar(identifier: .gregorian)
-        let weekDay = myCalendar.component(.weekday, from: todayDate)
+        var weekDay = myCalendar.component(.weekday, from: todayDate)
+        if weekDay == 0 { weekDay = 7 }
         return weekDay
     }
     
