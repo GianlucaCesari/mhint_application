@@ -30,10 +30,11 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
     
     let loadingShoppingBar = UIProgressView()
     var progressBarTimer:Timer!
-    var progressBarStop:Float! = 0.8
+    static var progressBarStop:Float! = 0.0
     
-    var dayToGo:Float!
-    var dateToGo:String!
+    static var dayToGo:Float = 0.0
+    static var dateToGo:String = ""
+    static var weekToGo:String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,11 +44,10 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         getDayAtShopping()
         header()
         
-        loadingShoppingBar.trackTintColor = .lightGray
+        loadingShoppingBar.trackTintColor = UIColor.init(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.04)
         loadingShoppingBar.progressTintColor = GlobalColor().greenSea
         loadingShoppingBar.frame = CGRect(x:GlobalSize().widthScreen*0.05, y: GlobalSize().heightScreen*0.21, width:GlobalSize().widthScreen*0.9, height:GlobalSize().widthScreen*0.02)
-        loadingShoppingBar.progress = 0.5
-        progressBarTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(HomeFoodController.loadingShopping), userInfo: nil, repeats: true)
+        progressBarTimer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(HomeFoodController.loadingShopping), userInfo: nil, repeats: true)
         self.view.addSubview(loadingShoppingBar)
         
         let backCollectionView = UIView()
@@ -171,7 +171,7 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         self.view.addSubview(description)
         
         let titleListView = UILabel()
-        titleListView.text = "\(Int(dayToGo!)) days to go | \(dateToGo)"
+        titleListView.text = "\(Int(HomeFoodController.dayToGo)) days to go | \(HomeFoodController.dateToGo)"
         titleListView.textColor = self.globalColor.colorBlack
         titleListView.textAlignment = .left
         titleListView.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.028)
@@ -183,11 +183,17 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         btnShopNow.setTitleColor(.black, for: .normal)
         btnShopNow.titleLabel?.font = UIFont(name: "AvenirLTStd-Heavy", size: GlobalSize().widthScreen*0.028)
         btnShopNow.frame = CGRect(x: GlobalSize().widthScreen*0.77, y: GlobalSize().heightScreen*0.22, width: GlobalSize().widthScreen*0.2, height: GlobalSize().widthScreen*0.1)
+        btnShopNow.addTarget(self, action: #selector(goToShoppingList), for: .touchUpInside)
         self.view.addSubview(btnShopNow)
     }
     
+    func goToShoppingList() {
+        let newViewController = HomeShoppingListController(collectionViewLayout: layout)
+        self.navigationController?.pushViewController(newViewController, animated: true)
+    }
+    
     func loadingShopping() {
-        if loadingShoppingBar.progress > progressBarStop {
+        if loadingShoppingBar.progress > HomeFoodController.progressBarStop {
             progressBarTimer.invalidate()
             progressBarTimer = nil
         } else {
@@ -212,25 +218,29 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         print("Day Notification: ", notification)
         
         if today > notification {
-            dayToGo = (7 - today) + (notification + 1)
+            HomeFoodController.dayToGo = (7 - today) + (notification + 1)
         } else if today < notification {
-            dayToGo = 7 - today
+            HomeFoodController.dayToGo = 7 - today
         }
         
-        print("Giorni alla Notification: ", dayToGo)
+        print("Giorni alla Notification: ", HomeFoodController.dayToGo)
         
-        progressBarStop = 1-(dayToGo/10)
+        HomeFoodController.progressBarStop = 1-(HomeFoodController.dayToGo/10)
         
-        print("Loading: ", progressBarStop)
+        print("Loading: ", HomeFoodController.progressBarStop)
         
         var dayToShopping: Date {
-            return (Calendar.current as NSCalendar).date(byAdding: .day, value: Int(dayToGo!), to: Date(), options: [])!
+            return (Calendar.current as NSCalendar).date(byAdding: .day, value: Int(HomeFoodController.dayToGo), to: Date(), options: [])!
         }
         let calendar = Calendar.current
         let month = calendar.component(.month, from: dayToShopping)
         let day = calendar.component(.day, from: dayToShopping)
-        var weekDay = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."]
-        dateToGo = "\(day) \(weekDay[month])"
+        var weekDay = ["", "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+        var monthDay = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."]
+        
+        HomeFoodController.dateToGo = "\(day) \(monthDay[month])"
+        
+        HomeFoodController.weekToGo = weekDay[Int(notification)]
         
     }
     
