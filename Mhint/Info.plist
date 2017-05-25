@@ -4,8 +4,6 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-	<key>CFBundleDocumentTypes</key>
-	<array/>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -77,8 +75,12 @@
 		<dict>
 			<key>mhint.eu</key>
 			<string></string>
+			<key>mhint.eu/privacy</key>
+			<string></string>
 		</dict>
 	</dict>
+	<key>NSContactsUsageDescription</key>
+	<string>This permission generate a custom emergency for you from Mhint</string>
 	<key>NSHealthShareUsageDescription</key>
 	<string>This permission generate a custom diet for you from Mhint</string>
 	<key>NSHealthUpdateUsageDescription</key>
@@ -87,8 +89,6 @@
 	<string>This permission generate a custom experience for you from Mhint</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This permission generate a custom experience for you from Mhint</string>
-	<key>NSContactsUsageDescription</key>
-	<string>This permission generate a custom emergency for you from Mhint</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AvenirLTStd-Black.otf</string>
