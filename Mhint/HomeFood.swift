@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFlowLayout{
+class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate{
     
     //CLASSI ESTERNE
     let globalColor = GlobalColor()
@@ -38,9 +38,14 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.view.backgroundColor = .white
         
         globalFunction.navBar(nav: navigationItem, s: self, show: true) //navigation bar
+//        
+//        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+//        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        
         getDayAtShopping()
         header()
         
@@ -213,7 +218,7 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         let notification:Float = Float(saveData.integer(forKey: "notificationDay"))
         
         if today > notification {
-            HomeFoodController.dayToGo = (7 - today) + (notification + 1)
+            HomeFoodController.dayToGo = (7 - today) + notification
         } else if today < notification {
             HomeFoodController.dayToGo = 7 - today
         } else if today == notification {
@@ -229,10 +234,10 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         let month = calendar.component(.month, from: dayToShopping)
         let day = calendar.component(.day, from: dayToShopping)
         var weekDay = ["", "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
-        var monthDay = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."]
+        var monthDay = ["", "Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."]
         
         HomeFoodController.dateToGo = "\(day) \(monthDay[month])"
-        HomeFoodController.weekToGo = weekDay[Int(notification)]
+        HomeFoodController.weekToGo = weekDay[Int(notification-1)]
         
     }
     

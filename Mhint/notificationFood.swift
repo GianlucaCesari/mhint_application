@@ -123,7 +123,7 @@ class NotificationFoodController: UICollectionViewController, UICollectionViewDe
     }
     
     func goToDiet() {
-        saveData.set(indexWeek, forKey: "notificationDay")
+        saveData.set(indexWeek+1, forKey: "notificationDay")
         saveData.set(true, forKey: "HomeFood")
         let newViewController = HomeFoodController(collectionViewLayout: layout)
         self.navigationController?.pushViewController(newViewController, animated: true)
@@ -138,9 +138,9 @@ class NotificationFoodController: UICollectionViewController, UICollectionViewDe
         content.badge = 1
         
         var dateComponents = DateComponents()
-        dateComponents.weekday = saveData.integer(forKey: "notificationDay")+1
-        dateComponents.hour = 12
-        dateComponents.minute = 00
+        dateComponents.weekday = saveData.integer(forKey: "notificationDay")
+        dateComponents.hour = 18
+        dateComponents.minute = 56
         let trigger = UNCalendarNotificationTrigger.init(dateMatching: (dateComponents), repeats: true)
         let request = UNNotificationRequest(identifier:"SampleRequest", content: content, trigger: trigger)
         
