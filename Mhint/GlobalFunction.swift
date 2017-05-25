@@ -107,7 +107,8 @@ class GlobalFunc: UIView{
         nav.rightBarButtonItem = UIBarButtonItem(customView: btnMenu)
     }
     
-    func goToChat(_ sender: Any) {
+    func goToChat(sender: UIButton) {
+        print("cadibafad")
         let newViewController = ChatController(collectionViewLayout: layout)
         viewChatController.navigationController?.pushViewController(newViewController, animated: true)
     }
