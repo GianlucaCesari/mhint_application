@@ -13,7 +13,7 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
     let user = GlobalUser()
     
     var tableView: UITableView?
-    var titles: [String] = ["Food & Diet", "Needs & Emergency", "Teaching", "Settings", "Mhint 4 you"]
+    var titles: [String] = ["Food & Diet", "Needs & Emergency", "Teaching", "Settings", "Privacy Policy"]
     
     init() {
         super.init(nibName:nil, bundle:nil)
@@ -85,12 +85,13 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
         tableView.deselectRow(at: indexPath, animated: true)
         switch indexPath.row {
         case 0: //HOME
-            let foodView:UIViewController?
-                if saveData.bool(forKey: "HomeFood") == true {
-                    foodView = HomeFoodController(collectionViewLayout: layout)
-                } else {
+            
+                let foodView:UIViewController?
+//                if saveData.bool(forKey: "HomeFood") == true {
+//                    foodView = HomeFoodController(collectionViewLayout: layout)
+//                } else {
                     foodView = FoodController(collectionViewLayout: layout)
-                }
+//                }
                 self.sideMenuViewController!.setContentViewController(UINavigationController.init(rootViewController: foodView!), animated: true)
                 self.sideMenuViewController!.hideMenuViewController()
             

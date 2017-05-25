@@ -98,6 +98,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.startUpdatingLocation()
         locationManager.requestAlwaysAuthorization()
+        
         UIApplication.shared.statusBarView?.backgroundColor = .white//BACKGROUND STATUS BAR WHITE
         
         GlobalFunc().checkInternet(s: self)//INTERNET

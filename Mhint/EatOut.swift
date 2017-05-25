@@ -95,13 +95,10 @@ class EatOutController: UICollectionViewController, UICollectionViewDelegateFlow
         let cell = collectionView.cellForItem(at: indexPath) as! CustomCellChooseEatOut
         
         var boolImage = Bool()
-        var stringImage = String()
         if arrayImageHidden[indexPath.row] == true {
             boolImage = false
-            stringImage = "check-false"
         } else {
             boolImage = true
-            stringImage = "check-true"
         }
         
         

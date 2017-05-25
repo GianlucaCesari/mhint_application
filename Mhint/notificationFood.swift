@@ -93,13 +93,10 @@ class NotificationFoodController: UICollectionViewController, UICollectionViewDe
         let cell = collectionView.cellForItem(at: indexPath) as! CustomCellChooseNotificationFood
         
         var boolImage = Bool()
-        var stringImage = String()
         if arrayImageHidden[indexPath.row] == true {
             boolImage = false
-            stringImage = "check-false"
         } else {
             boolImage = true
-            stringImage = "check-true"
         }
         
         let imageGreen = UIImage(named: "check-true")
@@ -108,7 +105,6 @@ class NotificationFoodController: UICollectionViewController, UICollectionViewDe
         arrayImageHidden[indexPath.row] = boolImage
         
         nextPage()
-        
     }
     //COLLECTIONVIEW
     
@@ -124,6 +120,7 @@ class NotificationFoodController: UICollectionViewController, UICollectionViewDe
     }
     
     func goToDiet() {
+        saveData.set(1, forKey: "notificationDay")
         saveData.set(true, forKey: "HomeFood")
         let newViewController = HomeFoodController(collectionViewLayout: layout)
         self.navigationController?.pushViewController(newViewController, animated: true)

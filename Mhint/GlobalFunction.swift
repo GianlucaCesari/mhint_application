@@ -107,8 +107,9 @@ class GlobalFunc: UIView{
         nav.rightBarButtonItem = UIBarButtonItem(customView: btnMenu)
     }
     
-    func goToChat() {
-        viewChatController.present(ChatController(collectionViewLayout: layout), animated: true, completion: nil)
+    func goToChat(_ sender: Any) {
+        let newViewController = ChatController(collectionViewLayout: layout)
+        viewChatController.navigationController?.pushViewController(newViewController, animated: true)
     }
     
     //NAVIGATION BAR INSIDE VIEW
@@ -310,8 +311,29 @@ class GlobalFunc: UIView{
     
     //POSIZIONE
     func getLocation(latitude: Double, longitude: Double) {
-//        print("Longitudine: ", longitude)
-//        print("Latitudine: ", latitude)
+        
+        let accuracy:Double = 10000000
+        
+        if Double(round(latitude*accuracy)/accuracy) != saveData.double(forKey: "latitudeHistory") || Double(round(longitude*accuracy)/accuracy) != saveData.double(forKey: "longitudeHistory") {
+            
+            let parameter = [
+                "mail": saveData.string(forKey: "email")!//STRING
+                , "lat": String(Double(round(latitude*accuracy)/accuracy))
+                , "long": String(Double(round(longitude*accuracy)/accuracy))
+                ] as [String : Any]
+            
+            Alamofire.request("https://api.mhint.eu/userpositions", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON {_ in }
+            
+            saveData.set(Double(round(latitude*accuracy)/accuracy), forKey: "latitudeHistory")
+            saveData.set(Double(round(longitude*accuracy)/accuracy), forKey: "longitudeHistory")
+            
+            print("POSIZIONE CAMBIATA")
+            print("Longitudine: ", Double(round(latitude*accuracy)/accuracy))
+            print("Latitudine: ", Double(round(longitude*accuracy)/accuracy))
+            print("Email: ", saveData.string(forKey: "email")!)
+            
+        }
+        
     }
     
 }
