@@ -13,7 +13,7 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
     let user = GlobalUser()
     
     var tableView: UITableView?
-    var titles: [String] = ["Food & Diet", "Needs & Emergency", "Teaching", "Settings", "Mhint 4 you"]
+    var titles: [String] = ["Food & Diet", "Needs & Emergency", "Teaching", "Settings", "Privacy policy"]
     
     init() {
         super.init(nibName:nil, bundle:nil)
