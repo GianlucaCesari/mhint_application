@@ -19,7 +19,7 @@ class BaseCellChooseHomeDetailsRecipes: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     func setupViews() {
-        self.backgroundColor = .white
+        self.backgroundColor = GlobalColor().backgroundCollectionView
     }
     
 }
@@ -30,7 +30,8 @@ class CustomCellChooseHomeDetailsRecipes: BaseCellChooseHomeDetailsRecipes {
         var label = UILabel()
         label.textColor = .black
         label.addTextSpacing()
-        label.font = UIFont(name: "AvenirLTStd-Heavy", size: 15)
+        label.textAlignment = .center
+        label.font = UIFont(name: "AvenirLTStd-Black", size: 11)
         label.backgroundColor = GlobalColor().backgroundCollectionView
         return label
     }()
@@ -45,10 +46,9 @@ class CustomCellChooseHomeDetailsRecipes: BaseCellChooseHomeDetailsRecipes {
     override func setupViews() {
         super.setupViews()
         
-        self.addSubview(titleSection)
         self.addSubview(lineTitleSection)
+        self.addSubview(titleSection)
         
     }
     
 }
-

@@ -50,7 +50,7 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
         collectionView?.backgroundColor = GlobalColor().backgroundCollectionView
         collectionView?.delegate = self
         collectionView?.dataSource = self
-        collectionView?.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.26, width: widthCollectionView, height: GlobalSize().heightScreen*0.74)
+        collectionView?.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.255, width: widthCollectionView, height: GlobalSize().heightScreen*0.72)
         collectionView?.register(CustomCellChooseHomeDetailsRecipes.self, forCellWithReuseIdentifier: cellId)
         collectionView?.showsHorizontalScrollIndicator = false
         collectionView?.showsVerticalScrollIndicator = false
@@ -67,12 +67,12 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CustomCellChooseHomeDetailsRecipes
         
-        cell.lineTitleSection.frame = CGRect(x: 0, y: 10, width: GlobalSize().widthScreen, height: 10)
+        cell.lineTitleSection.frame = CGRect(x: 0, y: (heightCell-2)/2, width: GlobalSize().widthScreen, height: 2)
         cell.lineTitleSection.backgroundColor = .black
         cell.lineTitleSection.alpha = 0.4
         
-        cell.titleSection.text = "NUTRITION VALUE"
-        cell.titleSection.frame = CGRect(x: GlobalSize().widthScreen*0.1, y: 10, width: GlobalSize().widthScreen*0.4, height: GlobalSize().heightScreen*0.1)
+        cell.titleSection.text = "NUTRITIONAL VALUE"
+        cell.titleSection.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: (heightCell-GlobalSize().heightScreen*0.1)/2, width: GlobalSize().widthScreen*0.35, height: GlobalSize().heightScreen*0.1)
         
         return cell
     }
