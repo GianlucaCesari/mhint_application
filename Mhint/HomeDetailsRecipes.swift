@@ -15,6 +15,8 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
     
     let cellId = "cellDetailsRecipes"
     
+    let sectionTitlearray = ["Nutritional value", "ingredients", "Description"]
+    
     var player = AVPlayer()
     
     let heightCell = GlobalSize().widthScreen*0.15
