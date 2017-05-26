@@ -101,6 +101,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         
         // Print it to console
         print("APNs device token: \(deviceTokenString)")
+        saveData.set(deviceTokenString, forKey: "deviceTokenString")
         
         // Persist it in your backend in case it's new
     }
