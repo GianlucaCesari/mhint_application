@@ -27,6 +27,7 @@
 		163CA14F1ED7378100B10700 /* HomeShoppiListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163CA14E1ED7378100B10700 /* HomeShoppiListCell.swift */; };
 		165458BF1ED2E34200088A22 /* EatOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165458BE1ED2E34200088A22 /* EatOut.swift */; };
 		165458C21ED2E4B500088A22 /* eatOutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165458C11ED2E4B500088A22 /* eatOutCell.swift */; };
+		16561D7B1ED826AF0040509C /* DetailsRecipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16561D7A1ED826AF0040509C /* DetailsRecipes.swift */; };
 		166AFC961ED42128008FF8F4 /* listRecipesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166AFC951ED42128008FF8F4 /* listRecipesCell.swift */; };
 		166AFC981ED4706F008FF8F4 /* shoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166AFC971ED4706F008FF8F4 /* shoppingList.swift */; };
 		166AFC9B1ED471CC008FF8F4 /* shoppingListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166AFC9A1ED471CC008FF8F4 /* shoppingListCell.swift */; };
@@ -98,6 +99,7 @@
 		163CA14E1ED7378100B10700 /* HomeShoppiListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeShoppiListCell.swift; path = Mhint/HomeShoppiListCell.swift; sourceTree = "<group>"; };
 		165458BE1ED2E34200088A22 /* EatOut.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EatOut.swift; path = Mhint/EatOut.swift; sourceTree = "<group>"; };
 		165458C11ED2E4B500088A22 /* eatOutCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = eatOutCell.swift; path = Mhint/eatOutCell.swift; sourceTree = "<group>"; };
+		16561D7A1ED826AF0040509C /* DetailsRecipes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DetailsRecipes.swift; path = Mhint/DetailsRecipes.swift; sourceTree = "<group>"; };
 		166AFC951ED42128008FF8F4 /* listRecipesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = listRecipesCell.swift; path = Mhint/listRecipesCell.swift; sourceTree = "<group>"; };
 		166AFC971ED4706F008FF8F4 /* shoppingList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = shoppingList.swift; path = Mhint/shoppingList.swift; sourceTree = "<group>"; };
 		166AFC9A1ED471CC008FF8F4 /* shoppingListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = shoppingListCell.swift; path = Mhint/shoppingListCell.swift; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				161F55701ED5C2DE004D6786 /* HomeFood.swift */,
+				16561D7A1ED826AF0040509C /* DetailsRecipes.swift */,
 				163CA14C1ED7213500B10700 /* HomeShoppingList.swift */,
 				161F55721ED5DEFF004D6786 /* HomeFoodCell.swift */,
 				163CA14E1ED7378100B10700 /* HomeShoppiListCell.swift */,
@@ -748,6 +751,7 @@
 				16002CC71EB085EC0069C11F /* GlobalSize.swift in Sources */,
 				16F95DB91EA7FD5B007C64F0 /* Menu.swift in Sources */,
 				169381E81ED3353F002B0784 /* listRecipes.swift in Sources */,
+				16561D7B1ED826AF0040509C /* DetailsRecipes.swift in Sources */,
 				168B94351ECEEC9C00372475 /* foodCell.swift in Sources */,
 				16D917BD1EA7C1A80049394A /* GlobalColor.swift in Sources */,
 				1620D9141ED47B420045873A /* notificationFood.swift in Sources */,

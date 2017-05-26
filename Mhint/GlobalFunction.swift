@@ -45,7 +45,6 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
     //NAVIGATION BAR TOP CHAT
     func navBar(nav: UINavigationItem, s: UIViewController, show: Bool) {
         
-        
         s.navigationController?.interactivePopGestureRecognizer?.delegate = self
         s.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         
