@@ -108,6 +108,7 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
             let indexImage = indexPath.row - indexDailyMeal
             
             cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: nil)
+            
             cell.descriptionRecipes.text = dailyMealRecipes[indexImage].capitalized
             
             

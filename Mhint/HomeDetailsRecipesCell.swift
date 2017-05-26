@@ -24,7 +24,7 @@ class BaseCellChooseHomeDetailsRecipes: UICollectionViewCell {
     
 }
 
-class CustomCellChooseHomeDetailsRecipes: BaseCellChooseHomeDetailsRecipes {
+class CustomCellChooseHomeDetailsRecipes: BaseCellChooseHomeDetailsRecipes, UITableViewDelegate, UITableViewDataSource {
     
     let titleSection: UILabel = {
         var label = UILabel()
@@ -43,11 +43,33 @@ class CustomCellChooseHomeDetailsRecipes: BaseCellChooseHomeDetailsRecipes {
         return line
     }()
     
+    let descriptionRecipes: UITextView = {
+        var label = UITextView()
+        label.textColor = .black
+        label.isEditable = false
+        label.textAlignment = .center
+        label.font = UIFont(name: "AvenirLTStd-Medium", size: 15)
+        label.backgroundColor = GlobalColor().backgroundCollectionView
+        label.textAlignment = .left
+        return label
+    }()
+    
+    let tableIngredient: UITableView = {
+        var table = UITableView()
+        table.dataSource = self
+        table.delegate = self
+        return table
+    }()
+    
     override func setupViews() {
         super.setupViews()
         
         self.addSubview(lineTitleSection)
         self.addSubview(titleSection)
+        
+        self.addSubview(descriptionRecipes)
+        
+        self.addSubview(tableIngredient)
         
     }
     
