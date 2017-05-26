@@ -24,7 +24,7 @@ class BaseCellChooseHomeDetailsRecipes: UICollectionViewCell {
     
 }
 
-class CustomCellChooseHomeDetailsRecipes: BaseCellChooseHomeDetailsRecipes, UITableViewDelegate, UITableViewDataSource {
+class CustomCellChooseHomeDetailsRecipes: BaseCellChooseHomeDetailsRecipes {
     
     let titleSection: UILabel = {
         var label = UILabel()
@@ -56,8 +56,6 @@ class CustomCellChooseHomeDetailsRecipes: BaseCellChooseHomeDetailsRecipes, UITa
     
     let tableIngredient: UITableView = {
         var table = UITableView()
-        table.dataSource = self
-        table.delegate = self
         return table
     }()
     
