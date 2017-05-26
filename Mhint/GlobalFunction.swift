@@ -153,9 +153,9 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
             "id": saveData.string(forKey: "email")//STRING
             ] as [String : Any]
         
-        Alamofire.request("https://api.mhint.eu/foodpreference", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
-            print(response)
-        }
+//        Alamofire.request("https://api.mhint.eu/foodpreference", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
+//            print(response)
+//        }
         
         let titleArray = ["Cantonese Rice", "Fragola", "Burro", "Birra", "Mango Sticky Rice"]
         let imageArray = ["http://www.rostianjin.it/images/menu/riso-cantonese.jpg", "http://www.thevaporstudio.net/uploads/4/8/2/8/48280647/s251326635458941086_p100_i1_w1024.jpeg", "https://media1.popsugar-assets.com/files/thumbor/II_C9ixzaGfnFoSUinArDuurbo4/fit-in/1024x1024/filters:format_auto-!!-:strip_icc-!!-/2017/01/26/994/n/1922195/e8b3cb2e588a7d72610472.15290441_edit_img_image_43060949_1485470765/i/What-Difference-Between-Salted-Unsalted-Butter.jpg", "https://agrime.it/wp-content/uploads/2016/09/11_40_31_803_image-1024x1024.jpg", "https://c1.staticflickr.com/6/5530/11139105454_a62724c244_b.jpg"]
