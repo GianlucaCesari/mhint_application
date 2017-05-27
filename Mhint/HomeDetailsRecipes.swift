@@ -67,7 +67,7 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
             cell.lineTitleSection.frame = CGRect(x: 0, y: (heightCell-2)/2, width: GlobalSize().widthScreen, height: 2)
             cell.lineTitleSection.backgroundColor = .black
             cell.lineTitleSection.alpha = 0.4
-            cell.titleSection.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: (heightCell-GlobalSize().heightScreen*0.05)/2, width: GlobalSize().widthScreen*0.36, height: GlobalSize().heightScreen*0.05)
+            cell.titleSection.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: (heightCell-GlobalSize().heightScreen*0.07)/2, width: GlobalSize().widthScreen*0.36, height: GlobalSize().heightScreen*0.07)
         } else if indexPath.row == 1 {
             cell.lineTitleSection.alpha = 0
             cell.titleSection.alpha = 0
@@ -100,17 +100,17 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
             let heightFrameRow3 = NSString(string: row3).boundingRect(with: CGSize(width: widthRow, height: GlobalSize().heightScreen*10), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 20)], context: nil)
             let heightFrameRow4 = NSString(string: row4).boundingRect(with: CGSize(width: widthRow, height: GlobalSize().heightScreen*10), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 20)], context: nil)
             
-            cell.labelRow1.frame = CGRect(x: marginRow*2, y: 10, width: widthRow, height: heightFrameRow1.height+marginRow)
-            cell.labelRow2.frame = CGRect(x: widthRow+marginRow*2, y: 10, width: widthRow, height: heightFrameRow2.height+marginRow)
-            cell.labelRow3.frame = CGRect(x: widthRow*2+marginRow*2, y: 10, width: widthRow, height: heightFrameRow3.height+marginRow)
-            cell.labelRow4.frame = CGRect(x: widthRow*3+marginRow*2, y: 10, width: widthRow, height: heightFrameRow4.height+marginRow)
+            cell.labelRow1.frame = CGRect(x: marginRow*2, y: 20, width: widthRow, height: heightFrameRow1.height+marginRow*2)
+            cell.labelRow2.frame = CGRect(x: widthRow+marginRow*2, y: 20, width: widthRow, height: heightFrameRow2.height+marginRow*2)
+            cell.labelRow3.frame = CGRect(x: widthRow*2+marginRow*2, y: 20, width: widthRow, height: heightFrameRow3.height+marginRow*2)
+            cell.labelRow4.frame = CGRect(x: widthRow*3+marginRow*2, y: 20, width: widthRow, height: heightFrameRow4.height+marginRow*2)
             
         } else if indexPath.row == 2 {
             cell.titleSection.text = sectionTitlearray[1].uppercased()
             cell.lineTitleSection.frame = CGRect(x: 0, y: (heightCell-2)/2, width: GlobalSize().widthScreen, height: 2)
             cell.lineTitleSection.backgroundColor = .black
             cell.lineTitleSection.alpha = 0.4
-            cell.titleSection.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: (heightCell-GlobalSize().heightScreen*0.05)/2, width: GlobalSize().widthScreen*0.26, height: GlobalSize().heightScreen*0.05)
+            cell.titleSection.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: (heightCell-GlobalSize().heightScreen*0.07)/2, width: GlobalSize().widthScreen*0.26, height: GlobalSize().heightScreen*0.07)
         } else if indexPath.row == 3 {
             cell.lineTitleSection.alpha = 0
             cell.titleSection.alpha = 0
@@ -143,17 +143,17 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
             let heightFrameRow3 = NSString(string: row3).boundingRect(with: CGSize(width: widthRow, height: GlobalSize().heightScreen*10), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 20)], context: nil)
             let heightFrameRow4 = NSString(string: row4).boundingRect(with: CGSize(width: widthRow, height: GlobalSize().heightScreen*10), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 20)], context: nil)
             
-            cell.labelRow1.frame = CGRect(x: marginRow*2, y: 10, width: widthRow, height: heightFrameRow1.height+marginRow)
-            cell.labelRow2.frame = CGRect(x: widthRow+marginRow*2, y: 10, width: widthRow, height: heightFrameRow2.height+marginRow)
-            cell.labelRow3.frame = CGRect(x: widthRow*2+marginRow*2, y: 10, width: widthRow, height: heightFrameRow3.height+marginRow)
-            cell.labelRow4.frame = CGRect(x: widthRow*3+marginRow*2, y: 10, width: widthRow, height: heightFrameRow4.height+marginRow)
+            cell.labelRow1.frame = CGRect(x: marginRow*2, y: 20, width: widthRow, height: heightFrameRow1.height+marginRow*2)
+            cell.labelRow2.frame = CGRect(x: widthRow+marginRow*2, y: 20, width: widthRow, height: heightFrameRow2.height+marginRow*2)
+            cell.labelRow3.frame = CGRect(x: widthRow*2+marginRow*2, y: 20, width: widthRow, height: heightFrameRow3.height+marginRow*2)
+            cell.labelRow4.frame = CGRect(x: widthRow*3+marginRow*2, y: 20, width: widthRow, height: heightFrameRow4.height+marginRow*2)
             
         } else if indexPath.row == 4 {
             cell.titleSection.text = sectionTitlearray[2].uppercased()
             cell.lineTitleSection.frame = CGRect(x: 0, y: (heightCell-2)/2, width: GlobalSize().widthScreen, height: 2)
             cell.lineTitleSection.backgroundColor = .black
             cell.lineTitleSection.alpha = 0.4
-            cell.titleSection.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: (heightCell-GlobalSize().heightScreen*0.05)/2, width: GlobalSize().widthScreen*0.26, height: GlobalSize().heightScreen*0.05)
+            cell.titleSection.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: (heightCell-GlobalSize().heightScreen*0.07)/2, width: GlobalSize().widthScreen*0.26, height: GlobalSize().heightScreen*0.07)
         } else if indexPath.row == 5 {
             cell.descriptionRecipes.text = descriptionRecipes
             let heightFrame = NSString(string: descriptionRecipes).boundingRect(with: CGSize(width: GlobalSize().widthScreen*0.88, height: GlobalSize().heightScreen*10), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 15)], context: nil)
@@ -166,7 +166,7 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.row == 0 || indexPath.row == 2 || indexPath.row == 4 {
             return CGSize(width: widthCollectionView, height: heightCellSection)
-        } else if indexPath.row == 1 {
+        } else if indexPath.row == 1 || indexPath.row == 3 {
             
             var row1 = String()
             
@@ -178,7 +178,7 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
             
             let heightFrameRow1 = NSString(string: row1).boundingRect(with: CGSize(width: widthCollectionView/4, height: GlobalSize().heightScreen*10), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil)
             
-            return CGSize(width: widthCollectionView, height: (heightFrameRow1.height + GlobalSize().heightScreen*0.02))
+            return CGSize(width: widthCollectionView, height: (heightFrameRow1.height + GlobalSize().heightScreen*0.03))
             
         } else if indexPath.row == 5 {
             let heightFrame = NSString(string: descriptionRecipes).boundingRect(with: CGSize(width: GlobalSize().widthScreen*0.88, height: GlobalSize().heightScreen*10), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 15)], context: nil)
