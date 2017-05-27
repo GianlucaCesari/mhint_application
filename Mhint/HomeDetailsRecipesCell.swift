@@ -54,9 +54,46 @@ class CustomCellChooseHomeDetailsRecipes: BaseCellChooseHomeDetailsRecipes {
         return label
     }()
     
-    let tableIngredient: UITableView = {
-        var table = UITableView()
-        return table
+    
+    //TABLE FOR SHOW INGREDIENT
+    let labelRow1: UITextView = {
+        var label = UITextView()
+        label.textColor = .black
+        label.isEditable = false
+        label.textAlignment = .left
+        label.backgroundColor = GlobalColor().backgroundCollectionView
+        label.font = UIFont(name: "AvenirLTStd-Medium", size: 12)
+        return label
+    }()
+    
+    let labelRow2: UITextView = {
+        var label = UITextView()
+        label.textColor = .black
+        label.isEditable = false
+        label.textAlignment = .left
+        label.backgroundColor = GlobalColor().backgroundCollectionView
+        label.font = UIFont(name: "AvenirLTStd-Black", size: 12)
+        return label
+    }()
+    
+    let labelRow3: UITextView = {
+        var label = UITextView()
+        label.textColor = .black
+        label.isEditable = false
+        label.textAlignment = .left
+        label.backgroundColor = GlobalColor().backgroundCollectionView
+        label.font = UIFont(name: "AvenirLTStd-Medium", size: 12)
+        return label
+    }()
+    
+    let labelRow4: UITextView = {
+        var label = UITextView()
+        label.textColor = .black
+        label.isEditable = false
+        label.textAlignment = .left
+        label.backgroundColor = GlobalColor().backgroundCollectionView
+        label.font = UIFont(name: "AvenirLTStd-Black", size: 12)
+        return label
     }()
     
     override func setupViews() {
@@ -67,7 +104,10 @@ class CustomCellChooseHomeDetailsRecipes: BaseCellChooseHomeDetailsRecipes {
         
         self.addSubview(descriptionRecipes)
         
-        self.addSubview(tableIngredient)
+        self.addSubview(labelRow1)
+        self.addSubview(labelRow2)
+        self.addSubview(labelRow3)
+        self.addSubview(labelRow4)
         
     }
     
