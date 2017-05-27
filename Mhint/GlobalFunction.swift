@@ -149,9 +149,9 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
     //PRENDE I DATI PER IL TEACH
     func getTeach() -> (Array<String>, Array<String>) {
         
-        let parameter = [
-            "id": saveData.string(forKey: "email")//STRING
-            ] as [String : Any]
+//        let parameter = [
+//            "id": saveData.string(forKey: "email")//STRING
+//            ] as [String : Any]
         
 //        Alamofire.request("https://api.mhint.eu/foodpreference", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
 //            print(response)

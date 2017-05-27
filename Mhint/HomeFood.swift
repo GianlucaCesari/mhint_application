@@ -162,8 +162,15 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         idRecipesClick = indexPath.row
         
+        let transition = CATransition()
+        transition.duration = 0.3
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromTop
+        view.window?.layer.add(transition, forKey: kCATransition)
         let newViewController = DetailsRecipesController(collectionViewLayout: layout)
-        self.navigationController?.pushViewController(newViewController, animated: true)
+        self.present(newViewController, animated: false, completion: nil)
+        
+        //self.navigationController?.pushViewController(newViewController, animated: true)
     }
     //COLLECTIONVIEW CLICK
     
