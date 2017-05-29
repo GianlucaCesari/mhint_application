@@ -263,7 +263,8 @@ class SettingsController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     func openEditProfile() {
-        let newViewController = editProfileController(collectionViewLayout: layout)
+//        let newViewController = editProfileController(collectionViewLayout: layout)
+        let newViewController = ChatBotController()
         self.navigationController?.pushViewController(newViewController, animated: true)
     }
     
