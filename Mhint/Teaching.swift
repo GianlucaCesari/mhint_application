@@ -22,6 +22,7 @@ class TeachingController: UIViewController{
     
     var titleArray = [String]()
     var imageArray = [String]()
+    var idArray = [String]()
     
     private var swipeView: DMSwipeCardsView<String>!
     var currentIndex = Int()
@@ -97,6 +98,7 @@ class TeachingController: UIViewController{
         let arrayTeaching = GlobalFunc().getTeach()
         titleArray = arrayTeaching.0
         imageArray = arrayTeaching.1
+        idArray = arrayTeaching.1
         
         if titleArray != nil {
             self.swipeView.addCards((0...(titleArray.count-1)).map({"\($0)"}), onTop: false)
