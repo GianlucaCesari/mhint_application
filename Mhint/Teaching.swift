@@ -28,8 +28,19 @@ class TeachingController: UIViewController{
     var imageArray = [String]()
     var idArray = [String]()
     
+    let row1 = UITextView()
+    let row2 = UITextView()
+    
+    var nutrimentsName = [String]()
+    var nutrimentsValue = [String]()
+    
+    let widthCard = GlobalSize().widthScreen*0.72
+    let heightCard = GlobalSize().heightScreen*0.5
+    
     private var swipeView: DMSwipeCardsView<String>!
     var currentIndex = Int()
+    
+    var imageLoadingView = UIImageView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,11 +49,8 @@ class TeachingController: UIViewController{
         
         self.view.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
         
-        let widthCard = GlobalSize().widthScreen*0.72
-        let heightCard = GlobalSize().heightScreen*0.5
-        
         let viewGenerator: (String, CGRect) -> (UIView) = { (element: String, frame: CGRect) -> (UIView) in
-            let container = UIView(frame: CGRect(x: GlobalSize().widthScreen*0.14, y: GlobalSize().heightScreen*0.1, width: widthCard, height: heightCard))
+            let container = UIView(frame: CGRect(x: GlobalSize().widthScreen*0.14, y: GlobalSize().heightScreen*0.1, width: self.widthCard, height: self.heightCard))
             
             let label = UILabel(frame: container.bounds)
             label.textAlignment = .center
@@ -53,16 +61,18 @@ class TeachingController: UIViewController{
             container.addSubview(label)
             
             let imageLoading = UIImageView(gifImage: UIImage(gifName: "load"), manager: SwiftyGifManager(memoryLimit:20))
-            imageLoading.frame = CGRect(x: 0, y: 0, width: widthCard, height: widthCard)
+            imageLoading.frame = CGRect(x: 0, y: 0, width: self.widthCard, height: self.widthCard)
             container.addSubview(imageLoading)
             
             var titleView: UIImageView!
             let img = UIImage(named: "default")
             titleView = UIImageView(image: img)
             titleView.alpha = 1
-            titleView.frame = CGRect(x: 0, y: 0, width: widthCard, height: widthCard)
+            titleView.frame = CGRect(x: 0, y: 0, width: self.widthCard, height: self.widthCard)
             titleView.sd_setImage(with: URL(string: self.imageArray[Int(element)!]), placeholderImage: nil)
             container.addSubview(titleView)
+            
+            self.showNutriments(name: self.nutrimentsName[Int(element)!], value: self.nutrimentsValue[Int(element)!])
             
             let titleCard = UILabel()
             self.currentIndex = Int(element)!
@@ -70,7 +80,7 @@ class TeachingController: UIViewController{
             titleCard.textColor = .black
             titleCard.font = UIFont(name: "AvenirLTStd-Light", size: GlobalSize().widthScreen*0.035)
             titleCard.textAlignment = .center
-            titleCard.frame = CGRect(x: 0, y: widthCard, width: widthCard, height: heightCard-widthCard)
+            titleCard.frame = CGRect(x: 0, y: self.widthCard, width: self.widthCard, height: self.heightCard-self.widthCard)
             container.addSubview(titleCard)
             
             container.layer.shadowRadius = 8
@@ -85,7 +95,7 @@ class TeachingController: UIViewController{
         
         let overlayGenerator: (SwipeMode, CGRect) -> (UIView) = { (mode: SwipeMode, frame: CGRect) -> (UIView) in
             let label = UILabel()
-            label.frame = CGRect(x: GlobalSize().widthScreen*0.14, y: GlobalSize().heightScreen*0.1, width: widthCard, height: heightCard)
+            label.frame = CGRect(x: GlobalSize().widthScreen*0.14, y: GlobalSize().heightScreen*0.1, width: self.widthCard, height: self.heightCard)
             label.backgroundColor = mode == .left ? GlobalColor().red : GlobalColor().green
             label.alpha = 0.3
             return label
@@ -98,61 +108,52 @@ class TeachingController: UIViewController{
         swipeView.delegate = self
         self.view.backgroundColor = .white
         
+        imageLoadingView = UIImageView(gifImage: UIImage(gifName: "load"), manager: SwiftyGifManager(memoryLimit:20))
+        imageLoadingView.frame = CGRect(x: GlobalSize().widthScreen*0.1, y: GlobalSize().heightScreen*0.3, width: GlobalSize().widthScreen*0.8, height: GlobalSize().widthScreen*0.8)
+        self.view.addSubview(imageLoadingView)
+        
         loadingCard()
         
         header()
-//        btnUp()
-//        btnDown()
+        
+    }
+    
+    func showNutriments(name: String, value: String) {
+        
+        let marginLeft = GlobalSize().widthScreen*0.1
+        let marginTop = GlobalSize().heightScreen*0.1+(self.heightCard*1.3)
+        
+        let widthRow = (GlobalSize().widthScreen-(marginLeft*2))/2
+        let heightRow = GlobalSize().heightScreen-marginTop
+        
+        self.row1.removeFromSuperview()
+        self.row2.removeFromSuperview()
+        
+        row1.text = name
+        row1.isEditable = false
+        row1.backgroundColor = .clear
+        row1.font = UIFont(name: "AvenirLTStd-Medium", size: 14)
+        row1.frame = CGRect(x: marginLeft*2, y: marginTop, width: widthRow, height: heightRow)
+        self.view.addSubview(row1)
+        
+        row2.text = value
+        row2.isEditable = false
+        row2.backgroundColor = .clear
+        row2.font = UIFont(name: "AvenirLTStd-Black", size: 14)
+        row2.frame = CGRect(x: marginLeft*2+widthRow, y: marginTop, width: widthRow*0.7, height: heightRow)
+        self.view.addSubview(row2)
         
     }
     
     func checkCardExist() {
         if titleArray.count > 0 {
+            self.imageLoadingView.removeFromSuperview()
             self.swipeView.addCards((0...(titleArray.count-1)).map({"\($0)"}), onTop: false)
             self.view.addSubview(swipeView)
             timerCard.invalidate()
         } else {
-            print(timerCard.isValid)
-            print(timerCard.fireDate)
-            print(timerCard.tolerance)
             finishCard()
         }
-    }
-    
-    func btnUp() {
-        var titleView: UIImageView!
-        let img = UIImage(named: "like")
-        titleView = UIImageView(image: img)
-        titleView.frame = CGRect(x: GlobalSize().widthScreen*0.79, y: GlobalSize().heightScreen*0.805, width: GlobalSize().widthScreen*0.04, height: GlobalSize().widthScreen*0.04)
-        self.view.addSubview(titleView)
-        
-        let btnUpCard = UIButton()
-        btnUpCard.tag = 1
-        btnUpCard.setTitle("Like", for: .normal)
-        btnUpCard.setTitleColor(.black, for: .normal)
-        btnUpCard.titleLabel?.font = UIFont(name: "AvenirLTStd-Heavy", size: GlobalSize().widthScreen*0.04)
-        btnUpCard.frame = CGRect(x: GlobalSize().widthScreen*0.47, y: GlobalSize().heightScreen*0.72, width: GlobalSize().widthScreen*0.5, height: GlobalSize().heightScreen*0.2)
-        btnUpCard.titleLabel?.textAlignment = .center
-        btnUpCard.addTarget(self, action: #selector(self.clickVote), for: .touchUpInside)
-        self.view.addSubview(btnUpCard)
-    }
-    
-    func btnDown() {
-        var titleView: UIImageView!
-        let img = UIImage(named: "unlike")
-        titleView = UIImageView(image: img)
-        titleView.frame = CGRect(x: GlobalSize().widthScreen*0.15, y: GlobalSize().heightScreen*0.805, width: GlobalSize().widthScreen*0.04, height: GlobalSize().widthScreen*0.04)
-        self.view.addSubview(titleView)
-        
-        let btnDownCard = UIButton()
-        btnDownCard.tag = -1
-        btnDownCard.setTitle("Unlike", for: .normal)
-        btnDownCard.setTitleColor(.black, for: .normal)
-        btnDownCard.titleLabel?.font = UIFont(name: "AvenirLTStd-Heavy", size: GlobalSize().widthScreen*0.04)
-        btnDownCard.frame = CGRect(x: GlobalSize().widthScreen*0.03, y: GlobalSize().heightScreen*0.72, width: GlobalSize().widthScreen*0.5, height: GlobalSize().heightScreen*0.2)
-        btnDownCard.titleLabel?.textAlignment = .center
-        btnDownCard.addTarget(self, action: #selector(self.clickVote), for: .touchUpInside)
-        self.view.addSubview(btnDownCard)
     }
     
     func header() {
@@ -162,16 +163,35 @@ class TeachingController: UIViewController{
     func loadingCard() {
         Alamofire.request("https://api.mhint.eu/foodpreference?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { response in
             for anItem in response.result.value! as! [[String:Any]] {
+                
                 self.titleArray.append(anItem["name"]! as! String)
                 self.idArray.append(anItem["_id"]! as! String)
                 self.imageArray.append(anItem["img_url"]! as! String)
+                
+                var arrayName = ""
+                var arrayValue = ""
+                
+                for nutriments in anItem["nutriments"] as! [[String:Any]] {
+                    if let name = nutriments["name"]{
+                        arrayName = "\(arrayName)\(String(describing: name)) \n"
+                    }
+                    if let value = nutriments["value"] {
+                        var val = String(describing: value)
+                        if val.characters.count > 5 {
+                            let endIndex = val.index(val.endIndex, offsetBy: (5-val.characters.count))
+                            val = val.substring(to: endIndex)
+                        }
+                        arrayValue = "\(arrayValue)\(val) \n"
+                    }
+                }
+                self.nutrimentsName.append(arrayName)
+                self.nutrimentsValue.append(arrayValue)
             }
         }
         timerCard = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkCardExist), userInfo: nil, repeats: true)
     }
     
     func finishCard() {
-        
         let cardEnd = UILabel()
         cardEnd.text = "For now that's all"
         cardEnd.textColor = .black
@@ -179,10 +199,11 @@ class TeachingController: UIViewController{
         cardEnd.textAlignment = .center
         cardEnd.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.4, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.2)
         self.view.addSubview(cardEnd)
+        row1.text = ""
+        row2.text = ""
     }
     
     func clickVote(sender: UIButton) {
-        print(sender.tag)
         switch sender.tag {
         case 1:
             sendVote(val: true, index: currentIndex)
@@ -194,18 +215,12 @@ class TeachingController: UIViewController{
     }
     
     func sendVote(val: Bool, index: Int) {
-        
         let parameter = [
             "mail": GlobalUser.email,
             "food_id": idArray[index-1],
             "type": val ? "like":"not-like"
             ] as [String : Any]
-        
-        Alamofire.request("https://api.mhint.eu/foodprefence", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
-            print(response)
-        }
-        
-        print("L'utente", GlobalUser.email, " ha votato ", val ? "like":"not-like", " l'elemento ", idArray[index-1])
+        Alamofire.request("https://api.mhint.eu/foodpreference", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON {_ in }
     }
     
 }
