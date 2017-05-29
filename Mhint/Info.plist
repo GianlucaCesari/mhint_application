@@ -61,6 +61,8 @@
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>tg</string>
+		<string>yt</string>
+		<string>youtube</string>
 		<string>fbapi</string>
 		<string>fb-messenger-api</string>
 		<string>fbauth2</string>
