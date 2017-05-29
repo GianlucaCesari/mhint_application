@@ -39,19 +39,19 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         let marginTopImage = (view.frame.height*0.85 - (view.frame.width/4))
         imgWave.frame = CGRect(x: 0, y: marginTopImage, width: view.frame.width, height: view.frame.width/2)
         
-        inputText = UITextField(frame: CGRect(x: view.frame.width*0.02, y: view.frame.height*0.91, width: view.frame.width*0.96, height: view.frame.height*0.08))
+        inputText = UITextField(frame: CGRect(x: view.frame.width*0.04, y: view.frame.height*0.9, width: view.frame.width*0.92, height: view.frame.height*0.08))
         inputText.backgroundColor = GlobalColor().backgroundCollectionView
         inputText.placeholder = "Say something..."
         inputText.textColor = .black
         inputText.layer.cornerRadius = 25
         inputText.layer.masksToBounds = true
-        inputText.layer.sublayerTransform = CATransform3DMakeTranslation(35,0,0)
+        inputText.layer.sublayerTransform = CATransform3DMakeTranslation(20,0,0)
         inputText.font = UIFont(name: "AvenirLTStd-Medium", size: 15)
         
         button = UIButton(type: .custom)
         button.setImage(UIImage(named: "google_mic"), for: .normal)
         button.imageEdgeInsets = UIEdgeInsetsMake(0, -50, 0, 50)
-        button.frame = CGRect(x: CGFloat(inputText.frame.size.width - 25), y: CGFloat(5), width: CGFloat(17.5), height: CGFloat(25))
+        button.frame = CGRect(x: CGFloat(inputText.frame.size.width - 30), y: CGFloat(5), width: CGFloat(17.5), height: CGFloat(25))
         button.addTarget(self, action: #selector(singleTapping), for: .touchUpInside)
         inputText.rightView = button
         inputText.rightViewMode = .always
@@ -68,10 +68,8 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
 //        LISTENER TASTIERA
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(textFieldShouldReturn))
         self.view.addGestureRecognizer(tap)
-//
+
         //CHAT
-        
-        
         let layout:UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
         layout.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
         layout.itemSize = CGSize(width: view.frame.width, height: 100)
@@ -163,9 +161,6 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     //COLLECTIONVIEW
     
-    
-    
-    
     func textFieldDidChange(inputText: UITextField) {
         if inputText.text! != "" {
             button.setImage(UIImage(named: "send_logo"), for: .normal)
@@ -177,6 +172,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         print("image clicked")
         printOnCollectionView(text: (inputText.text!), who: false)
         inputText.text = ""
+        button.setImage(UIImage(named: "google_mic"), for: .normal)
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -58,7 +58,7 @@
 		16FFCF551EA284AD005A4A59 /* AvenirLTStd-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 16FFCF501EA284AD005A4A59 /* AvenirLTStd-Medium.otf */; };
 		24E55129CE9EFEECD6F424BA /* Pods_MhintUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B72F63FE4B207186F53B62 /* Pods_MhintUITests.framework */; };
 		520B0EA81ED83CDC00A8DCEE /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 520B0EA71ED83CDC00A8DCEE /* UserNotifications.framework */; };
-		520B0EAC1ED8C0A300A8DCEE /* ChatBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520B0EAB1ED8C0A300A8DCEE /* ChatBot.swift */; };
+		520B0EAC1ED8C0A300A8DCEE /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520B0EAB1ED8C0A300A8DCEE /* Home.swift */; };
 		8331DB63C562F7929F5F1439 /* Pods_Mhint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3E260A3705318002BFE6E8 /* Pods_Mhint.framework */; };
 		980E41088CBE4DABC19A1DB4 /* Pods_MhintTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 268FB687E93765EDC33E154F /* Pods_MhintTests.framework */; };
 /* End PBXBuildFile section */
@@ -142,7 +142,7 @@
 		4D3E260A3705318002BFE6E8 /* Pods_Mhint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mhint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50ED0B0BC04AC2BEE5F2A675 /* Pods-MhintTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MhintTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MhintTests/Pods-MhintTests.debug.xcconfig"; sourceTree = "<group>"; };
 		520B0EA71ED83CDC00A8DCEE /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
-		520B0EAB1ED8C0A300A8DCEE /* ChatBot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatBot.swift; path = ../ChatBot.swift; sourceTree = "<group>"; };
+		520B0EAB1ED8C0A300A8DCEE /* Home.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Home.swift; path = ../Home.swift; sourceTree = "<group>"; };
 		66317E44FE10363323285E8A /* Pods-MhintTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MhintTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MhintTests/Pods-MhintTests.release.xcconfig"; sourceTree = "<group>"; };
 		6BA00CCA66FF6CEF76FD604C /* Pods-Mhint.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mhint.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mhint/Pods-Mhint.debug.xcconfig"; sourceTree = "<group>"; };
 		83B72F63FE4B207186F53B62 /* Pods_MhintUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MhintUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -380,7 +380,7 @@
 				16E91A2A1EA8E2F300C4EEFE /* Sections */,
 				16F95DB81EA7FD5B007C64F0 /* Menu.swift */,
 				16FFCF201EA28285005A4A59 /* Chat.swift */,
-				520B0EAB1ED8C0A300A8DCEE /* ChatBot.swift */,
+				520B0EAB1ED8C0A300A8DCEE /* Home.swift */,
 				1635E7751EBF9F800079E64E /* Chat */,
 				169D5DB61EBCA8D90020436F /* Assets.xcassets */,
 				16FFCF271EA28285005A4A59 /* LaunchScreen.storyboard */,
@@ -773,7 +773,7 @@
 				16561D7B1ED826AF0040509C /* HomeDetailsRecipes.swift in Sources */,
 				168B94351ECEEC9C00372475 /* foodCell.swift in Sources */,
 				16D917BD1EA7C1A80049394A /* GlobalColor.swift in Sources */,
-				520B0EAC1ED8C0A300A8DCEE /* ChatBot.swift in Sources */,
+				520B0EAC1ED8C0A300A8DCEE /* Home.swift in Sources */,
 				1620D9141ED47B420045873A /* notificationFood.swift in Sources */,
 				1635E7721EBF9D320079E64E /* indexSocialSetting.swift in Sources */,
 				16FFCF211EA28285005A4A59 /* Chat.swift in Sources */,
