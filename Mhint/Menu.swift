@@ -66,7 +66,11 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func goToChat() {
-        self.sideMenuViewController!.setContentViewController(UINavigationController.init(rootViewController: ChatController(collectionViewLayout: layout)), animated: true)
+        if saveData.bool(forKey: "welcomeFinish") {
+            self.sideMenuViewController!.setContentViewController(UINavigationController.init(rootViewController: ChatBotController(collectionViewLayout: layout)), animated: true)
+        } else {
+            self.sideMenuViewController!.setContentViewController(UINavigationController.init(rootViewController: ChatController(collectionViewLayout: layout)), animated: true)
+        }
         self.sideMenuViewController!.hideMenuViewController()
     }
     

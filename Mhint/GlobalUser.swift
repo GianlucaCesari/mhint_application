@@ -108,7 +108,7 @@ class GlobalUser{
         
         let parameter = [
             "name": name//STRING
-            , "birthday": birthday//DATE
+            //, "birthday": birthday//DATE
             , "imageProfile": imageProfile//STRING
             , "address": address//STRING
             , "height": height//FLOAT

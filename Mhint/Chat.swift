@@ -70,22 +70,22 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     let healthManager:HKHealthStore = HKHealthStore()
     
-    override func viewDidDisappear(_ animated: Bool) {
-        if saveData.integer(forKey: "welcomeFinish") == 1 {
-            saveData.set(["Voice;Keyboard"], forKey: "archiveMessages")
-            saveData.set([false], forKey: "archiveMessagesType")
-            saveData.set(["What's up ?"], forKey: "chatMessage")
-            saveData.set([true], forKey: "typeMessage")
-        
-            saveData.set(1, forKey: "positionChat")
-            saveData.set(2, forKey: "welcomeFinish")
-        }
-    }
+//    override func viewDidDisappear(_ animated: Bool) {
+//        if saveData.integer(forKey: "welcomeFinish") {
+//            saveData.set(["Voice;Keyboard"], forKey: "archiveMessages")
+//            saveData.set([false], forKey: "archiveMessagesType")
+//            saveData.set(["What's up ?"], forKey: "chatMessage")
+//            saveData.set([true], forKey: "typeMessage")
+//        
+//            saveData.set(1, forKey: "positionChat")
+//            saveData.set(2, forKey: "welcomeFinish")
+//        }
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if saveData.integer(forKey: "welcomeFinish") == 2 {
+        if saveData.bool(forKey: "welcomeFinish") {
             sideMenuViewController?.panGestureLeftEnabled = true //DA ATTIVARE ALLA FINE DELLA CHAT
             GlobalFunc().navBarMenu(nav: navigationItem, s: self) //MOSTRA IL MENU, DEVE ESSERE FATTO ALLA FINE DELLA CHAT
         } else {
@@ -562,7 +562,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         sideMenuViewController?.panGestureLeftEnabled = true //DA ATTIVARE ALLA FINE DELLA CHAT
         GlobalFunc().navBarMenu(nav: navigationItem, s: self) //MOSTRA IL MENU, DEVE ESSERE FATTO ALLA FINE DELLA CHAT
-        saveData.set(1, forKey: "welcomeFinish")
+        saveData.set(true, forKey: "welcomeFinish")
         
         //CARICA UTENTE SUL SERVER
         if GlobalUser.fullNameFacebook != nil {

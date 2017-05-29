@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ChatBotController: UIViewController {
+class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     var imgWave: UIImageView!
     let imgUrlLogo = UIImage(named: "wave")
@@ -17,6 +17,9 @@ class ChatBotController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.view.backgroundColor = .white
+        
         sideMenuViewController?.panGestureLeftEnabled = true //DA ATTIVARE ALLA FINE DELLA CHAT
         GlobalFunc().navBar(nav: navigationItem, s: self, show: true)
         UIApplication.shared.statusBarView?.backgroundColor = .white//BACKGROUND STATUS BAR WHITE
@@ -57,6 +60,8 @@ class ChatBotController: UIViewController {
 //        LISTENER TASTIERA
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(textFieldShouldReturn))
         self.view.addGestureRecognizer(tap)
+        
+        collectionView?.backgroundColor = .white
 
     }
     

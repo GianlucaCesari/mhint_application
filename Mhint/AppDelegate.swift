@@ -23,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
 
     var window: UIWindow?
     var chatController = ChatController()
+    var chatbotController = ChatBotController()
     
     
     func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
@@ -64,11 +65,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         layout.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
         layout.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
         chatController = ChatController(collectionViewLayout: layout)
+        chatbotController = ChatBotController(collectionViewLayout: layout)
         
         GlobalUser().start()//ISTANZIA
         
         //MENU
-        let navigationController = UINavigationController(rootViewController: chatController)
+        
+        print(saveData.integer(forKey: "welcomeFinish"))
+        
+        var navigationController = UINavigationController(rootViewController: chatController)
+        if saveData.bool(forKey: "welcomeFinish") {
+            navigationController = UINavigationController(rootViewController: chatbotController)
+        }
+        
         let leftMenuViewController = LeftMenuViewController()
         let rightMenuViewController = LeftMenuViewController()
         let sideMenuViewController: AKSideMenu = AKSideMenu(contentViewController: navigationController, leftMenuViewController: leftMenuViewController, rightMenuViewController: rightMenuViewController)
