@@ -33,10 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
     }
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        
-        
 //        NOTIFICATIONS REMOTES
-        
         if #available(iOS 10, *) {
             UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
             application.registerForRemoteNotifications()
@@ -57,25 +54,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         }
         
         
-        
-        //
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in }
         let layout = UICollectionViewFlowLayout.init()
         layout.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
         layout.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
-        chatController = ChatController(collectionViewLayout: layout)
         chatbotController = ChatBotController(collectionViewLayout: layout)
+        let layoutChat = UICollectionViewFlowLayout.init()
+        layoutChat.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
+        layoutChat.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
+        chatController = ChatController(collectionViewLayout: layoutChat)
         
         GlobalUser().start()//ISTANZIA
         
         //MENU
         
-        print(saveData.integer(forKey: "welcomeFinish"))
+        print(saveData.bool(forKey: "welcomeFinish"))
         
-        var navigationController = UINavigationController(rootViewController: chatController)
+        var navigationController = UINavigationController()
         if saveData.bool(forKey: "welcomeFinish") {
             navigationController = UINavigationController(rootViewController: chatbotController)
+        } else {
+            navigationController = UINavigationController(rootViewController: chatController)
         }
         
         let leftMenuViewController = LeftMenuViewController()

@@ -15,6 +15,11 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
     var keyboardOpen = false
     var button : UIButton!
     
+    var messagesChatBot:[String] = ["What's up ?", "adadfadad", "adadfadad", "adadfadad", "adadfadad", "adadfadad"]
+    var messagesTypeChatBot = [true, false, true, false, true, false, true, false, true]
+    
+    let cellId = "chatBot"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,9 +66,97 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(textFieldShouldReturn))
         self.view.addGestureRecognizer(tap)
         
+        //CHAT
+        collectionView?.delegate = self
+        collectionView?.dataSource = self
+        layout.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
+        layout.itemSize = CGSize(width: view.frame.width, height: 100)
         collectionView?.backgroundColor = .white
-
+        collectionView?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height*0.7)
+        collectionView?.collectionViewLayout = layout
+        self.view.addSubview(collectionView!)
+//        let itemA = self.collectionView(self.collectionView!, numberOfItemsInSection: 0) - 1
+//        let lastItemIndex = NSIndexPath(item: itemA, section: 0)
+//        self.collectionView?.scrollToItem(at: lastItemIndex as IndexPath, at: UICollectionViewScrollPosition.bottom, animated: true)
     }
+    
+    
+    
+    
+    //COLLECTIONVIEW
+//    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return 1
+//    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ChatControllerCell
+//        var title:String = ""
+//        let titleFont:CGFloat = 10
+//        var colorUser:UIColor = UIColor.init(red: 80/255, green: 227/255, blue: 226/255, alpha: 1)
+//            
+//        let size = CGSize(width: 250, height: 1000)
+//        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+//            
+//        cell.messageTextView.text = messagesChatBot?[indexPath.row]
+//            
+//        cell.alpha = 0.1
+//        cell.messageTextView.font = UIFont(name: "AvenirLTStd-Heavy", size: 20 )
+//        if (((messagesChatBot?.count)!-1 - indexPath.row) < 3) {
+//            cell.alpha = 0.3
+//            cell.messageTextView.font = UIFont(name: "AvenirLTStd-Heavy", size: 22)
+//        }
+//        if ((messagesChatBot?.count)!-1 == indexPath.row){
+//            cell.alpha = 1
+//            cell.messageTextView.font = UIFont(name: "AvenirLTStd-Heavy", size: 24)
+//        }
+//        
+//        if let messagesTypeText = messagesTypeChatBot?[indexPath.row] {
+//            if messagesTypeText {
+//                //MHINT
+//                title = "Mhint"
+//                colorUser = UIColor.init(red: 80/255, green: 227/255, blue: 226/255, alpha: 1)
+//                cell.messageTextView.textAlignment = .left
+//                cell.titleTextView.textAlignment = .left
+//                cell.roundColor.frame = CGRect(x: 10, y: 0, width: 20, height: 20)
+//            }
+//            else{
+//                //YOU
+//                title = "You"
+//                colorUser = UIColor.init(red: 255/255, green: 119/255, blue: 119/255, alpha: 1)
+//                cell.messageTextView.textAlignment = .right
+//                cell.titleTextView.textAlignment = .right
+//                cell.roundColor.frame = CGRect(x: view.frame.width-40, y: 0, width: 20, height: 20)
+//            }
+//            
+//            cell.roundColor.backgroundColor = colorUser
+//            cell.titleTextView.text = title
+//            let estimatedFrameTitle = NSString(string: title).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize:titleFont)], context: nil)
+//            cell.titleTextView.frame = CGRect(x: 21, y: -6, width: 300 + 20, height: estimatedFrameTitle.height + 20)
+//            
+//            if let messageText = messagesChatBot?[indexPath.row] {
+//                let estimatedFrame = NSString(string: messageText).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize:24)], context: nil)
+//                    cell.messageTextView.frame = CGRect(x: 27, y: 10, width: 300 + 20, height: estimatedFrame.height + 25)
+//                }
+//            }
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        if let messageText = messagesChatBot[indexPath.row] as String {
+//            let size = CGSize(width: 300, height: 1000)
+//            let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+//            let estimatedFrame = NSString(string: messageText).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 24)], context: nil)
+//            return CGSize(width: view.frame.width, height: estimatedFrame.height + 50)
+//        }
+        return CGSize(width: view.frame.width, height: 100)
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsetsMake(8, 0, 0, 0)
+    }
+    //COLLECTIONVIEW
+    
+    
+    
     
     func textFieldDidChange(inputText: UITextField) {
         if inputText.text! != "" {
