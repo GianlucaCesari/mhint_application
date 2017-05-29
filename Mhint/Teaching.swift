@@ -14,11 +14,15 @@ import DMSwipeCards
 //GIF
 import SwiftyGif
 
+import Alamofire
+
 class TeachingController: UIViewController{
     
     //CLASSI ESTERNE
     let globalColor = GlobalColor()
     let globalFunction = GlobalFunc()
+    
+    var timerCard = Timer()
     
     var titleArray = [String]()
     var imageArray = [String]()
@@ -94,23 +98,25 @@ class TeachingController: UIViewController{
         swipeView.delegate = self
         self.view.backgroundColor = .white
         
-        
-        let arrayTeaching = GlobalFunc().getTeach()
-        titleArray = arrayTeaching.0
-        imageArray = arrayTeaching.1
-        idArray = arrayTeaching.1
-        
-        if titleArray != nil {
-            self.swipeView.addCards((0...(titleArray.count-1)).map({"\($0)"}), onTop: false)
-            self.view.addSubview(swipeView)
-        } else {
-            finishCard()
-        }
+        loadingCard()
         
         header()
 //        btnUp()
 //        btnDown()
         
+    }
+    
+    func checkCardExist() {
+        if titleArray.count > 0 {
+            self.swipeView.addCards((0...(titleArray.count-1)).map({"\($0)"}), onTop: false)
+            self.view.addSubview(swipeView)
+            timerCard.invalidate()
+        } else {
+            print(timerCard.isValid)
+            print(timerCard.fireDate)
+            print(timerCard.tolerance)
+            finishCard()
+        }
     }
     
     func btnUp() {
@@ -153,7 +159,19 @@ class TeachingController: UIViewController{
         GlobalFunc().titlePage(titlePage: "Teach to Mhint.", s: self)
     }
     
+    func loadingCard() {
+        Alamofire.request("https://api.mhint.eu/foodpreference?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { response in
+            for anItem in response.result.value! as! [[String:Any]] {
+                self.titleArray.append(anItem["name"]! as! String)
+                self.idArray.append(anItem["_id"]! as! String)
+                self.imageArray.append(anItem["img_url"]! as! String)
+            }
+        }
+        timerCard = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkCardExist), userInfo: nil, repeats: true)
+    }
+    
     func finishCard() {
+        
         let cardEnd = UILabel()
         cardEnd.text = "For now that's all"
         cardEnd.textColor = .black
@@ -176,7 +194,18 @@ class TeachingController: UIViewController{
     }
     
     func sendVote(val: Bool, index: Int) {
-        print("L'utente", GlobalUser.email, " ha votato ", val, " l'elemento ", titleArray[index-1])
+        
+        let parameter = [
+            "mail": GlobalUser.email,
+            "food_id": idArray[index-1],
+            "type": val ? "like":"not-like"
+            ] as [String : Any]
+        
+        Alamofire.request("https://api.mhint.eu/foodprefence", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
+            print(response)
+        }
+        
+        print("L'utente", GlobalUser.email, " ha votato ", val ? "like":"not-like", " l'elemento ", idArray[index-1])
     }
     
 }
@@ -194,6 +223,6 @@ extension TeachingController: DMSwipeCardsViewDelegate {
     }
     
     func reachedEndOfStack() { //QUANDO HA FNITO
-        self.finishCard()
+        self.loadingCard()
     }
 }

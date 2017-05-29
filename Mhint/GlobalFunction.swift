@@ -146,40 +146,6 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
     }
     //SALVA NELLA CACHE
     
-    //PRENDE I DATI PER IL TEACH
-    func getTeach() -> (Array<String>, Array<String>, Array<String>) {
-        
-        
-        var titleArray = [Any]()
-        var idArray = [Any]()
-        var imageArray = [Any]()
-        
-        saveData.set("merliandrea.com@gmail.com", forKey: "email")
-        
-        let mail = saveData.string(forKey: "email")!
-        print(mail)
-        
-        Alamofire.request("https://api.mhint.eu/foodpreference?mail=\(mail)", encoding: JSONEncoding.default).responseJSON { response in
-            
-            print("Response: ", response)
-            
-            print("Arryay: ", response.result.value!)
-            
-            for anItem in response.result.value! as! [[String:String]] {
-                titleArray.append(anItem["name"]!)
-                idArray.append(anItem["name"]!)
-                imageArray.append(anItem["name"]!)
-                    
-                print(anItem["name"]!)
-                print(anItem["_id"]!)
-                print(anItem["img_url"]!)
-            }
-            
-            
-        }
-        return (titleArray as! Array<String>, imageArray as! Array<String>, idArray as! Array<String>)
-    }
-    
     
     //PRENDI DATI SALUTE
     func getBodyData(hM: HKHealthStore) {
