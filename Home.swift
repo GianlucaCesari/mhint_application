@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
@@ -169,10 +170,17 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         }
     }
     func singleTapping() {
-        print("image clicked")
+        print("image clicked \(inputText.text!)")
+        let parameter = [
+            "message": inputText.text!//STRING
+            ] as [String : Any]
         printOnCollectionView(text: (inputText.text!), who: false)
         inputText.text = ""
         button.setImage(UIImage(named: "google_mic"), for: .normal)
+        Alamofire.request("https://nodered.mhint.eu/chat", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
+            print((response.value! as AnyObject)["message"]!)
+            self.printOnCollectionView(text: ((response.value! as AnyObject)["message"]! as! String), who: true)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
