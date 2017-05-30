@@ -41,7 +41,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         imgWave.frame = CGRect(x: 0, y: marginTopImage, width: view.frame.width, height: view.frame.width/2)
         
         inputText = UITextField(frame: CGRect(x: view.frame.width*0.04, y: view.frame.height*0.9, width: view.frame.width*0.92, height: view.frame.height*0.08))
-        inputText.backgroundColor = GlobalColor().backgroundCollectionView
+        inputText.backgroundColor = UIColor.init(red: 250/255, green: 250/255, blue: 250/255, alpha: 1)
         inputText.placeholder = "Say something..."
         inputText.textColor = .black
         inputText.layer.cornerRadius = 25
@@ -51,8 +51,8 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         
         button = UIButton(type: .custom)
         button.setImage(UIImage(named: "google_mic"), for: .normal)
-        button.imageEdgeInsets = UIEdgeInsetsMake(0, -50, 0, 50)
-        button.frame = CGRect(x: CGFloat(inputText.frame.size.width - 30), y: CGFloat(5), width: CGFloat(17.5), height: CGFloat(25))
+        button.imageEdgeInsets = UIEdgeInsetsMake(0, -30, 0, 30)
+        button.frame = CGRect(x: CGFloat(inputText.frame.size.width - 30), y: CGFloat(5), width: CGFloat(35), height: CGFloat(35))
         button.addTarget(self, action: #selector(singleTapping), for: .touchUpInside)
         inputText.rightView = button
         inputText.rightViewMode = .always
