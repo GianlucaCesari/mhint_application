@@ -15,7 +15,7 @@ class GlobalUser{
     static var imageProfile:String? = nil
     
     static var address:String = ""
-    static var birthday:DateComponents? = nil
+    static var birthday = DateComponents()
     
     static var height:Float = -1
     static var weight:Float = -1

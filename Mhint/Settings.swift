@@ -116,7 +116,7 @@ class SettingsController: UICollectionViewController, UICollectionViewDelegateFl
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            let newViewController = socialController()
+            let newViewController = socialController(collectionViewLayout: layout)
             self.navigationController?.pushViewController(newViewController, animated: true)
         }
         else if indexPath.row == 1 {
@@ -211,7 +211,9 @@ class SettingsController: UICollectionViewController, UICollectionViewDelegateFl
             place.text = "Not address found"
         }
         if saveData.value(forKey: "birthday") != nil {
-            place.text = place.text! + "\n\(saveData.string(forKey: "birthday")!)"
+            if let birth = saveData.string(forKey: "birthday") {
+                place.text = place.text! + "\n\(birth)"
+            }
         } else {
             place.text = place.text! + "\nNot birthday found"
         }

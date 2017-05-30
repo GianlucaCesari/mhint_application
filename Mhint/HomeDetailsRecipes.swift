@@ -8,8 +8,9 @@
 
 import Foundation
 import UIKit
-import AVKit
-import AVFoundation
+
+//GIF
+import SwiftyGif
 
 class DetailsRecipesController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate{
     
@@ -189,6 +190,10 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
     }
     
     func videoRecipes() {
+        
+        let imageLoadingView = UIImageView(gifImage: UIImage(gifName: "load"), manager: SwiftyGifManager(memoryLimit:20))
+        imageLoadingView.frame = CGRect(x: GlobalSize().widthScreen-GlobalSize().widthScreen*0.561/2, y: 0, width: GlobalSize().widthScreen*0.561, height: GlobalSize().widthScreen*0.561)
+        self.view.addSubview(imageLoadingView)
         
         let previewVideo = UIImageView()
         previewVideo.sd_setImage(with: URL(string: "https://i.ytimg.com/vi/B7JUzPTib9A/mqdefault.jpg"), placeholderImage: nil)

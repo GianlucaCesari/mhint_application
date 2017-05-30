@@ -14,6 +14,7 @@ import DMSwipeCards
 //GIF
 import SwiftyGif
 
+//POST-GET
 import Alamofire
 
 class TeachingController: UIViewController{
@@ -151,8 +152,6 @@ class TeachingController: UIViewController{
             self.swipeView.addCards((0...(titleArray.count-1)).map({"\($0)"}), onTop: false)
             self.view.addSubview(swipeView)
             timerCard.invalidate()
-        } else {
-            finishCard()
         }
     }
     
@@ -162,7 +161,8 @@ class TeachingController: UIViewController{
     
     func loadingCard() {
         Alamofire.request("https://api.mhint.eu/foodpreference?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { response in
-            for anItem in response.result.value! as! [[String:Any]] {
+            if let result = response.result.value {
+                for anItem in result as! [[String:Any]] {
                 
                 self.titleArray.append(anItem["name"]! as! String)
                 self.idArray.append(anItem["_id"]! as! String)
@@ -171,7 +171,7 @@ class TeachingController: UIViewController{
                 var arrayName = ""
                 var arrayValue = ""
                 
-                for nutriments in anItem["nutriments"] as! [[String:Any]] {
+                for nutriments in anItem["nutrients"] as! [[String:Any]] {
                     if let name = nutriments["name"]{
                         arrayName = "\(arrayName)\(String(describing: name)) \n"
                     }
@@ -181,14 +181,17 @@ class TeachingController: UIViewController{
                             let endIndex = val.index(val.endIndex, offsetBy: (5-val.characters.count))
                             val = val.substring(to: endIndex)
                         }
-                        arrayValue = "\(arrayValue)\(val) \n"
+                        arrayValue = "\(arrayValue)\(val) \(nutriments["unit"]!)\n"
                     }
                 }
                 self.nutrimentsName.append(arrayName)
                 self.nutrimentsValue.append(arrayValue)
+                }
+            } else {
+                self.finishCard()
             }
         }
-        timerCard = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkCardExist), userInfo: nil, repeats: true)
+        timerCard = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.checkCardExist), userInfo: nil, repeats: true)
     }
     
     func finishCard() {
@@ -199,8 +202,6 @@ class TeachingController: UIViewController{
         cardEnd.textAlignment = .center
         cardEnd.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.4, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.2)
         self.view.addSubview(cardEnd)
-        row1.text = ""
-        row2.text = ""
     }
     
     func clickVote(sender: UIButton) {
@@ -238,6 +239,11 @@ extension TeachingController: DMSwipeCardsViewDelegate {
     }
     
     func reachedEndOfStack() { //QUANDO HA FNITO
+        imageLoadingView = UIImageView(gifImage: UIImage(gifName: "load"), manager: SwiftyGifManager(memoryLimit:20))
+        imageLoadingView.frame = CGRect(x: GlobalSize().widthScreen*0.1, y: GlobalSize().heightScreen*0.3, width: GlobalSize().widthScreen*0.8, height: GlobalSize().widthScreen*0.8)
+        self.view.addSubview(imageLoadingView)
+        row1.text = ""
+        row2.text = ""
         self.loadingCard()
     }
 }

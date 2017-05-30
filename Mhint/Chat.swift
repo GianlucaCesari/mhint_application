@@ -580,7 +580,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             birth = saveData.value(forKey: "birthday") as! String
             print("Birthday1: ", birth)
         } else if GlobalUser.birthday != nil {
-            birth = String(describing: GlobalUser.birthday?.year!) + "-" + String(describing: GlobalUser.birthday?.month!) + "-" + String(describing: GlobalUser.birthday?.day!)
+            birth = String(describing: GlobalUser.birthday.year!) + "-" + String(describing: GlobalUser.birthday.month!) + "-" + String(describing: GlobalUser.birthday.day!)
             print("Birthday2: ", birth)
         } else {
             birth = "1970-0-0"

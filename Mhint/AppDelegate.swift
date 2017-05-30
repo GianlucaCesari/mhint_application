@@ -69,8 +69,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         
         //MENU
         
-        print(saveData.bool(forKey: "welcomeFinish"))
-        
         var navigationController = UINavigationController()
         if saveData.bool(forKey: "welcomeFinish") {
             navigationController = UINavigationController(rootViewController: chatbotController)

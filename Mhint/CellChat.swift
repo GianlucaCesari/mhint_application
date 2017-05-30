@@ -18,7 +18,7 @@ class BaseCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     func setupViews() {
-        self.backgroundColor = UIColor.white
+        self.backgroundColor = .clear
     }
     
 }

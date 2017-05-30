@@ -15,6 +15,7 @@ import Alamofire
 class botController: UIViewController, UITextFieldDelegate, SKStoreProductViewControllerDelegate{
     
     var textInputTelegram: UITextField?
+    var keyboardOpen = false
     
     override func viewDidLoad() {
         
@@ -28,12 +29,12 @@ class botController: UIViewController, UITextFieldDelegate, SKStoreProductViewCo
         btnMenu.addTarget(self, action: #selector(self.back(sender:)), for: .touchUpInside)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: btnMenu)
         
-        
-        
         builderInterface()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         super.viewWillAppear(true)
         builderInterface()
     }
@@ -75,7 +76,7 @@ class botController: UIViewController, UITextFieldDelegate, SKStoreProductViewCo
         textInputTelegram?.textColor = .black
         textInputTelegram?.layer.cornerRadius = 10
         textInputTelegram?.layer.masksToBounds = true
-        textInputTelegram?.layer.sublayerTransform = CATransform3DMakeTranslation(35,0,0)
+        textInputTelegram?.layer.sublayerTransform = CATransform3DMakeTranslation(20,0,0)
         textInputTelegram?.font = UIFont(name: "AvenirLTStd-Medium", size: 15)
         
         let btnVerifyCodeTelegram = UIButton(frame: CGRect(x: GlobalSize().widthScreen*0.5, y: GlobalSize().heightScreen*0.7, width: GlobalSize().widthScreen*0.4, height: GlobalSize().heightScreen*0.1))
@@ -99,6 +100,34 @@ class botController: UIViewController, UITextFieldDelegate, SKStoreProductViewCo
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(textFieldShouldReturn))
         self.view.addGestureRecognizer(tap)
         
+    }
+    
+    func keyboardDown(notification: Notification) {
+        tastieraInOut(su: false, notification: notification)
+    }
+    
+    func keyboardWillChangeFrame(notification: NSNotification) {
+        if ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue) != nil {
+            tastieraInOut(su: true, notification: notification as Notification)
+        }
+    }
+    
+    func tastieraInOut(su: Bool, notification: Notification) {
+        guard su != keyboardOpen else {
+            return
+        }
+        let info = notification.userInfo
+        let fineTastiera: CGRect = ((info?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
+        let durataAnimazione: TimeInterval = info?[UIKeyboardAnimationDurationUserInfoKey] as! Double
+        
+        if fineTastiera.size.height > 216 {
+            UIView.animate(withDuration: durataAnimazione, delay: 0, options: .curveEaseInOut, animations: {
+                let dimensioneTastiera = self.view.convert(fineTastiera, to: nil)
+                let spostamentoVerticale = dimensioneTastiera.size.height * (su ? -1 : 1)
+                self.view.frame = self.view.frame.offsetBy(dx: 0, dy: spostamentoVerticale*0.7)
+                self.keyboardOpen = !self.keyboardOpen
+            }, completion: nil)
+        }
     }
     
     func verifyCode() {
@@ -131,7 +160,7 @@ class botController: UIViewController, UITextFieldDelegate, SKStoreProductViewCo
         let botURL = URL.init(string: "tg://resolve?domain=BotFather")
         
         if UIApplication.shared.canOpenURL(botURL!) {
-            UIApplication.shared.openURL(botURL!)
+            UIApplication.shared.open(botURL!)
         } else {
             // Telegram is not installed.
             let controller = UIAlertController(title: "Telegram is not installed", message: "This function requires telegram to be installed", preferredStyle: .alert)

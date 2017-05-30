@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 
-class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
     
     var imgWave: UIImageView!
     let imgUrlLogo = UIImage(named: "wave")
@@ -38,20 +38,22 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         self.view.backgroundColor = .white
         imgWave = UIImageView (image: imgUrlLogo)
         let marginTopImage = (view.frame.height*0.85 - (view.frame.width/4))
+        imgWave.alpha = 0.2
         imgWave.frame = CGRect(x: 0, y: marginTopImage, width: view.frame.width, height: view.frame.width/2)
         
-        inputText = UITextField(frame: CGRect(x: view.frame.width*0.04, y: view.frame.height*0.9, width: view.frame.width*0.92, height: view.frame.height*0.08))
+        inputText = UITextField(frame: CGRect(x: 0, y: view.frame.height*0.92, width: view.frame.width, height: view.frame.height*0.08))
         inputText.backgroundColor = UIColor.init(red: 250/255, green: 250/255, blue: 250/255, alpha: 1)
         inputText.placeholder = "Say something..."
         inputText.textColor = .black
-        inputText.layer.cornerRadius = 25
-        inputText.layer.masksToBounds = true
-        inputText.layer.sublayerTransform = CATransform3DMakeTranslation(20,0,0)
+        inputText.delegate = self
+//        inputText.layer.cornerRadius = 25
+//        inputText.layer.masksToBounds = true
+        inputText.layer.sublayerTransform = CATransform3DMakeTranslation(12,0,0)
         inputText.font = UIFont(name: "AvenirLTStd-Medium", size: 15)
         
         button = UIButton(type: .custom)
         button.setImage(UIImage(named: "google_mic"), for: .normal)
-        button.imageEdgeInsets = UIEdgeInsetsMake(0, -30, 0, 30)
+        button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 20)
         button.frame = CGRect(x: CGFloat(inputText.frame.size.width - 30), y: CGFloat(5), width: CGFloat(35), height: CGFloat(35))
         button.addTarget(self, action: #selector(singleTapping), for: .touchUpInside)
         inputText.rightView = button
@@ -67,23 +69,21 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
 //        self.view.addSubview(imgMic)
         
 //        LISTENER TASTIERA
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(textFieldShouldReturn))
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(textFieldShouldReturnClose))
         self.view.addGestureRecognizer(tap)
 
         //CHAT
         let layout:UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
         layout.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
         layout.itemSize = CGSize(width: view.frame.width, height: 100)
-        collectionView?.backgroundColor = UIColor.white
-        collectionView?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height*0.7)
         
         collectionView?.collectionViewLayout = layout
         collectionView?.delegate = self
         collectionView?.dataSource = self
-        collectionView?.backgroundColor = .white
-        collectionView?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height*0.7)
+        collectionView?.backgroundColor = .clear
+        collectionView?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height*0.9)
         collectionView?.register(ChatControllerCell.self, forCellWithReuseIdentifier: cellId)
-        
+        self.view.addSubview((collectionView)!)
     }
     
     //COLLECTIONVIEW
@@ -170,30 +170,33 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         }
     }
     func singleTapping() {
-        print("image clicked \(inputText.text!)")
-        let parameter = [
-            "message": inputText.text!//STRING
+        let textTrimmed = (inputText.text!).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        if textTrimmed != "" {
+            printOnCollectionView(text: textTrimmed, who: false)
+            let parameter = [
+                "message": textTrimmed//STRING
             ] as [String : Any]
-        printOnCollectionView(text: (inputText.text!), who: false)
-        inputText.text = ""
-        button.setImage(UIImage(named: "google_mic"), for: .normal)
-        Alamofire.request("https://nodered.mhint.eu/chat", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
-            print((response.value! as AnyObject)["message"]!)
-            self.printOnCollectionView(text: ((response.value! as AnyObject)["message"]! as! String), who: true)
+            inputText.text = ""
+            button.setImage(UIImage(named: "google_mic"), for: .normal)
+            Alamofire.request("https://nodered.mhint.eu/chat", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
+                self.printOnCollectionView(text: ((response.value! as AnyObject)["message"]! as! String), who: true)
+            }
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
     }
     
     func keyboardDown(notification: Notification) {
         tastieraInOut(su: false, notification: notification)
     }
     
-    func keyboardUp(notification: Notification) {
-        tastieraInOut(su: true, notification: notification)
+    func keyboardWillChangeFrame(notification: NSNotification) {
+        if ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue) != nil {
+            tastieraInOut(su: true, notification: notification as Notification)
+        }
     }
     
     func tastieraInOut(su: Bool, notification: Notification) {
@@ -204,16 +207,26 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         let fineTastiera: CGRect = ((info?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
         let durataAnimazione: TimeInterval = info?[UIKeyboardAnimationDurationUserInfoKey] as! Double
         
-        UIView.animate(withDuration: durataAnimazione, delay: 0, options: .curveEaseInOut, animations: {
-            let dimensioneTastiera = self.view.convert(fineTastiera, to: nil)
-            let spostamentoVerticale = dimensioneTastiera.size.height * (su ? -1 : 1)
-            self.view.frame = self.view.frame.offsetBy(dx: 0, dy: spostamentoVerticale)
-            self.keyboardOpen = !self.keyboardOpen
-        }, completion: nil)
+        if fineTastiera.size.height > 216 {
         
+            UIView.animate(withDuration: durataAnimazione, delay: 0, options: .curveEaseInOut, animations: {
+                let dimensioneTastiera = self.view.convert(fineTastiera, to: nil)
+                let spostamentoVerticale = dimensioneTastiera.size.height * (su ? -1 : 1)
+                self.view.frame = self.view.frame.offsetBy(dx: 0, dy: spostamentoVerticale)
+                self.collectionView?.frame.origin.y = (su ? dimensioneTastiera.size.height : 0)
+                self.collectionView?.frame.size.height = (su ? GlobalSize().heightScreen*0.9 - dimensioneTastiera.size.height : GlobalSize().heightScreen*0.9)
+                self.keyboardOpen = !self.keyboardOpen
+            }, completion: nil)
+            
+        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        singleTapping()
+        return false
+    }
+    
+    func textFieldShouldReturnClose(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
     }
@@ -225,7 +238,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         messagesChatBot?.append(text)
         messagesTypeChatBot?.append(who)
         collectionView?.reloadData()
-        
+    
         let itemA = self.collectionView(self.collectionView!, numberOfItemsInSection: 0) - 1
         let lastItemIndex = NSIndexPath(item: itemA, section: 0)
         self.collectionView?.scrollToItem(at: lastItemIndex as IndexPath, at: UICollectionViewScrollPosition.top, animated: true)

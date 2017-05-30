@@ -43,6 +43,7 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
         self.tableView = tableView
         self.tableView?.backgroundColor = .clear
         self.view.addSubview(self.tableView!)
+        
     }
     
     func navbar() {
@@ -95,12 +96,20 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
                 } else {
                     foodView = FoodController(collectionViewLayout: layout)
                 }
-                self.sideMenuViewController!.setContentViewController(UINavigationController.init(rootViewController: foodView!), animated: true)
-                self.sideMenuViewController!.hideMenuViewController()
-            
+                if saveData.bool(forKey: "food") {
+                    self.sideMenuViewController!.setContentViewController(UINavigationController.init(rootViewController: foodView!), animated: true)
+                    self.sideMenuViewController!.hideMenuViewController()
+                } else {
+                    GlobalFunc().alertCustom(stringAlertTitle: "Food section not available", stringAlertDescription: "You need to activate this section", button:"Ok", s: self)
+                }
+        
             case 1:
-                self.sideMenuViewController!.setContentViewController(UINavigationController.init(rootViewController: EmergencyController()), animated: true)
-                self.sideMenuViewController!.hideMenuViewController()
+                if saveData.bool(forKey: "need") {
+                    self.sideMenuViewController!.setContentViewController(UINavigationController.init(rootViewController: EmergencyController()), animated: true)
+                    self.sideMenuViewController!.hideMenuViewController()
+                } else {
+                    GlobalFunc().alertCustom(stringAlertTitle: "Need section not available", stringAlertDescription: "You need to activate this section", button:"Ok", s: self)
+                }
             
             case 2:
                 self.sideMenuViewController!.setContentViewController(UINavigationController.init(rootViewController: TeachingController()), animated: true)
