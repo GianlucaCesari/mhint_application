@@ -839,7 +839,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     }
                     else {
                         self.promptLogin()
-                        print("Error: \(connectionError)")
+                        print("Error: \(String(describing: connectionError))")
                     }
                 }
                 

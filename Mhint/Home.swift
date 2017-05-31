@@ -130,6 +130,8 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     
     func microphoneTapped(sender: UILongPressGestureRecognizer) {
+        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.impactOccurred()
         if sender.state == .began {
             if (inputText.text! == "") {
                 startRecording()
@@ -226,6 +228,8 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         }
     }
     func singleTapping() {
+        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.impactOccurred()
         let textTrimmed = (inputText.text!).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         if textTrimmed != "" {
             printOnCollectionView(text: textTrimmed, who: false)
@@ -245,7 +249,6 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     
     func startRecording() {
-        
         if recognitionTask != nil {
             recognitionTask?.cancel()
             recognitionTask = nil
