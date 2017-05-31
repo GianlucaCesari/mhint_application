@@ -15,7 +15,7 @@ class GlobalSize{
     
     var sizeIconMenuBar = UIScreen.main.bounds.size.width*0.05
     
-    var minHeight = 160
+    var minHeight = 150
     var maxHeight = 200
     
     var minWeight = 65

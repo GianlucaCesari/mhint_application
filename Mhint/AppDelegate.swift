@@ -14,6 +14,7 @@ import GoogleSignIn
 import TwitterKit
 import Fabric
 import Firebase
+import Alamofire
 
 //MENU
 import AKSideMenu
@@ -24,7 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
     var window: UIWindow?
     var chatController = ChatController()
     var chatbotController = ChatBotController()
-    
     
     func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
         //ALL'APERTURA DI UNA LOCALNOTIFICATION VA A SHOPPINGLIST 
@@ -109,6 +109,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         // Print it to console
         print("APNs device token: \(deviceTokenString)")
         saveData.set(deviceTokenString, forKey: "deviceTokenString")
+        // /deviceverify
+        if saveData.string(forKey: "email") != nil {
+            let parameter = [
+                "mail": saveData.string(forKey: "email"),//STRING
+                "device_token": deviceTokenString
+                ] as [String : Any]
+            Alamofire.request("https://api.mhint.eu/deviceverify", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
+                print(response)
+            }
+        }
         
         // Persist it in your backend in case it's new
     }

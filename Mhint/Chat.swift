@@ -39,9 +39,9 @@ let layout:UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
 
 class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLayout, FBSDKLoginButtonDelegate, GIDSignInUIDelegate, CLLocationManagerDelegate{
     
-    let collectionVHeight = UICollectionView(frame: CGRect(x: 0, y: GlobalSize().heightScreen*0.7, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.3), collectionViewLayout: layout)
+    let collectionVHeight = UICollectionView(frame: CGRect(x: 0, y: GlobalSize().heightScreen*0.8, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1), collectionViewLayout: layout)
     
-    let collectionVWeight = UICollectionView(frame: CGRect(x: 0, y: GlobalSize().heightScreen*0.7, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.3), collectionViewLayout: layout)
+    let collectionVWeight = UICollectionView(frame: CGRect(x: 0, y: GlobalSize().heightScreen*0.8, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1), collectionViewLayout: layout)
     
     let cellId = "cellId"
     let cellIdHeight = "cellIdHeight"
@@ -70,20 +70,10 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     let healthManager:HKHealthStore = HKHealthStore()
     
-//    override func viewDidDisappear(_ animated: Bool) {
-//        if saveData.integer(forKey: "welcomeFinish") {
-//            saveData.set(["Voice;Keyboard"], forKey: "archiveMessages")
-//            saveData.set([false], forKey: "archiveMessagesType")
-//            saveData.set(["What's up ?"], forKey: "chatMessage")
-//            saveData.set([true], forKey: "typeMessage")
-//        
-//            saveData.set(1, forKey: "positionChat")
-//            saveData.set(2, forKey: "welcomeFinish")
-//        }
-//    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print(saveData.bool(forKey: "welcomeFinish"))
         
         if saveData.bool(forKey: "welcomeFinish") {
             sideMenuViewController?.panGestureLeftEnabled = true //DA ATTIVARE ALLA FINE DELLA CHAT
@@ -149,7 +139,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         layoutHeight.itemSize = CGSize(width: GlobalSize().heightScreen*0.1, height: GlobalSize().heightScreen*0.1)
         self.collectionVHeight.collectionViewLayout = layoutHeight
         self.collectionVWeight.collectionViewLayout = layoutHeight
-        self.collectionVHeight.contentSize = CGSize(width: 1, height: 1)
+        self.collectionVHeight.contentSize = CGSize(width: 10, height: 10)
         self.collectionVWeight.contentSize = CGSize(width: 10, height: 10)
         
         collectionView?.register(ChatControllerCell.self, forCellWithReuseIdentifier: cellId)
@@ -213,7 +203,6 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let space = screenW/CGFloat(length)
         var marginLeft = (space/2)-(widthText/2) + (space*CGFloat(id))
         
-        
         if length == 1 {
             marginLeft = screenW/2 - (widthText/2)
         }
@@ -260,7 +249,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         else if textButton == "Food & Supply" {
             buttonChat[id].addTarget(self, action: #selector(foodSupply), for: .touchUpInside)
         }
-        else if textButton == "Help & Needs" || textButton == "I don't give you" {
+        else if textButton == "Help & Needs" {
             if ChatController.deniedAccessNeed == false {
                 buttonChat[id].addTarget(self, action: #selector(needSupply), for: .touchUpInside)
             } else{
@@ -319,7 +308,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         ChatController.boolResponeWithoutButton = true
         archiveMessages?.remove(at: 0)
         archiveMessages?.insert("I give you", at: 0)
-        archiveMessages?.insert("How tall are you (cm) ?", at: 1)
+        archiveMessages?.insert("Let's start,\nHow tall are you (cm) ?", at: 1)
         self.heightResponse()
         self.activateResponse()
     }
@@ -411,7 +400,9 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func finishFood(sender: UIButton) {
-        ChatController().sectionFood = true
+        
+        sectionFood = true
+        
         if sender.titleLabel?.text == "Sport" {
             GlobalUser.lifestyle = 1
         } else if sender.titleLabel?.text == "Active" {
@@ -420,15 +411,18 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             GlobalUser.lifestyle = 3
         }
         GlobalFunc().saveUserProfile(value: GlobalUser.lifestyle, description: "lifestyle")
-        archiveMessages?.remove(at: 0)
+        
+        //archiveMessages?.remove(at: 0)
         archiveMessages?.insert((sender.titleLabel?.text)!, at: 0)
-        if ChatController().sectionNeed == false {
+        
+        if sectionNeed == false {
             archiveMessages?.insert("Wow now what do you wanna do ?", at: 1)
             archiveMessages?.insert("Stop;Help & Needs", at: 2)
+            print(archiveMessages!)
             self.activateResponse()
         } else {
             ChatController.boolResponeWithoutButton = true
-            archiveMessages?.insert("That's all", at: 1)
+            archiveMessages?.insert("Now you can start exploring the app.", at: 1)
             self.activateResponse()
         }
     }
@@ -446,11 +440,21 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     //NEED SECTION
     func needSupply() {
         
+        for x in 0..<self.buttonChat.count {
+            self.buttonChat[x].removeFromSuperview()
+        }
+        
+        ChatController.boolResponeWithoutButton = true
+        archiveMessages?.remove(at: 0)
+        archiveMessages?.insert("My info from Contacts", at: 0)
+        archiveMessages?.insert("Loading...", at: 1)
+        self.activateResponse()
+        
         let addressBookStore = CNContactStore()
         
         addressBookStore.requestAccess(for: CNEntityType.contacts) { (isGranted, error) in
             if ChatController.deniedAccessNeed == true {
-                archiveMessages?.remove(at: 0)
+                //archiveMessages?.remove(at: 0)
                 archiveMessages?.insert("No access to my number", at: 0)
                 archiveMessages?.insert("Ops we need your number for active Help & Needs.", at: 1)
                 if ChatController().sectionFood == true {
@@ -462,7 +466,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 GlobalFunc().saveUserProfile(value: true, description: "need")
                 ChatController.deniedAccessNeed = false
                 GlobalFunc().getContacts()
-                archiveMessages?.remove(at: 0)
+                //archiveMessages?.remove(at: 0)
                 archiveMessages?.insert("Take my friends contacts", at: 0)
                 if GlobalUser.phoneNumber != nil{
                     archiveMessages?.insert("Wow, your number is \(GlobalUser.phoneNumber!)?", at: 1)
@@ -488,12 +492,16 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             textField.text = ""
             textField.keyboardType = UIKeyboardType.phonePad
         }
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { [] (_) in
+            self.dismiss(animated: true, completion: nil)
+        }))
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             let firstTextField = (alert?.textFields![0])! as UITextField
             if let number = firstTextField.text {
                 do {
                     let num = try Int(number)!
                     if num > 0 {
+                        archiveMessages?.insert("My number \(number)", at: 0)
                         GlobalUser.phoneNumber = number
                         self.takeNumber(n: number)
                     } else {
@@ -506,36 +514,31 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 self.alertNumber()
             }
         }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { [] (_) in
-            self.dismiss(animated: true, completion: nil)
-        }))
         self.present(alert, animated: true, completion: nil)
     }
     
     func takeNumber(n: String) {
         ChatController().sectionNeed = true
-        archiveMessages?.remove(at: 0)
-        archiveMessages?.insert("My number \(n)", at: 0)
         if ChatController().sectionFood == false {
             archiveMessages?.insert("You wanna stop or activate the Food & Supply section?", at: 1)
             archiveMessages?.insert("Stop;Food & Supply", at: 2)
         } else {
             ChatController.boolResponeWithoutButton = true
-            archiveMessages?.insert("That's all", at: 1)
+            archiveMessages?.insert("Now you can start exploring the app.", at: 1)
         }
         self.activateResponse()
     }
     
     func finishNeed() {
-        ChatController().sectionNeed = true
-        archiveMessages?.remove(at: 0)
+        sectionNeed = true
+        //archiveMessages?.remove(at: 0)
         archiveMessages?.insert("Yes", at: 0)
         if sectionFood == false {
             archiveMessages?.insert("You wanna stop or activate the Food & Supply section?", at: 1)
             archiveMessages?.insert("Stop;Food & Supply", at: 2)
         } else {
             ChatController.boolResponeWithoutButton = true
-            archiveMessages?.insert("That's all", at: 1)
+            archiveMessages?.insert("Now you can start exploring the app.", at: 1)
         }
         self.activateResponse()
     }
@@ -575,15 +578,13 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             GlobalUser.fullName = GlobalUser.nickname
         }
         
+        //BIRTHDAY
         var birth = String()
-        if GlobalUser.birthday == nil && saveData.value(forKey: "birthday") != nil {
-            birth = saveData.value(forKey: "birthday") as! String
-            print("Birthday1: ", birth)
-        } else if GlobalUser.birthday != nil {
-            birth = String(describing: GlobalUser.birthday.year!) + "-" + String(describing: GlobalUser.birthday.month!) + "-" + String(describing: GlobalUser.birthday.day!)
-            print("Birthday2: ", birth)
-        } else {
-            birth = "1970-0-0"
+        if let b = saveData.value(forKey: "birthday") {
+            birth = b as! String
+        }
+        if GlobalUser.birthday != "" {
+            birth = GlobalUser.birthday
         }
         
         if GlobalUser.imageProfileFacebook != nil {
@@ -606,12 +607,11 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         GlobalFunc().saveUserProfile(value: GlobalUser.email, description: "email")
         
-        GlobalUser().createUser(name: GlobalUser.fullName!, imageProfile: GlobalUser.imageProfile!, birthday: birth, address: GlobalUser.address, height: GlobalUser.height, weight: GlobalUser.weight, sex: GlobalUser.sex, lifestyle: GlobalUser.lifestyle, sectionEnabled: [sectionFood,sectionNeed], logins: [loginFacebookBool,loginTwitterBool,ChatController.loginGoogleBool,loginHealthBool], mail: GlobalUser.email)
+        GlobalUser().createUser(name: GlobalUser.fullName!, imageProfile: GlobalUser.imageProfile!, birthday: birth, address: GlobalUser.address, height: GlobalUser.height, weight: GlobalUser.weight, sex: GlobalUser.sex, lifestyle: GlobalUser.lifestyle, sectionEnabled: [saveData.bool(forKey: "food"),saveData.bool(forKey: "nedd")], logins: [loginFacebookBool,loginTwitterBool,ChatController.loginGoogleBool,loginHealthBool], mail: GlobalUser.email)
         
         ChatController.boolResponeWithoutButton = true
-        archiveMessages?.remove(at: 0)
         archiveMessages?.insert("Stop", at: 0)
-        archiveMessages?.insert("Now you can go to menu.", at: 1)
+        archiveMessages?.insert("Now you can start exploring the app.", at: 1)
         self.activateResponse()
         
     }
@@ -670,10 +670,10 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             //BIRTHDAY
             GlobalFunc().saveUserProfile(value: String(describing: result?["birthday"]), description: "birthday")
             if let user_birthday = result?["birthday"] as? DateComponents {
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "MM/DD/YYYY"
-                let dateBirthday = String(describing: user_birthday.year!) + "-" + String(describing: user_birthday.month!) + "-" + String(describing: user_birthday.day!)
+                var dateBirthday = ""
+                dateBirthday = String(describing: user_birthday.day!) + "-" + String(describing: user_birthday.month!) + "-" + String(describing: user_birthday.year!)
                 GlobalFunc().saveUserProfile(value: dateBirthday, description: "birthday")
+                GlobalUser.birthday = dateBirthday
             }
             
             //HOMETOWN
@@ -1164,5 +1164,12 @@ extension UILabel {
             attributedString.addAttribute(NSKernAttributeName, value: 1.15, range: NSRange(location: 0, length: attributedString.length - 1))
             attributedText = attributedString
         }
+    }
+}
+
+//ADD CHARACTER IN STRING
+extension String {
+    func insert(string:String,ind:Int) -> String {
+        return  String(self.characters.prefix(ind)) + string + String(self.characters.suffix(self.characters.count-ind))
     }
 }

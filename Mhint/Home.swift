@@ -17,12 +17,20 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
     var keyboardOpen = false
     var button : UIButton!
     
+    var timerListening = Timer()
+    
     var messagesChatBot: [String]?
     var messagesTypeChatBot: [Bool]?
     
     var inputText = UITextField()
     
     let cellId = "chatBot"
+    
+    var startTime:Double = 0
+    var timeListening:Double = 0
+    var stringListening = 0
+    
+    let lblTimer = UILabel()
     
 //    SPEECH RECOGNIZER
     
@@ -112,9 +120,12 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(textFieldShouldReturnClose))
         self.view.addGestureRecognizer(tap)
         
+        lblTimer.backgroundColor = .clear
+        lblTimer.textColor = .black
+        lblTimer.addTextSpacing()
+        lblTimer.font = UIFont(name: "AvenirLTStd-Heavy", size: 14)
+        lblTimer.frame = CGRect(x: GlobalSize().widthScreen*0.05, y: view.frame.height*0.85, width: GlobalSize().widthScreen*0.15, height: view.frame.height*0.08)
         
-        
-
         //CHAT
         let layout:UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
         layout.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
@@ -129,18 +140,50 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         self.view.addSubview((collectionView)!)
     }
     
+    func listeningTime() {
+        timeListening = Date.timeIntervalSinceReferenceDate - startTime
+        let timeString = String(Int(timeListening))
+        if timeListening < 10 {
+            lblTimer.text = "00:0" + timeString
+        } else if timeListening >= 100 {
+            lblTimer.text = "0" + timeString.insert(string: ":", ind: 1)
+        } else {
+            lblTimer.text = "00:" + timeString
+        }
+        self.view.addSubview(lblTimer)
+        
+        if stringListening == 0 {
+            self.inputText.placeholder = "I'm listening"
+            stringListening = 1
+        } else if stringListening == 1 {
+            self.inputText.placeholder = "I'm listening."
+            stringListening = 2
+        } else if stringListening == 2 {
+            self.inputText.placeholder = "I'm listening.."
+            stringListening = 3
+        } else if stringListening == 3 {
+            self.inputText.placeholder = "I'm listening..."
+            stringListening = 0
+        }
+    }
+    
     func microphoneTapped(sender: UILongPressGestureRecognizer) {
         let generator = UIImpactFeedbackGenerator(style: .heavy)
         generator.impactOccurred()
         if sender.state == .began {
-            if (inputText.text! == "") {
-                startRecording()
-                button?.isEnabled = false
-            }
+            timerListening = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(self.listeningTime), userInfo: nil, repeats: false)
+            startRecording()
+            startTime = Date().timeIntervalSinceReferenceDate
+            timerListening = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.listeningTime), userInfo: nil, repeats: true)
+            button?.isEnabled = false
+            self.inputText.placeholder = "I'm listening..."
         } else if sender.state == .ended {
             audioEngine.stop()
+            timerListening.invalidate()
             recognitionRequest?.endAudio()
             button?.isEnabled = false
+            lblTimer.text = ""
+            self.inputText.placeholder = "Say something..."
         }
     }
     
@@ -249,6 +292,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     
     func startRecording() {
+        
         if recognitionTask != nil {
             recognitionTask?.cancel()
             recognitionTask = nil
@@ -280,21 +324,21 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             var isFinal = false
             
             if result != nil {
-                
                 self.inputText.text = result?.bestTranscription.formattedString
                 isFinal = (result?.isFinal)!
             }
             // print("IS FINAL: ",isFinal)
-            if error != nil || isFinal {
-                print("finito")
+            
+            if (error != nil || isFinal) {
                 self.audioEngine.stop()
                 self.view.endEditing(true)
-                self.button.setImage(UIImage(named: "send_logo"), for: .normal)
+                let textTrimmed = (self.inputText.text!).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                if textTrimmed != "" {
+                    self.button.setImage(UIImage(named: "send_logo"), for: .normal)
+                }
                 inputNode.removeTap(onBus: 0)
-                
                 self.recognitionRequest = nil
                 self.recognitionTask = nil
-                
                 self.button.isEnabled = true
             }
         })
@@ -313,7 +357,6 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         }
         
         inputText.text = ""
-        
     }
     
     func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
@@ -357,7 +400,6 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         let durataAnimazione: TimeInterval = info?[UIKeyboardAnimationDurationUserInfoKey] as! Double
         
         if fineTastiera.size.height > 216 {
-        
             UIView.animate(withDuration: durataAnimazione, delay: 0, options: .curveEaseInOut, animations: {
                 let dimensioneTastiera = self.view.convert(fineTastiera, to: nil)
                 let spostamentoVerticale = dimensioneTastiera.size.height * (su ? -1 : 1)
@@ -366,7 +408,6 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
                 self.collectionView?.frame.size.height = (su ? GlobalSize().heightScreen*0.9 - dimensioneTastiera.size.height : GlobalSize().heightScreen*0.9)
                 self.keyboardOpen = !self.keyboardOpen
             }, completion: nil)
-            
         }
     }
     

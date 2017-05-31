@@ -15,7 +15,7 @@ class GlobalUser{
     static var imageProfile:String? = nil
     
     static var address:String = ""
-    static var birthday = DateComponents()
+    static var birthday:String = ""
     
     static var height:Float = -1
     static var weight:Float = -1
@@ -101,14 +101,15 @@ class GlobalUser{
         print("weight: ", weight)
         print("sex: ", sex)
         print("lifestyle: ", lifestyle)
-        print("sectionEnabled: ", sectionEnabled)
+        print("food: ", sectionEnabled[0])
+        print("need: ", sectionEnabled[1])
         print("logins: ", logins)
         print("mail: ", mail)
         print("password: ", password)
         
         let parameter = [
             "name": name//STRING
-            //, "birthday": birthday//DATE
+            , "birthday": birthday//DATE
             , "imageProfile": imageProfile//STRING
             , "address": address//STRING
             , "height": height//FLOAT

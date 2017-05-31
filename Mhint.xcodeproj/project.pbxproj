@@ -44,7 +44,6 @@
 		169D5DB71EBCA8D90020436F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 169D5DB61EBCA8D90020436F /* Assets.xcassets */; };
 		16D917BB1EA7C1940049394A /* GlobalFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D917BA1EA7C1940049394A /* GlobalFunction.swift */; };
 		16D917BD1EA7C1A80049394A /* GlobalColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D917BC1EA7C1A80049394A /* GlobalColor.swift */; };
-		16D917BF1EA7C4220049394A /* setColorInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D917BE1EA7C4220049394A /* setColorInterface.swift */; };
 		16E91A261EA898E900C4EEFE /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E91A251EA898E900C4EEFE /* Settings.swift */; };
 		16E91A291EA8DD1800C4EEFE /* GlobalUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E91A281EA8DD1800C4EEFE /* GlobalUser.swift */; };
 		16F95DB91EA7FD5B007C64F0 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F95DB81EA7FD5B007C64F0 /* Menu.swift */; };
@@ -121,7 +120,6 @@
 		169D5DB61EBCA8D90020436F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		16D917BA1EA7C1940049394A /* GlobalFunction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalFunction.swift; sourceTree = "<group>"; };
 		16D917BC1EA7C1A80049394A /* GlobalColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalColor.swift; sourceTree = "<group>"; };
-		16D917BE1EA7C4220049394A /* setColorInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = setColorInterface.swift; sourceTree = "<group>"; };
 		16E91A251EA898E900C4EEFE /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Settings.swift; path = Mhint/Settings.swift; sourceTree = "<group>"; };
 		16E91A281EA8DD1800C4EEFE /* GlobalUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalUser.swift; sourceTree = "<group>"; };
 		16F95DB81EA7FD5B007C64F0 /* Menu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
@@ -334,7 +332,6 @@
 				16002CC61EB085EC0069C11F /* GlobalSize.swift */,
 				16E91A281EA8DD1800C4EEFE /* GlobalUser.swift */,
 				160962151EC07B1A00C5B4B0 /* GlobalVariable.swift */,
-				16D917BE1EA7C4220049394A /* setColorInterface.swift */,
 			);
 			name = "Global Class";
 			sourceTree = "<group>";
@@ -805,7 +802,6 @@
 				16561D7D1ED8589A0040509C /* HomeDetailsRecipesCell.swift in Sources */,
 				166AFC981ED4706F008FF8F4 /* shoppingList.swift in Sources */,
 				166AFC9B1ED471CC008FF8F4 /* shoppingListCell.swift in Sources */,
-				16D917BF1EA7C4220049394A /* setColorInterface.swift in Sources */,
 				163CA14D1ED7213500B10700 /* HomeShoppingList.swift in Sources */,
 				16FFCF1F1EA28285005A4A59 /* AppDelegate.swift in Sources */,
 			);

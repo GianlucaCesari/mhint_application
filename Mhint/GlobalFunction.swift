@@ -16,31 +16,31 @@ import Alamofire //REQUEST INTERNET
 class GlobalFunc: UIView, UIGestureRecognizerDelegate{
     
     var globalSize = GlobalSize()
-    var themeColor:Bool = true
+//    var themeColor:Bool = true
     var viewChatController = UIViewController()
     
     //CAMBIARE COLORE TEMA
-    func changeColor(s: UIViewController, collectionV: UICollectionView, backgroundImage: UIView) {
-        if themeColor {
-            //TEMA DIVENTA NERO
-            let black = GlobalColor().colorBlack
-            s.view.backgroundColor = black
-            collectionV.backgroundColor = black
-            backgroundImage.backgroundColor = black
-            s.navigationController?.navigationBar.barTintColor = black
-            s.navigationController?.navigationBar.backgroundColor = black
-            themeColor = false
-        } else{
-            //TEMA DIVENTA BIANCO
-            let white = GlobalColor().colorWhite
-            s.view.backgroundColor = white
-            collectionV.backgroundColor = white
-            backgroundImage.backgroundColor = white
-            s.navigationController?.navigationBar.barTintColor = white
-            s.navigationController?.navigationBar.backgroundColor = white
-            themeColor = true
-        }
-    }
+//    func changeColor(s: UIViewController, collectionV: UICollectionView, backgroundImage: UIView) {
+//        if themeColor {
+//            //TEMA DIVENTA NERO
+//            let black = GlobalColor().colorBlack
+//            s.view.backgroundColor = black
+//            collectionV.backgroundColor = black
+//            backgroundImage.backgroundColor = black
+//            s.navigationController?.navigationBar.barTintColor = black
+//            s.navigationController?.navigationBar.backgroundColor = black
+//            themeColor = false
+//        } else{
+//            //TEMA DIVENTA BIANCO
+//            let white = GlobalColor().colorWhite
+//            s.view.backgroundColor = white
+//            collectionV.backgroundColor = white
+//            backgroundImage.backgroundColor = white
+//            s.navigationController?.navigationBar.barTintColor = white
+//            s.navigationController?.navigationBar.backgroundColor = white
+//            themeColor = true
+//        }
+//    }
     
     //NAVIGATION BAR TOP CHAT
     func navBar(nav: UINavigationItem, s: UIViewController, show: Bool) {
@@ -182,17 +182,13 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
     }
     func getBirthday(healthManager: HKHealthStore) {
         var birth = DateComponents(calendar: Calendar.current)
-        if GlobalUser.birthday == nil {
-            do {
-                birth = try healthManager.dateOfBirthComponents()
-            } catch {}
-            if birth.isValidDate {
-                let dateBirthday = String(describing: birth.year!) + "-" + String(describing: birth.month!) + "-" + String(describing: birth.day!)
-                GlobalUser.birthday = birth
-                self.saveUserProfile(value: dateBirthday, description: "birthday")
-            }
-        } else {
-            GlobalUser.birthday = birth
+        do {
+            birth = try healthManager.dateOfBirthComponents()
+        } catch {}
+        if birth.isValidDate {
+            let dateBirthday = String(describing: birth.day!) + "-" + String(describing: birth.month!) + "-" + String(describing: birth.year!)
+            GlobalUser.birthday = dateBirthday
+            self.saveUserProfile(value: dateBirthday, description: "birthday")
         }
     }
     func getHeight(healthManager: HKHealthStore) {
