@@ -100,11 +100,9 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
     
     //CUSTOM ALERT
     func alertCustom(stringAlertTitle: String, stringAlertDescription: String, button: String, s: UIViewController) {
-        
         let alert = UIAlertController(title: stringAlertTitle, message: stringAlertDescription, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: button, style: UIAlertActionStyle.default, handler: nil))
         s.present(alert, animated: true, completion: nil)
-        
     }
     
     //navigationRight v.a.

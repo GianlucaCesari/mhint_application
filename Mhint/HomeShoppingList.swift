@@ -10,7 +10,7 @@ import Foundation
 import UserNotifications
 import UIKit
 
-class HomeShoppingListController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UNUserNotificationCenterDelegate{
+class HomeShoppingListController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UNUserNotificationCenterDelegate, UITextFieldDelegate {
     
     let cellId = "cellShoppingList"
     
@@ -25,6 +25,12 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
     let loadingShoppingBar = UIProgressView()
     var progressBarTimer:Timer!
     var progressBarStop:Float! = 0.0
+    
+    let btnAlert = UITextField()
+    let btnAlertQuantity = UITextField()
+    let btnAlertUnity = UITextField()
+    
+    var tap = UITapGestureRecognizer()
     
     override func viewDidLoad() {
         
@@ -82,9 +88,7 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         cell.quantityDiet.frame = CGRect(x: widthCollectionView-(heightCell*2)-30, y: 0, width: heightCell*2, height: heightCell)
         cell.quantityDiet.text = shoppingListQuantity[indexPath.row].capitalized
         
-        let imageGreen = UIImage(named: "check-false")
         cell.checkImageBtn.frame = CGRect(x: GlobalSize().widthScreen*0.04, y: heightCell*0.2, width: GlobalSize().heightScreen*0.05, height: GlobalSize().heightScreen*0.05)
-        cell.checkImageBtn.image = imageGreen
         
         cell.lineGetItem.alpha = 0
         cell.lineGetItem.frame = CGRect(x: 0, y: heightCell*0.475, width: widthCollectionView, height: heightCell*0.03)
@@ -93,6 +97,25 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
             arrayImageHidden.append(false)
         }
         
+        if arrayImageHidden[indexPath.row] == true {
+            let stringImage = "check-true"
+            cell.quantityDiet.textColor = .lightGray
+            cell.titleDiet.textColor = .lightGray
+            cell.quantityDiet.alpha = 0.6
+            cell.titleDiet.alpha = 0.6
+            cell.lineGetItem.alpha = 0.1
+            let imageGreen = UIImage(named: stringImage)
+            cell.checkImageBtn.image = imageGreen
+        } else {
+            let stringImage = "check-false"
+            cell.quantityDiet.textColor = .black
+            cell.titleDiet.textColor = .black
+            cell.quantityDiet.alpha = 1
+            cell.titleDiet.alpha = 1
+            cell.lineGetItem.alpha = 0
+            let imageGreen = UIImage(named: stringImage)
+            cell.checkImageBtn.image = imageGreen
+        }
         return cell
     }
     
@@ -138,20 +161,79 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         addBackground.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.28, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
         self.view.addSubview(addBackground)
         
-        var imageIngredient = UIImageView()
-        let img = UIImage(named: "check-plus")
-        imageIngredient = UIImageView(image: img)
-        imageIngredient.frame = CGRect(x: GlobalSize().widthScreen*0.04, y: GlobalSize().heightScreen*0.305, width: GlobalSize().heightScreen*0.05, height: GlobalSize().heightScreen*0.05)
-        self.view.addSubview(imageIngredient)
+        let btnMenu = UIButton()
+        let imgMenuClose = UIImage(named: "check-plus")
+        btnMenu.setImage(imgMenuClose, for: .normal)
+        btnMenu.frame = CGRect(x: GlobalSize().widthScreen*0.04, y: GlobalSize().heightScreen*0.305, width: GlobalSize().heightScreen*0.05, height: GlobalSize().heightScreen*0.05)
+        btnMenu.addTarget(self, action: #selector(insertShoppingList), for: .touchUpInside)
+        self.view.addSubview(btnMenu)
         
-        let btnAlert = UILabel()
-        btnAlert.text = "Add Item"
+        btnAlert.placeholder = "Add Item"
         btnAlert.textColor = .black
-        btnAlert.alpha = 0.2
         btnAlert.font = UIFont(name: "AvenirLTStd-Heavy", size: 13)
         btnAlert.textAlignment = .left
-        btnAlert.frame = CGRect(x: GlobalSize().widthScreen*0.15, y: GlobalSize().heightScreen*0.305, width: GlobalSize().widthScreen*0.3, height: GlobalSize().heightScreen*0.05)
+        btnAlert.frame = CGRect(x: GlobalSize().widthScreen*0.15, y: GlobalSize().heightScreen*0.305, width: GlobalSize().widthScreen*0.4, height: GlobalSize().heightScreen*0.05)
+        
+        btnAlertQuantity.keyboardType = UIKeyboardType.numberPad
+        btnAlertQuantity.placeholder = "Add Quanity"
+        btnAlertQuantity.textColor = .black
+        btnAlertQuantity.font = UIFont(name: "AvenirLTStd-Medium", size: 10)
+        btnAlertQuantity.textAlignment = .left
+        btnAlertQuantity.frame = CGRect(x: GlobalSize().widthScreen*0.6, y: GlobalSize().heightScreen*0.305, width: GlobalSize().widthScreen*0.2, height: GlobalSize().heightScreen*0.05)
+        
+        btnAlertUnity.placeholder = "Add Unit"
+        btnAlertUnity.textColor = .black
+        btnAlertUnity.font = UIFont(name: "AvenirLTStd-Medium", size: 10)
+        btnAlertUnity.textAlignment = .left
+        btnAlertUnity.frame = CGRect(x: GlobalSize().widthScreen*0.8, y: GlobalSize().heightScreen*0.305, width: GlobalSize().widthScreen*0.2, height: GlobalSize().heightScreen*0.05)
+        
+        btnAlertUnity.addTarget(self, action: #selector(clickTextField), for: .touchDown)
+        btnAlertQuantity.addTarget(self, action: #selector(clickTextField), for: .touchDown)
+        btnAlert.addTarget(self, action: #selector(clickTextField), for: .touchDown)
+        
+        btnAlertUnity.delegate = self
+        btnAlertQuantity.delegate = self
+        btnAlert.delegate = self
+        
         self.view.addSubview(btnAlert)
+        self.view.addSubview(btnAlertQuantity)
+        self.view.addSubview(btnAlertUnity)
+        
+        tap = UITapGestureRecognizer(target: self, action: #selector(textFieldShouldReturnClose))
+    }
+    
+    func clickTextField() {
+        self.view.addGestureRecognizer(tap)
+    }
+    
+    func textFieldShouldReturnClose(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        self.view.removeGestureRecognizer(tap)
+        return false
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        insertShoppingList()
+        return true
+    }
+    
+    func insertShoppingList() {
+        let textTrimmed = (btnAlert.text!).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        if textTrimmed != "" {
+            shoppingList.insert(textTrimmed, at: 0)
+            shoppingListQuantity.insert(btnAlertQuantity.text! + " " + btnAlertUnity.text!, at: 0)
+            collectionView?.reloadData()
+            
+            GlobalVariable.listItem.insert(textTrimmed, at: 0)
+            GlobalVariable.listItem.insert(btnAlertQuantity.text! + " " + btnAlertUnity.text!, at: 0)
+            
+            btnAlert.text = ""
+            btnAlertQuantity.text = ""
+            btnAlertUnity.text = ""
+        } else {
+            GlobalFunc().alertCustom(stringAlertTitle: "No valid name", stringAlertDescription: "Insert the name of the item", button: "OK", s: self)
+        }
     }
     
     func loadingShoppingBarFunction() {
