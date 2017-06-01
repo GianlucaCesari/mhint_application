@@ -95,9 +95,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         self.window?.makeKeyAndVisible()
         
         //SOCIAL
-        FIRApp.configure() //FIREBASE
+        FirebaseApp.configure() //FIREBASE
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions) //FACEBOOK
-        GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()?.options.clientID //GOOGLE
+        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID //GOOGLE
         GIDSignIn.sharedInstance().delegate = self //GOOGLE
         Fabric.with([Twitter.self]) //TWITTER
         
@@ -165,10 +165,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         
         guard let idTokenGoogle = user.authentication.idToken else {return}
         guard let accessToken = user.authentication.accessToken else { return }
-        let credentials = FIRGoogleAuthProvider.credential(withIDToken: idTokenGoogle, accessToken: accessToken)
+        let credentials = GoogleAuthProvider.credential(withIDToken: idTokenGoogle, accessToken: accessToken)
         
         //FIREBASE
-        FIRAuth.auth()?.signIn(with: credentials, completion: {(user, err) in
+        Auth.auth().signIn(with: credentials, completion: {(user, err) in
             if err != nil{
                 print("Error Google on Firebase")
                 return

@@ -12,35 +12,12 @@ import ReachabilitySwift //INTERNET
 import HealthKit //SALUTE
 import Contacts //CONTACTS
 import Alamofire //REQUEST INTERNET
+import SwiftyGif //LOAD GIF
 
 class GlobalFunc: UIView, UIGestureRecognizerDelegate{
     
     var globalSize = GlobalSize()
-//    var themeColor:Bool = true
     var viewChatController = UIViewController()
-    
-    //CAMBIARE COLORE TEMA
-//    func changeColor(s: UIViewController, collectionV: UICollectionView, backgroundImage: UIView) {
-//        if themeColor {
-//            //TEMA DIVENTA NERO
-//            let black = GlobalColor().colorBlack
-//            s.view.backgroundColor = black
-//            collectionV.backgroundColor = black
-//            backgroundImage.backgroundColor = black
-//            s.navigationController?.navigationBar.barTintColor = black
-//            s.navigationController?.navigationBar.backgroundColor = black
-//            themeColor = false
-//        } else{
-//            //TEMA DIVENTA BIANCO
-//            let white = GlobalColor().colorWhite
-//            s.view.backgroundColor = white
-//            collectionV.backgroundColor = white
-//            backgroundImage.backgroundColor = white
-//            s.navigationController?.navigationBar.barTintColor = white
-//            s.navigationController?.navigationBar.backgroundColor = white
-//            themeColor = true
-//        }
-//    }
     
     //NAVIGATION BAR TOP CHAT
     func navBar(nav: UINavigationItem, s: UIViewController, show: Bool) {
@@ -68,7 +45,6 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
         titleLabel.sizeToFit()
         s.navigationItem.titleView = titleLabel
         
-//        s.navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: "AvenirLTStd-Medium", size: 15)!]
         s.navigationController?.navigationBar.barTintColor = GlobalColor().colorWhite
         s.navigationController?.navigationBar.backgroundColor = GlobalColor().colorWhite
         s.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
@@ -331,6 +307,27 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
             
         }
         
+    }
+    
+    //LOADING CHAT
+    func loadingChat(s: UIViewController, frame: CGRect, nameGif: String){
+        let imgLoading = UIImageView(gifImage: UIImage(gifName: nameGif))
+        imgLoading.frame = frame
+        imgLoading.alpha = 1
+        imgLoading.tag = 9561
+        imgLoading.startAnimating()
+        imgLoading.startAnimatingGif()
+        s.view.addSubview(imgLoading)
+    }
+    
+    func removeLoadingChat(s: UIViewController) {
+        for locView in s.view.subviews {
+            if locView.isKind(of: UIImageView.self) {
+                if locView.tag == 9561 {
+                    locView.removeFromSuperview()
+                }
+            }
+        }
     }
     
 }

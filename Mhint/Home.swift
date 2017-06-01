@@ -81,7 +81,6 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         UIApplication.shared.statusBarView?.backgroundColor = .white//BACKGROUND STATUS BAR WHITE
         GlobalFunc().checkInternet(s: self)//INTERNET
         
-//      INTERFACE
         self.view.backgroundColor = .white
         imgWave = UIImageView (image: imgUrlLogo)
         let marginTopImage = (view.frame.height*0.85 - (view.frame.width/4))
@@ -93,8 +92,6 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         inputText.placeholder = "Say something..."
         inputText.textColor = .black
         inputText.delegate = self
-//        inputText.layer.cornerRadius = 25
-//        inputText.layer.masksToBounds = true
         inputText.layer.sublayerTransform = CATransform3DMakeTranslation(12,0,0)
         inputText.font = UIFont(name: "AvenirLTStd-Medium", size: 15)
         
@@ -107,14 +104,10 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(singleTapping))
         button.addGestureRecognizer(longPressRecognizer)
         button.addGestureRecognizer(tapGestureRecognizer)
-//        button.addTarget(self, action: #selector(singleTapping), for: .touchUpInside)
         inputText.rightView = button
         inputText.rightViewMode = .always
         inputText.addTarget(self, action: #selector(textFieldDidChange(inputText:)), for: UIControlEvents.editingChanged)
         
-//        let singleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(singleTapping(recognizer:)))
-//        singleTap.numberOfTapsRequired = 1;
-//        imgMic.addGestureRecognizer(singleTap)
         
         self.view.addSubview(imgWave)
         

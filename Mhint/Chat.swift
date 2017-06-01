@@ -64,6 +64,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     static var boolResponeWithoutButton:Bool = false
     
+    var imageListeningGif = UIImageView()
+    
     var nameFacebook = ""
     var facebookToken:String = ""
     
@@ -73,8 +75,6 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        print(saveData.bool(forKey: "welcomeFinish"))
         
         if saveData.bool(forKey: "welcomeFinish") {
             sideMenuViewController?.panGestureLeftEnabled = true //DA ATTIVARE ALLA FINE DELLA CHAT
@@ -345,7 +345,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         for x in 0..<self.buttonChat.count {
             self.buttonChat[x].removeFromSuperview()
         }
-        
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: view.frame.width*0.15, y: view.frame.height*0.7, width: view.frame.width*0.7, height: view.frame.width*0.35), nameGif: "load-chat")
         var readTypes = Set<HKObjectType>()
         readTypes.insert(HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.height)!)
         readTypes.insert(HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!)
@@ -369,6 +369,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             } else {
                 self.requestHealth()
             }
+            GlobalFunc().removeLoadingChat(s: self)
         }
     }
     
@@ -403,6 +404,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func finishFood(sender: UIButton) {
         
         sectionFood = true
+        saveData.set(true, forKey: "food")
         
         if sender.titleLabel?.text == "Sport" {
             GlobalUser.lifestyle = 1
@@ -412,19 +414,18 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             GlobalUser.lifestyle = 3
         }
         GlobalFunc().saveUserProfile(value: GlobalUser.lifestyle, description: "lifestyle")
-        
-        //archiveMessages?.remove(at: 0)
         archiveMessages?.insert((sender.titleLabel?.text)!, at: 0)
-        
-        if sectionNeed == false {
+        if saveData.bool(forKey: "need") == false {
             archiveMessages?.insert("Wow now what do you wanna do ?", at: 1)
             archiveMessages?.insert("Stop;Help & Needs", at: 2)
-            print(archiveMessages!)
             self.activateResponse()
         } else {
             ChatController.boolResponeWithoutButton = true
             archiveMessages?.insert("Now you can start exploring the app.", at: 1)
             self.activateResponse()
+            saveData.set(true, forKey: "welcomeFinish")
+            sideMenuViewController?.panGestureLeftEnabled = true //DA ATTIVARE ALLA FINE DELLA CHAT
+            GlobalFunc().navBarMenu(nav: navigationItem, s: self) //MOSTRA IL MENU, DEVE ESSERE FATTO ALLA FINE DELLA CHAT
         }
     }
     //FOOD SECTION
@@ -444,6 +445,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         for x in 0..<self.buttonChat.count {
             self.buttonChat[x].removeFromSuperview()
         }
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: view.frame.width*0.15, y: view.frame.height*0.7, width: view.frame.width*0.7, height: view.frame.width*0.35), nameGif: "load-chat")
         
         ChatController.boolResponeWithoutButton = true
         archiveMessages?.remove(at: 0)
@@ -455,11 +457,12 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         addressBookStore.requestAccess(for: CNEntityType.contacts) { (isGranted, error) in
             if ChatController.deniedAccessNeed == true {
-                //archiveMessages?.remove(at: 0)
+                self.sectionFood = true
+                saveData.set(true, forKey: "need")
                 archiveMessages?.insert("No access to my number", at: 0)
                 archiveMessages?.insert("Ops we need your number for active Help & Needs.", at: 1)
-                if ChatController().sectionFood == true {
-                    archiveMessages?.insert("Help & Needs;Stop", at: 2)
+                if saveData.bool(forKey: "food") == true {
+                    archiveMessages?.insert("Stop;Help & Needs", at: 2)
                 } else {
                     archiveMessages?.insert("Help & Needs;Food & Supply", at: 2)
                 }
@@ -467,7 +470,6 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 GlobalFunc().saveUserProfile(value: true, description: "need")
                 ChatController.deniedAccessNeed = false
                 GlobalFunc().getContacts()
-                //archiveMessages?.remove(at: 0)
                 archiveMessages?.insert("Take my friends contacts", at: 0)
                 if GlobalUser.phoneNumber != nil{
                     archiveMessages?.insert("Wow, your number is \(GlobalUser.phoneNumber!)?", at: 1)
@@ -484,6 +486,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 archiveMessages?.insert("Help & Needs;Food & Supply", at: 2)
             }
             self.activateResponse()
+            GlobalFunc().removeLoadingChat(s: self)
         }
     }
     
@@ -502,7 +505,6 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 do {
                     let num = try Int(number)!
                     if num > 0 {
-                        archiveMessages?.insert("My number \(number)", at: 0)
                         GlobalUser.phoneNumber = number
                         self.takeNumber(n: number)
                     } else {
@@ -519,27 +521,35 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func takeNumber(n: String) {
-        ChatController().sectionNeed = true
-        if ChatController().sectionFood == false {
+        sectionNeed = true
+        saveData.set(true, forKey: "need")
+        archiveMessages?.insert("My number \(n)", at: 0)
+        if saveData.bool(forKey: "food") == false {
             archiveMessages?.insert("You wanna stop or activate the Food & Supply section?", at: 1)
             archiveMessages?.insert("Stop;Food & Supply", at: 2)
         } else {
             ChatController.boolResponeWithoutButton = true
             archiveMessages?.insert("Now you can start exploring the app.", at: 1)
+            saveData.set(true, forKey: "welcomeFinish")
+            sideMenuViewController?.panGestureLeftEnabled = true //DA ATTIVARE ALLA FINE DELLA CHAT
+            GlobalFunc().navBarMenu(nav: navigationItem, s: self) //MOSTRA IL MENU, DEVE ESSERE FATTO ALLA FINE DELLA CHAT
         }
         self.activateResponse()
     }
     
     func finishNeed() {
         sectionNeed = true
-        //archiveMessages?.remove(at: 0)
+        saveData.set(true, forKey: "need")
         archiveMessages?.insert("Yes", at: 0)
-        if sectionFood == false {
+        if saveData.bool(forKey: "food") == false {
             archiveMessages?.insert("You wanna stop or activate the Food & Supply section?", at: 1)
             archiveMessages?.insert("Stop;Food & Supply", at: 2)
         } else {
             ChatController.boolResponeWithoutButton = true
             archiveMessages?.insert("Now you can start exploring the app.", at: 1)
+            saveData.set(true, forKey: "welcomeFinish")
+            sideMenuViewController?.panGestureLeftEnabled = true //DA ATTIVARE ALLA FINE DELLA CHAT
+            GlobalFunc().navBarMenu(nav: navigationItem, s: self) //MOSTRA IL MENU, DEVE ESSERE FATTO ALLA FINE DELLA CHAT
         }
         self.activateResponse()
     }
@@ -556,6 +566,9 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     //END CHAT
     func endChat() {
+        
+        archiveMessages?.insert("Stop", at: 0)
+        archiveMessages?.insert("Now you can start exploring the app.", at: 1)
         
         //POSIZIONE
         locationManager = CLLocationManager()
@@ -611,9 +624,10 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         GlobalUser().createUser(name: GlobalUser.fullName!, imageProfile: GlobalUser.imageProfile!, birthday: birth, address: GlobalUser.address, height: GlobalUser.height, weight: GlobalUser.weight, sex: GlobalUser.sex, lifestyle: GlobalUser.lifestyle, sectionEnabled: [saveData.bool(forKey: "food"),saveData.bool(forKey: "nedd")], logins: [loginFacebookBool,loginTwitterBool,ChatController.loginGoogleBool,loginHealthBool], mail: GlobalUser.email)
         
         ChatController.boolResponeWithoutButton = true
-        archiveMessages?.insert("Stop", at: 0)
-        archiveMessages?.insert("Now you can start exploring the app.", at: 1)
         self.activateResponse()
+        saveData.set(true, forKey: "welcomeFinish")
+        sideMenuViewController?.panGestureLeftEnabled = true //DA ATTIVARE ALLA FINE DELLA CHAT
+        GlobalFunc().navBarMenu(nav: navigationItem, s: self) //MOSTRA IL MENU, DEVE ESSERE FATTO ALLA FINE DELLA CHAT
         
     }
     //SECTION NEED
@@ -632,6 +646,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         for x in 0..<self.buttonChat.count {
             self.buttonChat[x].removeFromSuperview()
         }
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: view.frame.width*0.15, y: view.frame.height*0.7, width: view.frame.width*0.7, height: view.frame.width*0.35), nameGif: "load-chat")
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile", "user_birthday", "user_hometown"], from: self, handler: { //PERMESSI DA CHIEDERE
             (result, err) in
             if result?.token != nil {
@@ -737,6 +752,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         archiveMessages?.insert(self.nameFacebook, at: 1)
         archiveMessages?.insert(message, at: 2)
         self.activateResponse()
+        GlobalFunc().removeLoadingChat(s: self)
     }
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         print("Logout from Facebook")
@@ -757,6 +773,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         for x in 0..<self.buttonChat.count {
             self.buttonChat[x].removeFromSuperview()
         }
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: view.frame.width*0.15, y: view.frame.height*0.7, width: view.frame.width*0.7, height: view.frame.width*0.35), nameGif: "load-chat")
         GIDSignIn.sharedInstance().signIn()
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.googleResponse), userInfo: nil, repeats: true)
     }
@@ -779,6 +796,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             archiveMessages?.insert("Now you are login with Google", at: 1)
             archiveMessages?.insert(message, at: 2)
             self.activateResponse()
+            GlobalFunc().removeLoadingChat(s: self)
         }
     }
     //END GOOGLE
@@ -797,6 +815,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         for x in 0..<self.buttonChat.count {
             self.buttonChat[x].removeFromSuperview()
         }
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: view.frame.width*0.15, y: view.frame.height*0.7, width: view.frame.width*0.7, height: view.frame.width*0.35), nameGif: "load-chat")
         Twitter.sharedInstance().logIn { (session, error) in
             if session != nil {
                 let client = TWTRAPIClient.withCurrentUser()
@@ -889,6 +908,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         archiveMessages?.insert(messageResponse, at: 1)
         archiveMessages?.insert(message, at: 2)
         self.activateResponse()
+        GlobalFunc().removeLoadingChat(s: self)
     }
     //END TWITTER
     
