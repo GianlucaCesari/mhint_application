@@ -16,8 +16,8 @@ target 'Mhint' do
 
   pod 'GoogleSignIn'
 
-  #pod 'Fabric'
-  #pod 'TwitterKit'
+  pod 'Fabric'
+  pod 'TwitterKit'
 
   pod 'AKSideMenu'
 
