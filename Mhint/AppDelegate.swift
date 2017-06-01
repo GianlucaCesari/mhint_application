@@ -7,7 +7,8 @@
 //
 
 import UIKit
-import UserNotifications
+import UserNotifications //NOTIFICHE
+import CoreLocation //POSIZIONE
 //LOGIN
 import FBSDKCoreKit
 import GoogleSignIn
@@ -20,11 +21,12 @@ import Alamofire
 import AKSideMenu
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSideMenuDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSideMenuDelegate, CLLocationManagerDelegate {
 
     var window: UIWindow?
     var chatController = ChatController()
     var chatbotController = ChatBotController()
+    var locationManager: CLLocationManager!
     
     func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
         //ALL'APERTURA DI UNA LOCALNOTIFICATION VA A SHOPPINGLIST 
@@ -99,6 +101,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         GIDSignIn.sharedInstance().delegate = self //GOOGLE
         Fabric.with([Twitter.self]) //TWITTER
         
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.startUpdatingLocation()
+        
         return true
     }
     
@@ -112,7 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         // /deviceverify
         if saveData.string(forKey: "email") != nil {
             let parameter = [
-                "mail": saveData.string(forKey: "email"),//STRING
+                "mail": saveData.string(forKey: "email")!,//STRING
                 "device_token": deviceTokenString
                 ] as [String : Any]
             Alamofire.request("https://api.mhint.eu/deviceverify", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
@@ -177,7 +184,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
     }
     
     func applicationWillResignActive(_ application: UIApplication) {}
-    func applicationDidEnterBackground(_ application: UIApplication) {}
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.startUpdatingLocation()
+    }
     func applicationWillEnterForeground(_ application: UIApplication) {}
     func applicationDidBecomeActive(_ application: UIApplication) {}
     func applicationWillTerminate(_ application: UIApplication) {}
@@ -195,5 +207,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
     open func sideMenu(_ sideMenu: AKSideMenu, willHideMenuViewController menuViewController: UIViewController) {}
     open func sideMenu(_ sideMenu: AKSideMenu, didHideMenuViewController menuViewController: UIViewController) {}
     
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let userLocation:CLLocation = locations[0]
+        let long = userLocation.coordinate.longitude;
+        let lat = userLocation.coordinate.latitude;
+        GlobalFunc().getLocation(latitude: lat, longitude: long)
+    }
 }
 

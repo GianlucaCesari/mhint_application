@@ -161,6 +161,9 @@ class TeachingController: UIViewController{
     
     func loadingCard() {
         Alamofire.request("https://api.mhint.eu/foodpreference?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { response in
+            self.titleArray.removeAll()
+            self.idArray.removeAll()
+            self.imageArray.removeAll()
             if let result = response.result.value {
                 for anItem in result as! [[String:Any]] {
                 

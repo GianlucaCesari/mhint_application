@@ -9,6 +9,8 @@
 import UIKit
 import Alamofire
 import Speech
+import AudioToolbox
+import SwiftyGif
 
 class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, SFSpeechRecognizerDelegate, SFSpeechRecognitionTaskDelegate {
     
@@ -31,6 +33,8 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
     var stringListening = 0
     
     let lblTimer = UILabel()
+    
+    var imageListeningGif = UIImageView()
     
 //    SPEECH RECOGNIZER
     
@@ -113,6 +117,11 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
 //        imgMic.addGestureRecognizer(singleTap)
         
         self.view.addSubview(imgWave)
+        
+        imageListeningGif = UIImageView(gifImage: UIImage(gifName: "load-chat"), manager: SwiftyGifManager(memoryLimit:20))
+        imageListeningGif.frame = CGRect(x: 0, y: (view.frame.height*0.85 - (view.frame.width/4)), width: view.frame.width, height: view.frame.width/2)
+        imageListeningGif.alpha = 0
+        self.view.addSubview(imageListeningGif)
         self.view.addSubview(inputText)
 //        self.view.addSubview(imgMic)
         
@@ -171,12 +180,16 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         let generator = UIImpactFeedbackGenerator(style: .heavy)
         generator.impactOccurred()
         if sender.state == .began {
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             timerListening = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(self.listeningTime), userInfo: nil, repeats: false)
             startRecording()
             startTime = Date().timeIntervalSinceReferenceDate
             timerListening = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.listeningTime), userInfo: nil, repeats: true)
             button?.isEnabled = false
             self.inputText.placeholder = "I'm listening..."
+            
+            imageListeningGif.alpha = 1
+            
         } else if sender.state == .ended {
             audioEngine.stop()
             timerListening.invalidate()
@@ -184,6 +197,8 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             button?.isEnabled = false
             lblTimer.text = ""
             self.inputText.placeholder = "Say something..."
+            
+            imageListeningGif.alpha = 0
         }
     }
     
@@ -378,7 +393,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
     
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(notification:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
     }
     
     func keyboardDown(notification: Notification) {
@@ -392,23 +407,28 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     
     func tastieraInOut(su: Bool, notification: Notification) {
-        guard su != keyboardOpen else {
-            return
-        }
         let info = notification.userInfo
         let fineTastiera: CGRect = ((info?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
         let durataAnimazione: TimeInterval = info?[UIKeyboardAnimationDurationUserInfoKey] as! Double
         
-        if fineTastiera.size.height > 216 {
-            UIView.animate(withDuration: durataAnimazione, delay: 0, options: .curveEaseInOut, animations: {
-                let dimensioneTastiera = self.view.convert(fineTastiera, to: nil)
-                let spostamentoVerticale = dimensioneTastiera.size.height * (su ? -1 : 1)
-                self.view.frame = self.view.frame.offsetBy(dx: 0, dy: spostamentoVerticale)
-                self.collectionView?.frame.origin.y = (su ? dimensioneTastiera.size.height : 0)
-                self.collectionView?.frame.size.height = (su ? GlobalSize().heightScreen*0.9 - dimensioneTastiera.size.height : GlobalSize().heightScreen*0.9)
-                self.keyboardOpen = !self.keyboardOpen
-            }, completion: nil)
-        }
+        UIView.animate(withDuration: durataAnimazione, delay: 0, options: .curveEaseInOut, animations: {
+            let dimensioneTastiera = self.view.convert(fineTastiera, to: nil)
+            let spostamentoVerticale = dimensioneTastiera.size.height * (su ? -1 : 1)
+            
+            if su {
+                self.view.frame.origin.y = spostamentoVerticale
+                self.collectionView?.frame.origin.y = dimensioneTastiera.size.height
+                self.collectionView?.frame.size.height = GlobalSize().heightScreen*0.9 - dimensioneTastiera.size.height
+            } else {
+                self.view.frame.origin.y = 0
+                self.collectionView?.frame.origin.y = 0
+                self.collectionView?.frame.size.height = GlobalSize().heightScreen*0.9
+            }
+            
+            let itemA = self.collectionView(self.collectionView!, numberOfItemsInSection: 0) - 1
+            let lastItemIndex = NSIndexPath(item: itemA, section: 0)
+            self.collectionView?.scrollToItem(at: lastItemIndex as IndexPath, at: UICollectionViewScrollPosition.top, animated: true)
+        }, completion: nil)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

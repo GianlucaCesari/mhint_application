@@ -53,14 +53,12 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
         name.textColor = .black
         name.textAlignment = .left
         name.font = UIFont(name: "AvenirLTStd-Medium", size: 14)
-        name.frame = CGRect(x:self.view.frame.width*0.05, y:0, width:self.view.frame.width, height: self.view.frame.height*0.1)
+        name.frame = CGRect(x:self.view.frame.width*0.05, y:15, width:self.view.frame.width, height: self.view.frame.height*0.1)
         self.view.addSubview(name)
         
-        let btnChat = UIButton()
-        btnChat.setTitle("v.a.", for: .normal)
-        btnChat.setTitleColor(UIColor.black, for: .normal)
-        btnChat.titleLabel?.font = UIFont(name: "AvenirLTStd-Medium", size: 12)
-        btnChat.frame = CGRect(x: self.view.frame.width-(self.view.frame.width*0.14), y: 0, width: self.view.frame.width*0.12, height: self.view.frame.height*0.1)
+        let btnChat = UIButton(type: .custom)
+        btnChat.setImage(UIImage(named: "iconChat"), for: .normal)
+        btnChat.frame = CGRect(x: self.view.frame.width-(self.view.frame.width*0.14), y: 25, width: self.view.frame.width*0.1, height: self.view.frame.width*0.1)
         btnChat.addTarget(self, action: #selector(goToChat), for: .touchUpInside)
         self.view.addSubview(btnChat)
         

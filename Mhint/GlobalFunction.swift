@@ -307,6 +307,13 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
     func getLocation(latitude: Double, longitude: Double) {
         
         let accuracy:Double = 10000000
+        //let accuracy:Double = 10
+        
+        print(Double(round(latitude*accuracy)/accuracy))
+        print(Double(round(longitude*accuracy)/accuracy))
+        
+        print(saveData.double(forKey: "latitudeHistory"))
+        print(saveData.double(forKey: "longitudeHistory"))
         
         if Double(round(latitude*accuracy)/accuracy) != saveData.double(forKey: "latitudeHistory") || Double(round(longitude*accuracy)/accuracy) != saveData.double(forKey: "longitudeHistory") {
             

@@ -24,6 +24,7 @@
 		1635E7721EBF9D320079E64E /* indexSocialSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1635E7711EBF9D320079E64E /* indexSocialSetting.swift */; };
 		1635E7741EBF9D570079E64E /* indexBotSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1635E7731EBF9D570079E64E /* indexBotSetting.swift */; };
 		1635E7771EBF9F900079E64E /* CellChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1635E7761EBF9F900079E64E /* CellChat.swift */; };
+		1639F25F1EE058A800E3B024 /* load-chat.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1639F25E1EE058A800E3B024 /* load-chat.gif */; };
 		163CA14D1ED7213500B10700 /* HomeShoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163CA14C1ED7213500B10700 /* HomeShoppingList.swift */; };
 		163CA14F1ED7378100B10700 /* HomeShoppiListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163CA14E1ED7378100B10700 /* HomeShoppiListCell.swift */; };
 		165458BF1ED2E34200088A22 /* EatOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165458BE1ED2E34200088A22 /* EatOut.swift */; };
@@ -99,6 +100,7 @@
 		1635E7711EBF9D320079E64E /* indexSocialSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = indexSocialSetting.swift; path = Mhint/indexSocialSetting.swift; sourceTree = "<group>"; };
 		1635E7731EBF9D570079E64E /* indexBotSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = indexBotSetting.swift; path = Mhint/indexBotSetting.swift; sourceTree = "<group>"; };
 		1635E7761EBF9F900079E64E /* CellChat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellChat.swift; sourceTree = "<group>"; };
+		1639F25E1EE058A800E3B024 /* load-chat.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "load-chat.gif"; sourceTree = "<group>"; };
 		163CA14C1ED7213500B10700 /* HomeShoppingList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeShoppingList.swift; path = Mhint/HomeShoppingList.swift; sourceTree = "<group>"; };
 		163CA14E1ED7378100B10700 /* HomeShoppiListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeShoppiListCell.swift; path = Mhint/HomeShoppiListCell.swift; sourceTree = "<group>"; };
 		165458BE1ED2E34200088A22 /* EatOut.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EatOut.swift; path = Mhint/EatOut.swift; sourceTree = "<group>"; };
@@ -386,6 +388,7 @@
 				16FFCF271EA28285005A4A59 /* LaunchScreen.storyboard */,
 				16FFCF2A1EA28285005A4A59 /* Info.plist */,
 				1601E1E81ECC7123004B9122 /* GoogleService-Info.plist */,
+				1639F25E1EE058A800E3B024 /* load-chat.gif */,
 				160962191EC0A90D00C5B4B0 /* load.gif */,
 				16FFCF561EA284B6005A4A59 /* Fonts */,
 			);
@@ -586,6 +589,7 @@
 				16FFCF541EA284AD005A4A59 /* AvenirLTStd-Light.otf in Resources */,
 				1601E1E91ECC7123004B9122 /* GoogleService-Info.plist in Resources */,
 				16FFCF291EA28285005A4A59 /* LaunchScreen.storyboard in Resources */,
+				1639F25F1EE058A800E3B024 /* load-chat.gif in Resources */,
 				16FFCF511EA284AD005A4A59 /* AvenirLTStd-Black.otf in Resources */,
 				16FFCF521EA284AD005A4A59 /* AvenirLTStd-Book.otf in Resources */,
 				169D5DB71EBCA8D90020436F /* Assets.xcassets in Resources */,

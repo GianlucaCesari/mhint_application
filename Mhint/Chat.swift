@@ -1,3 +1,4 @@
+
 //
 //  ViewController.swift
 //  Mhint Chat
@@ -7,7 +8,7 @@
 //
 
 import UIKit
-import CoreLocation //POSIZIONEC
+import CoreLocation //POSIZIONE
 import HealthKit //SALUTE
 import Contacts //CONTACTS
 
