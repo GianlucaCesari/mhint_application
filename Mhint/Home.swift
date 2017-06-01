@@ -118,9 +118,10 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         
         self.view.addSubview(imgWave)
         
-        imageListeningGif = UIImageView(gifImage: UIImage(gifName: "load-chat"), manager: SwiftyGifManager(memoryLimit:20))
-        imageListeningGif.frame = CGRect(x: 0, y: (view.frame.height*0.85 - (view.frame.width/4)), width: view.frame.width, height: view.frame.width/2)
-        imageListeningGif.alpha = 0
+        self.imageListeningGif = UIImageView(gifImage: UIImage(gifName: "load-voice"), manager: SwiftyGifManager(memoryLimit:20))
+        self.imageListeningGif.frame = CGRect(x: 0, y: 300, width: view.frame.width, height: view.frame.width/2)
+        self.imageListeningGif.alpha = 0
+        self.imageListeningGif.stopAnimatingGif()
         self.view.addSubview(imageListeningGif)
         self.view.addSubview(inputText)
 //        self.view.addSubview(imgMic)
@@ -188,7 +189,8 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             button?.isEnabled = false
             self.inputText.placeholder = "I'm listening..."
             
-            imageListeningGif.alpha = 1
+            self.imageListeningGif.alpha = 1
+            self.imageListeningGif.startAnimatingGif()
             
         } else if sender.state == .ended {
             audioEngine.stop()
@@ -198,7 +200,8 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             lblTimer.text = ""
             self.inputText.placeholder = "Say something..."
             
-            imageListeningGif.alpha = 0
+            self.imageListeningGif.alpha = 0
+            self.imageListeningGif.stopAnimatingGif()
         }
     }
     

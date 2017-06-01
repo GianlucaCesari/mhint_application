@@ -57,6 +57,7 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
         self.view.addSubview(name)
         
         let btnChat = UIButton(type: .custom)
+        btnChat.adjustsImageWhenHighlighted = false
         btnChat.setImage(UIImage(named: "iconChat"), for: .normal)
         btnChat.frame = CGRect(x: self.view.frame.width-(self.view.frame.width*0.14), y: 25, width: self.view.frame.width*0.1, height: self.view.frame.width*0.1)
         btnChat.addTarget(self, action: #selector(goToChat), for: .touchUpInside)

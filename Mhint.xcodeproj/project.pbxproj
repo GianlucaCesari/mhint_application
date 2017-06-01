@@ -60,6 +60,7 @@
 		16FFCF551EA284AD005A4A59 /* AvenirLTStd-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 16FFCF501EA284AD005A4A59 /* AvenirLTStd-Medium.otf */; };
 		24E55129CE9EFEECD6F424BA /* Pods_MhintUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B72F63FE4B207186F53B62 /* Pods_MhintUITests.framework */; };
 		520B0EA81ED83CDC00A8DCEE /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 520B0EA71ED83CDC00A8DCEE /* UserNotifications.framework */; };
+		529A150F1EE0982A00E86664 /* load-voice.gif in Resources */ = {isa = PBXBuildFile; fileRef = 529A150C1EE0982A00E86664 /* load-voice.gif */; };
 		8331DB63C562F7929F5F1439 /* Pods_Mhint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3E260A3705318002BFE6E8 /* Pods_Mhint.framework */; };
 		980E41088CBE4DABC19A1DB4 /* Pods_MhintTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 268FB687E93765EDC33E154F /* Pods_MhintTests.framework */; };
 /* End PBXBuildFile section */
@@ -145,6 +146,7 @@
 		4D3E260A3705318002BFE6E8 /* Pods_Mhint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mhint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50ED0B0BC04AC2BEE5F2A675 /* Pods-MhintTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MhintTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MhintTests/Pods-MhintTests.debug.xcconfig"; sourceTree = "<group>"; };
 		520B0EA71ED83CDC00A8DCEE /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		529A150C1EE0982A00E86664 /* load-voice.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "load-voice.gif"; sourceTree = "<group>"; };
 		66317E44FE10363323285E8A /* Pods-MhintTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MhintTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MhintTests/Pods-MhintTests.release.xcconfig"; sourceTree = "<group>"; };
 		6BA00CCA66FF6CEF76FD604C /* Pods-Mhint.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mhint.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mhint/Pods-Mhint.debug.xcconfig"; sourceTree = "<group>"; };
 		83B72F63FE4B207186F53B62 /* Pods_MhintUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MhintUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -389,6 +391,7 @@
 				16FFCF2A1EA28285005A4A59 /* Info.plist */,
 				1601E1E81ECC7123004B9122 /* GoogleService-Info.plist */,
 				1639F25E1EE058A800E3B024 /* load-chat.gif */,
+				529A150C1EE0982A00E86664 /* load-voice.gif */,
 				160962191EC0A90D00C5B4B0 /* load.gif */,
 				16FFCF561EA284B6005A4A59 /* Fonts */,
 			);
@@ -532,6 +535,9 @@
 						DevelopmentTeam = L4KF22FNCY;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.HealthKit = {
 								enabled = 1;
 							};
@@ -590,6 +596,7 @@
 				1601E1E91ECC7123004B9122 /* GoogleService-Info.plist in Resources */,
 				16FFCF291EA28285005A4A59 /* LaunchScreen.storyboard in Resources */,
 				1639F25F1EE058A800E3B024 /* load-chat.gif in Resources */,
+				529A150F1EE0982A00E86664 /* load-voice.gif in Resources */,
 				16FFCF511EA284AD005A4A59 /* AvenirLTStd-Black.otf in Resources */,
 				16FFCF521EA284AD005A4A59 /* AvenirLTStd-Book.otf in Resources */,
 				169D5DB71EBCA8D90020436F /* Assets.xcassets in Resources */,

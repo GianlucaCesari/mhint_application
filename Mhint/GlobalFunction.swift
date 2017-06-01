@@ -306,32 +306,28 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
     //POSIZIONE
     func getLocation(latitude: Double, longitude: Double) {
         
-        let accuracy:Double = 10000000
+        let accuracy:Double = 10000
         //let accuracy:Double = 10
         
-        print(Double(round(latitude*accuracy)/accuracy))
-        print(Double(round(longitude*accuracy)/accuracy))
+        let lat = Double(round(latitude*accuracy)/accuracy)
+        let lon = Double(round(longitude*accuracy)/accuracy)
         
-        print(saveData.double(forKey: "latitudeHistory"))
-        print(saveData.double(forKey: "longitudeHistory"))
-        
-        if Double(round(latitude*accuracy)/accuracy) != saveData.double(forKey: "latitudeHistory") || Double(round(longitude*accuracy)/accuracy) != saveData.double(forKey: "longitudeHistory") {
+        if lat != saveData.double(forKey: "latitudeHistory") || lon != saveData.double(forKey: "longitudeHistory") {
             
             let parameter = [
                 "mail": saveData.string(forKey: "email")!//STRING
-                , "lat": String(Double(round(latitude*accuracy)/accuracy))
-                , "long": String(Double(round(longitude*accuracy)/accuracy))
+                , "lat": String(lat)
+                , "long": String(lon)
                 ] as [String : Any]
             
             Alamofire.request("https://api.mhint.eu/userpositions", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON {_ in }
             
-            saveData.set(Double(round(latitude*accuracy)/accuracy), forKey: "latitudeHistory")
-            saveData.set(Double(round(longitude*accuracy)/accuracy), forKey: "longitudeHistory")
+            saveData.set(lat, forKey: "latitudeHistory")
+            saveData.set(lon, forKey: "longitudeHistory")
             
-            print("POSIZIONE CAMBIATA")
-            print("Longitudine: ", Double(round(latitude*accuracy)/accuracy))
-            print("Latitudine: ", Double(round(longitude*accuracy)/accuracy))
-            print("Email: ", saveData.string(forKey: "email")!)
+            print("POSIZIONE INVIATA")
+            print("Longitudine: ", lon)
+            print("Latitudine: ", lat)
             
         }
         
