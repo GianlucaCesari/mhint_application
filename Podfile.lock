@@ -59,6 +59,7 @@ PODS:
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
+  - SwiftGifOrigin (1.6.1)
   - SwiftyGif (3.0.3)
   - TwitterCore (2.8.0):
     - Fabric
@@ -78,6 +79,7 @@ DEPENDENCIES:
   - GoogleSignIn
   - ReachabilitySwift (~> 3)
   - SDWebImage (~> 3.8)
+  - SwiftGifOrigin (~> 1.6.1)
   - SwiftyGif
   - TwitterKit
 
@@ -101,10 +103,11 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 5c046c76a1f859bc9c187e918f18e4fc7bb57b5e
   ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  SwiftGifOrigin: d6679d3ebe9df2e049a84bc52582635107b581f6
   SwiftyGif: 89a0bb19709bdb6990e10405ad456d8bea804a65
   TwitterCore: e959987be23c767004d29eb7fab8d85d8585a2e5
   TwitterKit: 3b6044a7320340326a4098f3e37aa1dbaeb94942
 
-PODFILE CHECKSUM: 95b8a5f85cbbd1524c3336bf996856e485964771
+PODFILE CHECKSUM: 75362559cff0efd5ec356f2a7f59641870ea6ed1
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.2.0.beta.1

@@ -311,13 +311,12 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
     
     //LOADING CHAT
     func loadingChat(s: UIViewController, frame: CGRect, nameGif: String){
-        let imgLoading = UIImageView(gifImage: UIImage(gifName: nameGif))
-        imgLoading.frame = frame
-        imgLoading.alpha = 1
-        imgLoading.tag = 9561
-        imgLoading.startAnimating()
-        imgLoading.startAnimatingGif()
-        s.view.addSubview(imgLoading)
+        let imageListeningGif = UIImageView()
+        imageListeningGif.loadGif(name: nameGif)
+        imageListeningGif.frame = frame
+        imageListeningGif.tag = 9561
+        s.view.addSubview(imageListeningGif)
+        
     }
     
     func removeLoadingChat(s: UIViewController) {

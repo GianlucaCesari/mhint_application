@@ -11,6 +11,7 @@ import Alamofire
 import Speech
 import AudioToolbox
 import SwiftyGif
+import SwiftGifOrigin
 
 class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, SFSpeechRecognizerDelegate, SFSpeechRecognitionTaskDelegate {
     
@@ -111,11 +112,12 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         
         self.view.addSubview(imgWave)
         
-        self.imageListeningGif = UIImageView(gifImage: UIImage(gifName: "load-voice"), manager: SwiftyGifManager(memoryLimit:20))
-        self.imageListeningGif.frame = CGRect(x: 0, y: 300, width: view.frame.width, height: view.frame.width/2)
-        self.imageListeningGif.alpha = 0
-        self.imageListeningGif.stopAnimatingGif()
-        self.view.addSubview(imageListeningGif)
+        imageListeningGif = UIImageView()
+        imageListeningGif.loadGif(name: "load-voice")
+        imageListeningGif.frame = CGRect(x: 0, y: view.frame.height*0.7, width: view.frame.width, height: view.frame.width/2)
+        imageListeningGif.alpha = 0
+        view.addSubview(imageListeningGif)
+        
         self.view.addSubview(inputText)
 //        self.view.addSubview(imgMic)
         
@@ -181,10 +183,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             timerListening = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.listeningTime), userInfo: nil, repeats: true)
             button?.isEnabled = false
             self.inputText.placeholder = "I'm listening..."
-            
-            self.imageListeningGif.alpha = 1
-            self.imageListeningGif.startAnimatingGif()
-            
+            imageListeningGif.alpha = 1
         } else if sender.state == .ended {
             audioEngine.stop()
             timerListening.invalidate()
@@ -192,9 +191,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             button?.isEnabled = false
             lblTimer.text = ""
             self.inputText.placeholder = "Say something..."
-            
-            self.imageListeningGif.alpha = 0
-            self.imageListeningGif.stopAnimatingGif()
+            imageListeningGif.alpha = 0
         }
     }
     

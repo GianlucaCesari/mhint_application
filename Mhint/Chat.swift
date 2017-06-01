@@ -345,7 +345,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         for x in 0..<self.buttonChat.count {
             self.buttonChat[x].removeFromSuperview()
         }
-        GlobalFunc().loadingChat(s: self, frame: CGRect(x: view.frame.width*0.15, y: view.frame.height*0.7, width: view.frame.width*0.7, height: view.frame.width*0.35), nameGif: "load-chat")
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: 0, y: view.frame.height*0.7, width: view.frame.width, height: view.frame.width/2), nameGif: "load-chat")
         var readTypes = Set<HKObjectType>()
         readTypes.insert(HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.height)!)
         readTypes.insert(HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!)
@@ -445,7 +445,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         for x in 0..<self.buttonChat.count {
             self.buttonChat[x].removeFromSuperview()
         }
-        GlobalFunc().loadingChat(s: self, frame: CGRect(x: view.frame.width*0.15, y: view.frame.height*0.7, width: view.frame.width*0.7, height: view.frame.width*0.35), nameGif: "load-chat")
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: 0, y: view.frame.height*0.7, width: view.frame.width, height: view.frame.width/2), nameGif: "load-chat")
         
         ChatController.boolResponeWithoutButton = true
         archiveMessages?.remove(at: 0)
@@ -646,7 +646,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         for x in 0..<self.buttonChat.count {
             self.buttonChat[x].removeFromSuperview()
         }
-        GlobalFunc().loadingChat(s: self, frame: CGRect(x: view.frame.width*0.15, y: view.frame.height*0.7, width: view.frame.width*0.7, height: view.frame.width*0.35), nameGif: "load-chat")
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: 0, y: view.frame.height*0.7, width: view.frame.width, height: view.frame.width/2), nameGif: "load-chat")
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile", "user_birthday", "user_hometown"], from: self, handler: { //PERMESSI DA CHIEDERE
             (result, err) in
             if result?.token != nil {
@@ -773,7 +773,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         for x in 0..<self.buttonChat.count {
             self.buttonChat[x].removeFromSuperview()
         }
-        GlobalFunc().loadingChat(s: self, frame: CGRect(x: view.frame.width*0.15, y: view.frame.height*0.7, width: view.frame.width*0.7, height: view.frame.width*0.35), nameGif: "load-chat")
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: 0, y: view.frame.height*0.7, width: view.frame.width, height: view.frame.width/2), nameGif: "load-chat")
         GIDSignIn.sharedInstance().signIn()
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.googleResponse), userInfo: nil, repeats: true)
     }
@@ -815,7 +815,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         for x in 0..<self.buttonChat.count {
             self.buttonChat[x].removeFromSuperview()
         }
-        GlobalFunc().loadingChat(s: self, frame: CGRect(x: view.frame.width*0.15, y: view.frame.height*0.7, width: view.frame.width*0.7, height: view.frame.width*0.35), nameGif: "load-chat")
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: 0, y: view.frame.height*0.7, width: view.frame.width, height: view.frame.width/2), nameGif: "load-chat")
         Twitter.sharedInstance().logIn { (session, error) in
             if session != nil {
                 let client = TWTRAPIClient.withCurrentUser()
