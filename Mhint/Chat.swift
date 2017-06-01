@@ -702,8 +702,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             }
             //PRENDERE DATI DA FACEBOOK
             //CARICA SU FIREBASE
-            let credentials = FIRFacebookAuthProvider.credential(withAccessToken: self.facebookToken)
-            FIRAuth.auth()?.signIn(with: credentials, completion: {
+            let credentials = FacebookAuthProvider.credential(withAccessToken: self.facebookToken)
+            Auth.auth().signIn(with: credentials, completion: {
                 (user, error) in
                 if error != nil {
                     print("Error Facebook on Firebase")
@@ -810,7 +810,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 
                 guard let token = session?.authToken else { return }
                 guard let secret = session?.authTokenSecret else { return }
-                let credentials = FIRTwitterAuthProvider.credential(withToken: token, secret: secret)
+                let credentials = TwitterAuthProvider.credential(withToken: token, secret: secret)
                 
                 client.sendTwitterRequest(request) { response, data, connectionError in
                     if (connectionError == nil) {
@@ -844,7 +844,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     }
                 }
                 
-                FIRAuth.auth()?.signIn(with: credentials, completion: {
+                Auth.auth().signIn(with: credentials, completion: {
                     (user, error) in
                     
                     if let image = user?.photoURL {
