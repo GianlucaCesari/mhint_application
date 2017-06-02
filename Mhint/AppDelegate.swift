@@ -16,6 +16,7 @@ import TwitterKit
 import Fabric
 import Firebase
 import Alamofire
+import Whisper
 
 //MENU
 import AKSideMenu
@@ -134,6 +135,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
     func application(_ application: UIApplication, didReceiveRemoteNotification data: [AnyHashable : Any]) {
         // Print notification payload data
         print("Push notification received: \(data)")
+        
+        let announcement = Announcement(title: String(describing:data["user"]!), subtitle: String(describing:data["text"]!),image: UIImage(named: "iconChat"), duration: 30)
+        Whisper.show(shout: announcement, to: (self.window?.rootViewController)!, completion: {
+            print("Entra qui dentro quando schiacci") //QUESTO ANDRA A NEEDSVIEWCONTROLLER
+        })
+        
+        
+//        let alertController = UIAlertController(title: "Title", message: "Any message", preferredStyle: .actionSheet)
+//        let okAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.default) {
+//            UIAlertAction in
+//            NSLog("OK Pressed")
+//        }
+//        let cancelAction = UIAlertAction(title: "No", style: UIAlertActionStyle.cancel) {
+//            UIAlertAction in
+//            NSLog("Cancel Pressed")
+//        }
+//        alertController.addAction(okAction)
+//        alertController.addAction(cancelAction)
+//        self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
+        
     }
     
     

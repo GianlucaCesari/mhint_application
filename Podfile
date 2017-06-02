@@ -24,7 +24,8 @@ target 'Mhint' do
   pod 'SDWebImage', '~>3.8'
 
   pod 'SwiftyGif'
-  pod 'SwiftGifOrigin', '~>1.6.1' 
+  pod 'SwiftGifOrigin', '~>1.6.1'
+  pod 'Whisper'
 
   pod 'Alamofire', '~> 4.4'
   pod 'DMSwipeCards'
