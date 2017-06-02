@@ -223,6 +223,7 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         if textTrimmed != "" {
             shoppingList.insert(textTrimmed, at: 0)
             shoppingListQuantity.insert(btnAlertQuantity.text! + " " + btnAlertUnity.text!, at: 0)
+            arrayImageHidden.insert(false, at: 0)
             collectionView?.reloadData()
             
             GlobalVariable.listItem.insert(textTrimmed, at: 0)
