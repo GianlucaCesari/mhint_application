@@ -68,10 +68,11 @@ class EatOutController: UICollectionViewController, UICollectionViewDelegateFlow
             arrayImageHidden.append(false)
         }
         var stringImage = String()
-        if arrayImageHidden[indexPath.row] == true {
-            stringImage = "check-true"
-        } else {
-            stringImage = "check-false"
+        stringImage = "check-false"
+        if arrayImageHidden.count > indexPath.row {
+            if arrayImageHidden[indexPath.row] == true {
+                stringImage = "check-true"
+            }
         }
 
         let imageGreen = UIImage(named: stringImage)

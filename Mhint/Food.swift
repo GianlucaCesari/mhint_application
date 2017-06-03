@@ -66,10 +66,11 @@ class FoodController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
         
         var stringImage = String()
-        if arrayImageHidden[indexPath.row] == true {
-            stringImage = "overlayIngredientImage"
-        } else {
-            stringImage = "overlayIngredientImage0"
+        stringImage = "overlayIngredientImage0"
+        if arrayImageHidden.count > indexPath.row {
+            if arrayImageHidden[indexPath.row] == true {
+                stringImage = "overlayIngredientImage"
+            }
         }
         
         let imageGreen = UIImage(named: stringImage)

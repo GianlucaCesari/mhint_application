@@ -160,6 +160,7 @@ class TeachingController: UIViewController{
     }
     
     func loadingCard() {
+        if GlobalUser.email != "" {
         Alamofire.request("https://api.mhint.eu/foodpreference?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { response in
             self.titleArray.removeAll()
             self.idArray.removeAll()
@@ -195,6 +196,7 @@ class TeachingController: UIViewController{
             }
         }
         timerCard = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.checkCardExist), userInfo: nil, repeats: true)
+        }
     }
     
     func finishCard() {

@@ -96,10 +96,12 @@ class NotificationFoodController: UICollectionViewController, UICollectionViewDe
         let cell = collectionView.cellForItem(at: indexPath) as! CustomCellChooseNotificationFood
         
         var boolImage = Bool()
-        if arrayImageHidden[indexPath.row] == true {
-            boolImage = false
-        } else {
-            boolImage = true
+        
+        boolImage = true
+        if arrayImageHidden.count > indexPath.row {
+            if arrayImageHidden[indexPath.row] == true {
+                boolImage = false
+            }
         }
         
         let imageGreen = UIImage(named: "check-true")

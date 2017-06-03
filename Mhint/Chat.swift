@@ -662,7 +662,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         showNameFromFacebook()
     }
     func showNameFromFacebook() {
-        FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email, picture, birthday, hometown"]).start{ //COSA PRENDERE
+        FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email, picture, birthday, hometown, first_name, last_name"]).start{ //COSA PRENDERE
             (connection, result, err) in
             
             if err != nil {
@@ -683,6 +683,19 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 self.nameFacebook = "What's a wonderful name \(user_name)"
             }
             
+            //firstName
+            if let firstName = result?["first_name"] as? String {
+                GlobalUser.firstName = firstName
+                saveData.set(firstName, forKey: "firstName")
+                self.nameFacebook = "What's a wonderful name \(firstName)"
+            }
+            
+            //lastName
+            if let lastName = result?["last_name"] as? String {
+                GlobalUser.lastName = lastName
+                saveData.set(lastName, forKey: "lastName")
+            }
+            
             //BIRTHDAY
             GlobalFunc().saveUserProfile(value: String(describing: result?["birthday"]), description: "birthday")
             if let user_birthday = result?["birthday"] as? DateComponents {
@@ -690,6 +703,9 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 dateBirthday = String(describing: user_birthday.day!) + "-" + String(describing: user_birthday.month!) + "-" + String(describing: user_birthday.year!)
                 GlobalFunc().saveUserProfile(value: dateBirthday, description: "birthday")
                 GlobalUser.birthday = dateBirthday
+                if user_birthday.year! > 1980 {
+                    self.nameFacebook = "You are so younger."
+                }
             }
             
             //HOMETOWN
@@ -697,6 +713,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 if let hometown = user_home["name"]! as? String {
                     GlobalUser.address = hometown
                     GlobalFunc().saveUserProfile(value: hometown, description: "address")
+                    self.nameFacebook = "\(hometown)\nIt's a wonderful place."
                 }
             }
             
@@ -1059,6 +1076,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             }
         
             if let messagesTypeText = messagesType?[indexPath.row] {
+                var marginLeft:CGFloat = 0
                 if messagesTypeText {
                     //MHINT
                     title = "Mhint"
@@ -1066,6 +1084,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     cell.messageTextView.textAlignment = .left
                     cell.titleTextView.textAlignment = .left
                     cell.roundColor.frame = CGRect(x: 10, y: 0, width: 20, height: 20)
+                    marginLeft = 25
                 }
                 else{
                     //YOU
@@ -1079,11 +1098,11 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 cell.roundColor.backgroundColor = colorUser
                 cell.titleTextView.text = title
                 let estimatedFrameTitle = NSString(string: title).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: titleFont)], context: nil)
-                cell.titleTextView.frame = CGRect(x: 21, y: -6, width: 300 + 20, height: estimatedFrameTitle.height + 20)
+                cell.titleTextView.frame = CGRect(x: marginLeft, y: -6, width: GlobalSize().widthScreen*0.9, height: estimatedFrameTitle.height + 20)
             
                 if let messageText = messages?[indexPath.row] {
                     let estimatedFrame = NSString(string: messageText).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 24)], context: nil)
-                    cell.messageTextView.frame = CGRect(x: 27, y: 10, width: 300 + 20, height: estimatedFrame.height + 25)
+                    cell.messageTextView.frame = CGRect(x: 10, y: 10, width: GlobalSize().widthScreen*0.9, height: estimatedFrame.height + 25)
                 }
             }
             return cell

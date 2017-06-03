@@ -227,6 +227,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         }
         
         if let messagesTypeText = messagesTypeChatBot?[indexPath.row] {
+            var marginLeft:CGFloat = 0
             if messagesTypeText {
                 //MHINT
                 title = "Mhint"
@@ -234,6 +235,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
                 cell.messageTextView.textAlignment = .left
                 cell.titleTextView.textAlignment = .left
                 cell.roundColor.frame = CGRect(x: 10, y: 0, width: 20, height: 20)
+                marginLeft = 25
             }
             else{
                 //YOU
@@ -247,11 +249,11 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             cell.roundColor.backgroundColor = colorUser
             cell.titleTextView.text = title
             let estimatedFrameTitle = NSString(string: title).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: titleFont)], context: nil)
-            cell.titleTextView.frame = CGRect(x: 21, y: -6, width: 300 + 20, height: estimatedFrameTitle.height + 20)
+            cell.titleTextView.frame = CGRect(x: marginLeft, y: -6, width: GlobalSize().widthScreen*0.9, height: estimatedFrameTitle.height + 20)
             
             if let messageText = messagesChatBot?[indexPath.row] {
                 let estimatedFrame = NSString(string: messageText).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 24)], context: nil)
-                cell.messageTextView.frame = CGRect(x: 27, y: 10, width: 300 + 20, height: estimatedFrame.height + 25)
+                cell.messageTextView.frame = CGRect(x: 10, y: 10, width: GlobalSize().widthScreen*0.9, height: estimatedFrame.height + 25)
             }
         }
         return cell

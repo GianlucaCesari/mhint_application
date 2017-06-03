@@ -961,7 +961,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = L4KF22FNCY;
 				INFOPLIST_FILE = Mhint/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gianlucacesari.Mhint;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -978,7 +978,7 @@
 				CODE_SIGN_ENTITLEMENTS = Mhint/Mhint.entitlements;
 				DEVELOPMENT_TEAM = L4KF22FNCY;
 				INFOPLIST_FILE = Mhint/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gianlucacesari.Mhint;
 				PRODUCT_NAME = "$(TARGET_NAME)";

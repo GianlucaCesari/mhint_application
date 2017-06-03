@@ -11,6 +11,9 @@ import Alamofire
 
 class GlobalUser{
     
+    static var firstName:String = ""
+    static var lastName:String = ""
+    
     static var fullName:String? = nil
     static var imageProfile:String? = nil
     

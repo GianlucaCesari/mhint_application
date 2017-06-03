@@ -160,7 +160,7 @@ class SettingsController: UICollectionViewController, UICollectionViewDelegateFl
         settings.text = "Settings"
         settings.textColor = self.globalColor.colorBlack
         settings.font = UIFont(name: "AvenirLTStd-Medium", size: self.globalSize.widthScreen*0.035)
-        settings.frame = CGRect(x: self.globalSize.widthScreen*0.08, y: self.globalSize.heightScreen*0.09, width: self.globalSize.widthScreen, height: self.globalSize.widthScreen*0.1)
+        settings.frame = CGRect(x: self.globalSize.widthScreen*0.1, y: self.globalSize.heightScreen*0.1, width: self.globalSize.widthScreen, height: self.globalSize.widthScreen*0.1)
         self.view.addSubview(settings)
         
         let name = UILabel()

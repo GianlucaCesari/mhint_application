@@ -167,12 +167,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         }
         
         let image:String = String(describing: user.profile.imageURL(withDimension: 120))
-        let name:String = (user.profile.name + " " + user.profile.familyName) as String
+        
+        let name:String = (user.profile.name) as String
         
         GlobalFunc().saveUserProfile(value: name, description: "fullNameGoogle")
         if saveData.string(forKey: "nameProfile") == nil {
             saveData.set(name, forKey: "nameProfile")
             GlobalUser.fullNameGoogle = name
+            saveData.set(user.profile.givenName, forKey: "firstName")
+            saveData.set(user.profile.familyName, forKey: "lastName")
+            GlobalUser.firstName = user.profile.givenName
+            GlobalUser.lastName = user.profile.familyName
         }
         
         if saveData.string(forKey: "imageProfile") == nil {
