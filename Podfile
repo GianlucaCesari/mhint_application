@@ -29,6 +29,8 @@ target 'Mhint' do
 
   pod 'Alamofire', '~> 4.4'
   pod 'DMSwipeCards'
+
+  pod 'RevealingSplashView'
  
   pod 'ReachabilitySwift', '~> 3'
 

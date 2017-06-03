@@ -10,8 +10,13 @@ import UIKit
 import Alamofire
 import Speech
 import AudioToolbox
-import SwiftyGif
-import SwiftGifOrigin
+
+import SwiftyGif //GIF
+import SwiftGifOrigin //GIF
+
+import RevealingSplashView //SPLASH SCREEN
+
+var firstOpenHome = false
 
 class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, SFSpeechRecognizerDelegate, SFSpeechRecognitionTaskDelegate {
     
@@ -47,9 +52,34 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if !firstOpenHome {
+            
+            let window = UIApplication.shared.keyWindow
+            let revealingSplashView = RevealingSplashView(iconImage: UIImage(named: "iconChatSplashScreen")!,iconInitialSize: CGSize(width: 70, height: 70), backgroundColor: .white)
+            self.view.addSubview(revealingSplashView)
+            window?.addSubview(revealingSplashView)
+            self.view.backgroundColor = .white
+            self.navigationController?.navigationBar.barTintColor = GlobalColor().colorWhite
+            self.navigationController?.navigationBar.backgroundColor = GlobalColor().colorWhite
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+            self.navigationController?.navigationBar.shadowImage = UIImage()
+            
+            revealingSplashView.startAnimation(){
+                firstOpenHome = true
+                self.openHome()
+            }
+            
+        } else {
+            openHome()
+        }
         
-        speechRecognizer?.delegate = self
-        button?.isEnabled = false
+        collectionVieShow()
+    }
+    
+    func openHome() {
+        
+        self.speechRecognizer?.delegate = self
+        self.button?.isEnabled = false
         
         SFSpeechRecognizer.requestAuthorization { (authStatus) in
             var isButtonEnabled = false
@@ -72,69 +102,71 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
                 self.button.isEnabled = isButtonEnabled
             }
         }
-
         
-        messagesChatBot = ["What's up ?"]
-        messagesTypeChatBot = [true]
-        
-        sideMenuViewController?.panGestureLeftEnabled = true //DA ATTIVARE ALLA FINE DELLA CHAT
-        GlobalFunc().navBar(nav: navigationItem, s: self, show: true)
+        self.sideMenuViewController?.panGestureLeftEnabled = true //DA ATTIVARE ALLA FINE DELLA CHAT
+        GlobalFunc().navBar(nav: self.navigationItem, s: self, show: true)
         UIApplication.shared.statusBarView?.backgroundColor = .white//BACKGROUND STATUS BAR WHITE
         GlobalFunc().checkInternet(s: self)//INTERNET
         
         self.view.backgroundColor = .white
-        imgWave = UIImageView (image: imgUrlLogo)
-        let marginTopImage = (view.frame.height*0.85 - (view.frame.width/4))
-        imgWave.alpha = 0.2
-        imgWave.frame = CGRect(x: 0, y: marginTopImage, width: view.frame.width, height: view.frame.width/2)
+        self.imgWave = UIImageView (image: self.imgUrlLogo)
+        let marginTopImage = (self.view.frame.height*0.85 - (self.view.frame.width/4))
+        self.imgWave.alpha = 0.2
+        self.imgWave.frame = CGRect(x: 0, y: marginTopImage, width: self.view.frame.width, height: self.view.frame.width/2)
         
-        inputText = UITextField(frame: CGRect(x: 0, y: view.frame.height*0.92, width: view.frame.width, height: view.frame.height*0.08))
-        inputText.backgroundColor = UIColor.init(red: 250/255, green: 250/255, blue: 250/255, alpha: 1)
-        inputText.placeholder = "Say something..."
-        inputText.textColor = .black
-        inputText.delegate = self
-        inputText.layer.sublayerTransform = CATransform3DMakeTranslation(12,0,0)
-        inputText.font = UIFont(name: "AvenirLTStd-Medium", size: 15)
+        self.inputText = UITextField(frame: CGRect(x: 0, y: self.view.frame.height*0.92, width: self.view.frame.width, height: self.view.frame.height*0.08))
+        self.inputText.backgroundColor = UIColor.init(red: 250/255, green: 250/255, blue: 250/255, alpha: 1)
+        self.inputText.placeholder = "Say something..."
+        self.inputText.textColor = .black
+        self.inputText.delegate = self
+        self.inputText.layer.sublayerTransform = CATransform3DMakeTranslation(12,0,0)
+        self.inputText.font = UIFont(name: "AvenirLTStd-Medium", size: 15)
         
-        button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "google_mic"), for: .normal)
-        button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 20)
-        button.frame = CGRect(x: CGFloat(inputText.frame.size.width - 30), y: CGFloat(5), width: CGFloat(35), height: CGFloat(35))
+        self.button = UIButton(type: .custom)
+        self.button.setImage(UIImage(named: "google_mic"), for: .normal)
+        self.button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 20)
+        self.button.frame = CGRect(x: CGFloat(self.inputText.frame.size.width - 30), y: CGFloat(5), width: CGFloat(35), height: CGFloat(35))
         
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.microphoneTapped(sender:)))
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(singleTapping))
-        button.addGestureRecognizer(longPressRecognizer)
-        button.addGestureRecognizer(tapGestureRecognizer)
-        inputText.rightView = button
-        inputText.rightViewMode = .always
-        inputText.addTarget(self, action: #selector(textFieldDidChange(inputText:)), for: UIControlEvents.editingChanged)
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.singleTapping))
+        self.button.addGestureRecognizer(longPressRecognizer)
+        self.button.addGestureRecognizer(tapGestureRecognizer)
+        self.inputText.rightView = self.button
+        self.inputText.rightViewMode = .always
+        self.inputText.addTarget(self, action: #selector(self.textFieldDidChange(inputText:)), for: UIControlEvents.editingChanged)
         
         
-        self.view.addSubview(imgWave)
+        self.view.addSubview(self.imgWave)
         
-        imageListeningGif = UIImageView()
-        imageListeningGif.loadGif(name: "load-voice")
-        imageListeningGif.frame = CGRect(x: 0, y: view.frame.height*0.7, width: view.frame.width, height: view.frame.width/2)
-        imageListeningGif.alpha = 0
-        view.addSubview(imageListeningGif)
+        self.imageListeningGif = UIImageView()
+        self.imageListeningGif.loadGif(name: "load-voice")
+        self.imageListeningGif.frame = CGRect(x: 0, y: self.view.frame.height*0.7, width: self.view.frame.width, height: self.view.frame.width/2)
+        self.imageListeningGif.alpha = 0
+        self.view.addSubview(self.imageListeningGif)
         
-        self.view.addSubview(inputText)
-//        self.view.addSubview(imgMic)
+        self.view.addSubview(self.inputText)
+        //        self.view.addSubview(self.imgMic)
         
-//        LISTENER TASTIERA
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(textFieldShouldReturnClose))
+        //        LISTENER TASTIERA
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.textFieldShouldReturnClose))
         self.view.addGestureRecognizer(tap)
         
-        lblTimer.backgroundColor = .clear
-        lblTimer.textColor = .black
-        lblTimer.addTextSpacing()
-        lblTimer.font = UIFont(name: "AvenirLTStd-Heavy", size: 14)
-        lblTimer.frame = CGRect(x: GlobalSize().widthScreen*0.05, y: view.frame.height*0.85, width: GlobalSize().widthScreen*0.15, height: view.frame.height*0.08)
+        self.lblTimer.backgroundColor = .clear
+        self.lblTimer.textColor = .black
+        self.lblTimer.addTextSpacing()
+        self.lblTimer.font = UIFont(name: "AvenirLTStd-Heavy", size: 14)
+        self.lblTimer.frame = CGRect(x: GlobalSize().widthScreen*0.05, y: self.view.frame.height*0.85, width: GlobalSize().widthScreen*0.15, height: self.view.frame.height*0.08)
+    }
+    
+    func collectionVieShow() {
+        
+        messagesChatBot = ["What's up ?"]
+        messagesTypeChatBot = [true]
         
         //CHAT
         let layout:UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
         layout.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
-        layout.itemSize = CGSize(width: view.frame.width, height: 100)
+        layout.itemSize = CGSize(width: self.view.frame.width, height: 100)
         
         collectionView?.collectionViewLayout = layout
         collectionView?.delegate = self
@@ -142,7 +174,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         collectionView?.backgroundColor = .clear
         collectionView?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height*0.9)
         collectionView?.register(ChatControllerCell.self, forCellWithReuseIdentifier: cellId)
-        self.view.addSubview((collectionView)!)
+        view.addSubview((collectionView)!)
     }
     
     func listeningTime() {

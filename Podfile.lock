@@ -56,6 +56,7 @@ PODS:
   - GTMSessionFetcher/Full (1.1.9):
     - GTMSessionFetcher/Core (= 1.1.9)
   - ReachabilitySwift (3)
+  - RevealingSplashView (0.2.0)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
@@ -79,6 +80,7 @@ DEPENDENCIES:
   - Firebase/Core
   - GoogleSignIn
   - ReachabilitySwift (~> 3)
+  - RevealingSplashView
   - SDWebImage (~> 3.8)
   - SwiftGifOrigin (~> 1.6.1)
   - SwiftyGif
@@ -104,6 +106,7 @@ SPEC CHECKSUMS:
   GTMOAuth2: 7fc9c10f5c745f4d9850419ea88889fe3baa6b7d
   GTMSessionFetcher: 5c046c76a1f859bc9c187e918f18e4fc7bb57b5e
   ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
+  RevealingSplashView: a19962358db66188841c73afd51eb663a29f75cd
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   SwiftGifOrigin: d6679d3ebe9df2e049a84bc52582635107b581f6
   SwiftyGif: 89a0bb19709bdb6990e10405ad456d8bea804a65
@@ -111,6 +114,6 @@ SPEC CHECKSUMS:
   TwitterKit: 3b6044a7320340326a4098f3e37aa1dbaeb94942
   Whisper: 051f25e704bf8992641ffd28b20d5682ddc5f5d3
 
-PODFILE CHECKSUM: 5541b983c74cb12dea5a2b41d75e0736989bbc74
+PODFILE CHECKSUM: fd88bddc69e5eafa711ecdd22a909e71d460512d
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.2.0.beta.1
