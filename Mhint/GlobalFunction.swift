@@ -160,17 +160,17 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
             birth = try healthManager.dateOfBirthComponents()
         } catch {}
         if birth.isValidDate {
-            let dateBirthday = String(describing: birth.day!) + "-" + String(describing: birth.month!) + "-" + String(describing: birth.year!)
-            GlobalUser.birthday = dateBirthday
-            self.saveUserProfile(value: dateBirthday, description: "birthday")
+            let dateBirthday = String(describing: birth.day!) + "/" + String(describing: birth.month!) + "/" + String(describing: birth.year!)
+            GlobalUser.birthday = dateBirthday.replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "")
+            self.saveUserProfile(value: dateBirthday.replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: ""), description: "birthday")
         }
     }
     func getHeight(healthManager: HKHealthStore) {
         let sampleTypeHeight = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.height)
         let queryheight = HKSampleQuery(sampleType: sampleTypeHeight!, predicate: nil, limit: 1, sortDescriptors: nil) { (query, results, error) in
             if let result = results?.first as? HKQuantitySample {
-                GlobalUser.height = Float(result.quantity.doubleValue(for: HKUnit.meter()))
-                self.saveUserProfile(value: Float(result.quantity.doubleValue(for: HKUnit.meter())), description: "height")
+                GlobalUser.height = Int(result.quantity.doubleValue(for: HKUnit.meter())*100)
+                self.saveUserProfile(value: Int(result.quantity.doubleValue(for: HKUnit.meter())*100), description: "height")
             }
         }
         healthManager.execute(queryheight)
@@ -179,8 +179,8 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
         let sampleTypeWeight = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)
         let queryWeight = HKSampleQuery(sampleType: sampleTypeWeight!, predicate: nil, limit: 1, sortDescriptors: nil) { (query, results, error) in
             if let result = results?.first as? HKQuantitySample {
-                GlobalUser.weight = Float(result.quantity.doubleValue(for: HKUnit.gram()))/1000
-                self.saveUserProfile(value: Float(result.quantity.doubleValue(for: HKUnit.gram())/1000), description: "weight")
+                GlobalUser.weight = Int(result.quantity.doubleValue(for: HKUnit.gram()))/1000
+                self.saveUserProfile(value: Int(result.quantity.doubleValue(for: HKUnit.gram())/1000), description: "weight")
             }
         }
         healthManager.execute(queryWeight)

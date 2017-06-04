@@ -50,6 +50,7 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
         
         let name = UILabel()
         name.text = saveData.value(forKey: "nameProfile") as! String?
+        name.text = GlobalUser.fullName
         name.textColor = .black
         name.textAlignment = .left
         name.font = UIFont(name: "AvenirLTStd-Medium", size: 14)

@@ -285,7 +285,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             
             if let messageText = messagesChatBot?[indexPath.row] {
                 let estimatedFrame = NSString(string: messageText).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 24)], context: nil)
-                cell.messageTextView.frame = CGRect(x: 10, y: 10, width: GlobalSize().widthScreen*0.9, height: estimatedFrame.height + 25)
+                cell.messageTextView.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: 10, width: GlobalSize().widthScreen*0.84, height: estimatedFrame.height + 25)
             }
         }
         return cell

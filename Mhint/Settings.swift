@@ -212,7 +212,8 @@ class SettingsController: UICollectionViewController, UICollectionViewDelegateFl
         }
         if saveData.value(forKey: "birthday") != nil {
             if let birth = saveData.string(forKey: "birthday") {
-                place.text = place.text! + "\n\(birth)"
+                let b = birth.replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "")
+                place.text = place.text! + "\n\(b)"
             }
         } else {
             place.text = place.text! + "\nNot birthday found"
@@ -231,7 +232,7 @@ class SettingsController: UICollectionViewController, UICollectionViewDelegateFl
         
         
         let height = UILabel()
-        var stringHeight = "H. 1.50 cm"
+        var stringHeight = "H. 150 cm"
         if saveData.value(forKey: "height") != nil {
             stringHeight = "H. \(saveData.string(forKey: "height")!) cm"
         }

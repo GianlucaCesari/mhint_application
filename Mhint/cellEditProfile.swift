@@ -25,8 +25,8 @@ class BaseCellEditProfile: UICollectionViewCell {
 
 class CustomCellEditProfile: BaseCellEditProfile {
     
-    var titleTextView: UILabel = {
-        let titleView = UILabel()
+    var titleTextView: UITextField = {
+        let titleView = UITextField()
         titleView.text = "[text]"
         titleView.textColor = .black
         return titleView

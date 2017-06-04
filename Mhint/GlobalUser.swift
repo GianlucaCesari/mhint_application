@@ -20,8 +20,8 @@ class GlobalUser{
     static var address:String = ""
     static var birthday:String = ""
     
-    static var height:Float = -1
-    static var weight:Float = -1
+    static var height:Int = -1
+    static var weight:Int = -1
     
     static var sex:Int = 0
     static var blood:Int = 0
@@ -57,11 +57,11 @@ class GlobalUser{
         }
         
         if let hei = saveData.value(forKey: "height") {
-            GlobalUser.height = hei as! Float
+            GlobalUser.height = Int(hei as! Float)
         }
         
         if let wei = saveData.value(forKey: "weight") {
-            GlobalUser.weight = wei as! Float
+            GlobalUser.weight = Int(wei as! Float)
         }
         
         if let add = saveData.value(forKey: "address") {
@@ -72,8 +72,10 @@ class GlobalUser{
             GlobalUser.email = add as! String
         }
         
-//        let bir = saveData.value(forKey: "birthday") as! DateComponents
-//        GlobalUser.birthday = bir
+        if let birth = saveData.value(forKey: "birthday") {
+            GlobalUser.birthday = birth as! String
+        }
+        
     }
     
     func randomStringPassword(length: Int) -> String {

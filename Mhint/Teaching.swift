@@ -46,6 +46,8 @@ class TeachingController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        GlobalFunc().checkInternet(s: self)//INTERNET
+        
         globalFunction.navBar(nav: navigationItem, s: self, show: true)
         
         self.view.backgroundColor = UIColor(white: 0.95, alpha: 1.0)

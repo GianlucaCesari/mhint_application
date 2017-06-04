@@ -378,7 +378,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             timerHeight?.invalidate()
             timerHeight = nil
             archiveMessages?.insert("My info from Apple Health", at: 0)
-            if saveData.float(forKey: "height") > 1.78 {
+            if saveData.float(forKey: "height") > 178 {
                 archiveMessages?.insert("Wow you are so tall, \(saveData.float(forKey: "height")) cm.\nWhat's your lifestyle ?", at: 1)
             }
             else if saveData.float(forKey: "weight") > 120 || saveData.float(forKey: "weight") < 60 && saveData.float(forKey: "weight") > 30 {
@@ -621,7 +621,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         GlobalFunc().saveUserProfile(value: GlobalUser.email, description: "email")
         
-        GlobalUser().createUser(name: GlobalUser.fullName!, imageProfile: GlobalUser.imageProfile!, birthday: birth, address: GlobalUser.address, height: GlobalUser.height, weight: GlobalUser.weight, sex: GlobalUser.sex, lifestyle: GlobalUser.lifestyle, sectionEnabled: [saveData.bool(forKey: "food"),saveData.bool(forKey: "nedd")], logins: [loginFacebookBool,loginTwitterBool,ChatController.loginGoogleBool,loginHealthBool], mail: GlobalUser.email)
+        GlobalUser().createUser(name: GlobalUser.fullName!, imageProfile: GlobalUser.imageProfile!, birthday: birth, address: GlobalUser.address, height: Float(GlobalUser.height), weight: Float(GlobalUser.weight), sex: GlobalUser.sex, lifestyle: GlobalUser.lifestyle, sectionEnabled: [saveData.bool(forKey: "food"),saveData.bool(forKey: "nedd")], logins: [loginFacebookBool,loginTwitterBool,ChatController.loginGoogleBool,loginHealthBool], mail: GlobalUser.email)
         
         ChatController.boolResponeWithoutButton = true
         self.activateResponse()
@@ -700,9 +700,9 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             GlobalFunc().saveUserProfile(value: String(describing: result?["birthday"]), description: "birthday")
             if let user_birthday = result?["birthday"] as? DateComponents {
                 var dateBirthday = ""
-                dateBirthday = String(describing: user_birthday.day!) + "-" + String(describing: user_birthday.month!) + "-" + String(describing: user_birthday.year!)
-                GlobalFunc().saveUserProfile(value: dateBirthday, description: "birthday")
-                GlobalUser.birthday = dateBirthday
+                dateBirthday = String(describing: user_birthday.day!) + "/" + String(describing: user_birthday.month!) + "/" + String(describing: user_birthday.year!)
+                GlobalFunc().saveUserProfile(value: dateBirthday.replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: ""), description: "birthday")
+                GlobalUser.birthday = dateBirthday.replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "")
                 if user_birthday.year! > 1980 {
                     self.nameFacebook = "You are so younger."
                 }
@@ -1111,7 +1111,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdHeight, for: indexPath) as! ChatControllerCellHeight
             cell.backgroundV.frame = CGRect(x: GlobalSize().heightScreen*0.015, y: GlobalSize().heightScreen*0.015, width: GlobalSize().heightScreen*0.07, height: GlobalSize().heightScreen*0.07)
             let height:Float = Float(GlobalSize().minHeight+indexPath.row)
-            cell.titleTextView.text = String(height/100)
+            cell.titleTextView.text = String(height)
             cell.titleTextView.textAlignment = .center
             cell.titleTextView.frame = CGRect(x: 0, y: 0, width: GlobalSize().heightScreen*0.1, height: GlobalSize().heightScreen*0.1)
             return cell
@@ -1145,11 +1145,11 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         if collectionView == self.collectionVHeight {
             let height:Float = Float(GlobalSize().minHeight+indexPath.row)
             
-            GlobalUser.height = Float(height/100)
-            GlobalFunc().saveUserProfile(value: Float(height/100), description: "height")
+            GlobalUser.height = Int(height)
+            GlobalFunc().saveUserProfile(value: height, description: "height")
             
             ChatController.boolResponeWithoutButton = true
-            archiveMessages?.insert("I'm \(Float(height/100)) cm tall", at: 0)
+            archiveMessages?.insert("I'm \(height) cm tall", at: 0)
             archiveMessages?.insert("Wow, and what's your weight (kg) ?", at: 1)
             self.collectionVHeight.removeFromSuperview()
             self.weightResponse()
@@ -1158,8 +1158,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         } else if collectionView == self.collectionVWeight {
             let weight:Int = (GlobalSize().minWeight+indexPath.row)
             
-            GlobalUser.weight = Float(Int(weight))/1000
-            GlobalFunc().saveUserProfile(value: Float(Int(weight)/1000), description: "weight")
+            GlobalUser.weight = Int(weight)/1000
+            GlobalFunc().saveUserProfile(value: Int(weight)/1000, description: "weight")
             
             archiveMessages?.insert("I'm \(Float(Int(weight))) kg weight", at: 0)
             archiveMessages?.insert("Good job.\nWhat's your lifestyle ?", at: 1)
@@ -1211,5 +1211,22 @@ extension UILabel {
 extension String {
     func insert(string:String,ind:Int) -> String {
         return  String(self.characters.prefix(ind)) + string + String(self.characters.suffix(self.characters.count-ind))
+    }
+}
+
+extension Int {
+    func addZero(string:Int) -> String {
+        if string < 10 {
+            return "0\(string)"
+        }
+        return "\(string)"
+    }
+}
+
+extension NSDate {
+    var formatted: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEEE, dd MMM yyyy HH:mm:ss Z"
+        return  formatter.string(from: self as Date)
     }
 }
