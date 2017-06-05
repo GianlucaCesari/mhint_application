@@ -88,7 +88,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         GlobalFunc().checkInternet(s: self)//INTERNET
         
         //ARCHIVIO MESSAGGI
-        archiveMessages = ["Nice to meet you.", "Tell me somethig about you.", "Facebook;Twitter;Google", "Awww now we are friend!", "Wow, I'm so excited.", "Let's go! For now which part do you want to use?", "Help & Needs;Food & Supply"]
+        archiveMessages = ["Nice to meet you.", "Tell me somethig about you.", "Facebook;Twitter;Google", "Awww, now we are friend!", "Wow, I'm so excited.", "Let's go! For now, which section do you want to use?", "Help & Needs;Food & Supply"]
         archiveMessagesType = [false, true, false, true, false, true, false, true, false, true, false]
         messages = ["Good Evening,\nI'm Mhint your personal assistant."]
         messagesType = [true]
@@ -254,7 +254,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             if ChatController.deniedAccessNeed == false {
                 buttonChat[id].addTarget(self, action: #selector(needSupply), for: .touchUpInside)
             } else{
-                let controller = UIAlertController(title: "No Contacts Access", message: "This app requires an contact access for activate the Help & Needs section", preferredStyle: .alert)
+                let controller = UIAlertController(title: "No Contacts Access", message: "This app requires access to the contacts to activate the Help & Needs section", preferredStyle: .alert)
                 let settingsAction = UIAlertAction(title: "Go to settings", style: .default) { (_) -> Void in
                     let urlObj = NSURL.init(string:UIApplicationOpenSettingsURLString)
                     if #available(iOS 10.0, *) {
@@ -272,7 +272,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 self.present(controller, animated: true, completion: nil)
             }
         }
-        else if textButton == "I don't give you" {
+        else if textButton == "I won't give it to you" {
             ChatController.deniedAccessNeed = true
             buttonChat[id].addTarget(self, action: #selector(needSupply), for: .touchUpInside)
         }
@@ -281,7 +281,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             buttonChat[id].setTitleColor(.white, for: .normal)
             buttonChat[id].addTarget(self, action: #selector(accessToHealth), for: .touchUpInside)
         }
-        else if textButton == "I give you" {
+        else if textButton == "I'll give you" {
             buttonChat[id].addTarget(self, action: #selector(requestHealth), for: .touchUpInside)
         }
         else if textButton == "Sport" || textButton == "Active" || textButton == "Lazy" {
@@ -308,7 +308,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func requestHealth() {
         ChatController.boolResponeWithoutButton = true
         archiveMessages?.remove(at: 0)
-        archiveMessages?.insert("I give you", at: 0)
+        archiveMessages?.insert("I'll give you", at: 0)
         archiveMessages?.insert("Let's start,\nHow tall are you (cm) ?", at: 1)
         self.heightResponse()
         self.activateResponse()
@@ -359,7 +359,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             
             ChatController.boolResponeWithoutButton = true
             archiveMessages?.remove(at: 0)
-            archiveMessages?.insert("My info from Apple Health", at: 0)
+            archiveMessages?.insert("Get my info from Apple Health", at: 0)
             archiveMessages?.insert("Loading...", at: 1)
             self.activateResponse()
             
@@ -377,7 +377,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         if GlobalUser.height > -1 && GlobalUser.weight > -1 {
             timerHeight?.invalidate()
             timerHeight = nil
-            archiveMessages?.insert("My info from Apple Health", at: 0)
+            archiveMessages?.insert("Get my info from Apple Health", at: 0)
             if saveData.float(forKey: "height") > 178 {
                 archiveMessages?.insert("Wow you are so tall, \(saveData.float(forKey: "height")) cm.\nWhat's your lifestyle ?", at: 1)
             }
@@ -395,9 +395,9 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func foodSupply() {
         GlobalFunc().saveUserProfile(value: true, description: "food")
         archiveMessages?.remove(at: 0)
-        archiveMessages?.insert("Food & Supply activate", at: 0)
-        archiveMessages?.insert("To suggest you the perfect diet I need some body's infomation.", at: 1)
-        archiveMessages?.insert("Apple Health;I give you", at: 2)
+        archiveMessages?.insert("Activate Food & Supply", at: 0)
+        archiveMessages?.insert("To suggest you the perfect diet I need some body infomation.", at: 1)
+        archiveMessages?.insert("Apple Health;I'll give you", at: 2)
         self.activateResponse()
     }
     
@@ -416,7 +416,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         GlobalFunc().saveUserProfile(value: GlobalUser.lifestyle, description: "lifestyle")
         archiveMessages?.insert((sender.titleLabel?.text)!, at: 0)
         if saveData.bool(forKey: "need") == false {
-            archiveMessages?.insert("Wow now what do you wanna do ?", at: 1)
+            archiveMessages?.insert("Wow, now what do you want to do ?", at: 1)
             archiveMessages?.insert("Stop;Help & Needs", at: 2)
             self.activateResponse()
         } else {
@@ -460,7 +460,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 self.sectionFood = true
                 saveData.set(true, forKey: "need")
                 archiveMessages?.insert("No access to my number", at: 0)
-                archiveMessages?.insert("Ops we need your number for active Help & Needs.", at: 1)
+                archiveMessages?.insert("Ops, we need your number to activate the Help & Needs section.", at: 1)
                 if saveData.bool(forKey: "food") == true {
                     archiveMessages?.insert("Stop;Help & Needs", at: 2)
                 } else {
@@ -472,17 +472,17 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 GlobalFunc().getContacts()
                 archiveMessages?.insert("Take my friends contacts", at: 0)
                 if GlobalUser.phoneNumber != nil{
-                    archiveMessages?.insert("Wow, your number is \(GlobalUser.phoneNumber!)?", at: 1)
+                    archiveMessages?.insert("Is your number \(GlobalUser.phoneNumber!)?", at: 1)
                     archiveMessages?.insert("Yes;Nope", at: 2)
                 } else {
-                    archiveMessages?.insert("Wow, what's your number ?", at: 1)
-                    archiveMessages?.insert("Type my number;I don't give you", at: 2)
+                    archiveMessages?.insert("Sorry, I couldn't find your number, would you please give it to me?", at: 1)
+                    archiveMessages?.insert("Type my number;I won't give it to you", at: 2)
                 }
             } else {
                 ChatController.deniedAccessNeed = true
                 archiveMessages?.remove(at: 0)
-                archiveMessages?.insert("No access to my contact", at: 0)
-                archiveMessages?.insert("Ops we need your contacts infromation for active Help & Needs.", at: 1)
+                archiveMessages?.insert("I won't give you access to my contacts", at: 0)
+                archiveMessages?.insert("Ops, we need your contacts information to activate the Help & Needs section.", at: 1)
                 archiveMessages?.insert("Help & Needs;Food & Supply", at: 2)
             }
             self.activateResponse()
@@ -491,7 +491,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func alertNumber() {
-        let alert = UIAlertController(title: "What's your number ?", message: "Type here", preferredStyle: .alert)
+        let alert = UIAlertController(title: "What's your number ?", message: "Type it here", preferredStyle: .alert)
         alert.addTextField { (textField) in
             textField.text = ""
             textField.keyboardType = UIKeyboardType.phonePad
@@ -525,11 +525,11 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         saveData.set(true, forKey: "need")
         archiveMessages?.insert("My number \(n)", at: 0)
         if saveData.bool(forKey: "food") == false {
-            archiveMessages?.insert("You wanna stop or activate the Food & Supply section?", at: 1)
+            archiveMessages?.insert("Do you want to stop or do you want to activate the Food & Supply section?", at: 1)
             archiveMessages?.insert("Stop;Food & Supply", at: 2)
         } else {
             ChatController.boolResponeWithoutButton = true
-            archiveMessages?.insert("Now you can start exploring the app.", at: 1)
+            archiveMessages?.insert("You can now start exploring the app.", at: 1)
             saveData.set(true, forKey: "welcomeFinish")
             sideMenuViewController?.panGestureLeftEnabled = true //DA ATTIVARE ALLA FINE DELLA CHAT
             GlobalFunc().navBarMenu(nav: navigationItem, s: self) //MOSTRA IL MENU, DEVE ESSERE FATTO ALLA FINE DELLA CHAT
@@ -542,11 +542,11 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         saveData.set(true, forKey: "need")
         archiveMessages?.insert("Yes", at: 0)
         if saveData.bool(forKey: "food") == false {
-            archiveMessages?.insert("You wanna stop or activate the Food & Supply section?", at: 1)
+            archiveMessages?.insert("Do you want to stop or do you want to activate the Food & Supply section?", at: 1)
             archiveMessages?.insert("Stop;Food & Supply", at: 2)
         } else {
             ChatController.boolResponeWithoutButton = true
-            archiveMessages?.insert("Now you can start exploring the app.", at: 1)
+            archiveMessages?.insert("You can now start exploring the app.", at: 1)
             saveData.set(true, forKey: "welcomeFinish")
             sideMenuViewController?.panGestureLeftEnabled = true //DA ATTIVARE ALLA FINE DELLA CHAT
             GlobalFunc().navBarMenu(nav: navigationItem, s: self) //MOSTRA IL MENU, DEVE ESSERE FATTO ALLA FINE DELLA CHAT
@@ -568,7 +568,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func endChat() {
         
         archiveMessages?.insert("Stop", at: 0)
-        archiveMessages?.insert("Now you can start exploring the app.", at: 1)
+        archiveMessages?.insert("You can now start exploring the app.", at: 1)
         
         //POSIZIONE
         locationManager = CLLocationManager()
@@ -654,7 +654,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 self.showNameFromFacebook()
             } else {
                 self.promptLogin()
-                GlobalFunc().alert(stringAlertTitle: "Error login Facebook", stringAlertDescription: "Ops, something goes wrong.", s: self)
+                GlobalFunc().alert(stringAlertTitle: "Error Facebook login", stringAlertDescription: "Ops, something went wrong while authenticating with facebook.", s: self)
             }
         })
     }
@@ -680,14 +680,14 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             if let user_name = result?["name"] as? String {
                 GlobalUser.fullNameFacebook = user_name
                 GlobalFunc().saveUserProfile(value: user_name, description: "nameProfile")
-                self.nameFacebook = "What's a wonderful name \(user_name)"
+                self.nameFacebook = "What a wonderful name \(user_name)"
             }
             
             //firstName
             if let firstName = result?["first_name"] as? String {
                 GlobalUser.firstName = firstName
                 saveData.set(firstName, forKey: "firstName")
-                self.nameFacebook = "What's a wonderful name \(firstName)"
+                self.nameFacebook = "What a wonderful name \(firstName)"
             }
             
             //lastName
@@ -810,7 +810,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
             archiveMessages?.remove(at: 0)
             archiveMessages?.insert("Google", at: 0)
-            archiveMessages?.insert("Now you are login with Google", at: 1)
+            archiveMessages?.insert("Now you are logged-in with Google", at: 1)
             archiveMessages?.insert(message, at: 2)
             self.activateResponse()
             GlobalFunc().removeLoadingChat(s: self)
