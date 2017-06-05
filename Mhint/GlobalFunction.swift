@@ -13,6 +13,7 @@ import HealthKit //SALUTE
 import Contacts //CONTACTS
 import Alamofire //REQUEST INTERNET
 import SwiftyGif //LOAD GIF
+import Gifu //LOAD GIF
 
 class GlobalFunc: UIView, UIGestureRecognizerDelegate{
     
@@ -218,7 +219,7 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
     //CONTACTS
     func getContacts() {
         var contactsNumbers = [String]()
-        var mynumber:String? = nil
+        var mynumber:String? = ""
         
         let contactStore = CNContactStore()
         let request = CNContactFetchRequest(keysToFetch: [
@@ -236,24 +237,26 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
                     contactsNumbers.append(phoneNumberDigits)
                     
                     for email in contact.emailAddresses {
-                        let emailDigits = String(email.value)
-                        
-                        if saveData.value(forKey: "emailFacebook") != nil {
-                            if emailDigits == String(describing: saveData.value(forKey: "emailFacebook")!) {
-                                mynumber = phoneNumberDigits
+                        if mynumber! == "" {
+                            let emailDigits = String(email.value)
+                            if saveData.value(forKey: "emailFacebook") != nil {
+                                if emailDigits == String(describing: saveData.value(forKey: "emailFacebook")!) {
+                                    mynumber = phoneNumberDigits
+                                }
                             }
-                        }
-                        else if saveData.value(forKey: "emailtwitter") != nil {
-                            if emailDigits == String(describing: saveData.value(forKey: "emailtwitter")!) {
-                                mynumber = phoneNumberDigits
+                            else if saveData.value(forKey: "emailtwitter") != nil {
+                                if emailDigits == String(describing: saveData.value(forKey: "emailtwitter")!) {
+                                    mynumber = phoneNumberDigits
+                                }
                             }
-                        }
-                        else if saveData.value(forKey: "emailGoogle") != nil {
-                            if emailDigits == String(describing: saveData.value(forKey: "emailGoogle")!) {
-                                mynumber = phoneNumberDigits
+                            else if saveData.value(forKey: "emailGoogle") != nil {
+                                if emailDigits == String(describing: saveData.value(forKey: "emailGoogle")!) {
+                                    mynumber = phoneNumberDigits
+                                }
                             }
                         }
                     }
+                    
                 }
             }
         } catch let enumerateError {
@@ -311,17 +314,20 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
     
     //LOADING CHAT
     func loadingChat(s: UIViewController, frame: CGRect, nameGif: String){
-        let imageListeningGif = UIImageView()
-        imageListeningGif.loadGif(name: nameGif)
-        imageListeningGif.frame = frame
-        imageListeningGif.tag = 9561
-        s.view.addSubview(imageListeningGif)
+        
+        let imageView = GIFImageView(frame: frame)
+        imageView.animate(withGIFNamed: nameGif)
+//        let imageListeningGif = UIImageView()
+//        imageListeningGif.loadGif(name: nameGif)
+//        imageListeningGif.frame = frame
+        imageView.tag = 9561
+        s.view.addSubview(imageView)
         
     }
     
     func removeLoadingChat(s: UIViewController) {
         for locView in s.view.subviews {
-            if locView.isKind(of: UIImageView.self) {
+            if locView.isKind(of: GIFImageView.self) {
                 if locView.tag == 9561 {
                     locView.removeFromSuperview()
                 }

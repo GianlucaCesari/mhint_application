@@ -33,6 +33,7 @@ PODS:
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
   - FirebaseInstanceID (2.0.0):
     - FirebaseCore (~> 4.0)
+  - Gifu (2.0.0)
   - GoogleSignIn (4.0.2):
     - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
     - GoogleToolboxForMac/NSString+URLArguments (~> 2.1)
@@ -78,6 +79,7 @@ DEPENDENCIES:
   - FBSDKShareKit
   - Firebase/Auth
   - Firebase/Core
+  - Gifu
   - GoogleSignIn
   - ReachabilitySwift (~> 3)
   - RevealingSplashView
@@ -101,6 +103,7 @@ SPEC CHECKSUMS:
   FirebaseAuth: ebb6abcbabae00fc47446d690c19ce68d8484fde
   FirebaseCore: 85ad466044c2f013cdb167f85d426d15b128114a
   FirebaseInstanceID: 9fbf536668f4d3f0880e7438456dabd1376e294b
+  Gifu: 56a4d8f1092399159fa32662aa2232158b48d8ac
   GoogleSignIn: d7ad83f13480e1f30453471d00d19b5293ac46af
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMOAuth2: 7fc9c10f5c745f4d9850419ea88889fe3baa6b7d
@@ -114,6 +117,6 @@ SPEC CHECKSUMS:
   TwitterKit: 3b6044a7320340326a4098f3e37aa1dbaeb94942
   Whisper: 051f25e704bf8992641ffd28b20d5682ddc5f5d3
 
-PODFILE CHECKSUM: fd88bddc69e5eafa711ecdd22a909e71d460512d
+PODFILE CHECKSUM: 4736dce2abe78dd94157ef64402434bce619d71c
 
 COCOAPODS: 1.2.0.beta.1

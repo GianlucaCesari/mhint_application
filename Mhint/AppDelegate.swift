@@ -181,9 +181,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         }
         
         if saveData.string(forKey: "imageProfile") == nil {
-            GlobalUser.imageProfileGoogle = image
-            saveData.set(image, forKey: "imageProfile")
-            GlobalFunc().saveUserProfile(value: image, description: "imageProfileGoogle")
+            let imgGoogle = image.replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "")
+            GlobalUser.imageProfileGoogle = imgGoogle
+            saveData.set(imgGoogle, forKey: "imageProfile")
+            GlobalFunc().saveUserProfile(value: imgGoogle, description: "imageProfileGoogle")
         }
         
         GlobalUser.emailGoogle = user.profile.email ?? ""

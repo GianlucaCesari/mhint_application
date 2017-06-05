@@ -94,12 +94,19 @@ class GlobalUser{
         return randomString
     }
     
-    func createUser(name: String, imageProfile: String, birthday: String, address: String, height: Float, weight: Float, sex: Int, lifestyle: Int, sectionEnabled: Array<Any>, logins: Array<Any>, mail: String) {
+    func createUser(name: String, imageProfile: String, birthday: String, address: String, height: Int, weight: Int, sex: Int, lifestyle: Int, sectionEnabled: Array<Any>, logins: Array<Any>, mail: String, number: String) {
         
         let password = randomStringPassword(length: 10)
+        var token = ""
+        if saveData.string(forKey: "deviceTokenString") != nil {
+            token = saveData.string(forKey: "deviceTokenString")!
+        }
+        let b = birthday.replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "")
         
-        print("Name: ", name)
-        print("Birthday: ", birthday)
+        print("name: ", GlobalUser.firstName)
+        print("last_name: ", GlobalUser.lastName)
+        print("full_name: ", name)
+        print("Birthday: ", b)
         print("image: ", imageProfile)
         print("address: ", address)
         print("height: ", height)
@@ -110,18 +117,15 @@ class GlobalUser{
         print("need: ", sectionEnabled[1])
         print("logins: ", logins)
         print("mail: ", mail)
+        print("tel_number: ", number)
+        print("device_token", token)
         print("password: ", password)
-        
-        var token = ""
-        if saveData.string(forKey: "deviceTokenString") != nil {
-            token = saveData.string(forKey: "deviceTokenString")!
-        }
         
         let parameter = [
             "name": GlobalUser.firstName//STRING
             , "last_name": GlobalUser.lastName
             , "full_name": name//STRING
-            , "birthday": birthday//DATE
+            , "birthday": b//DATE
             , "imageProfile": imageProfile//STRING
             , "address": address//STRING
             , "height": height//FLOAT
@@ -141,7 +145,7 @@ class GlobalUser{
             ]//FACEBOOK, TWITTER, GOOGLE, HEALTH
             , "mail": mail//STRING
             , "password": password//STRING
-            , "tel_number": GlobalUser.phoneNumber!//STRING
+            , "tel_number": number//STRING
         ] as [String : Any]
         
         Alamofire.request("https://api.mhint.eu/user", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in

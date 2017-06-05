@@ -25,6 +25,7 @@ target 'Mhint' do
 
   pod 'SwiftyGif'
   pod 'SwiftGifOrigin', '~>1.6.1'
+  pod 'Gifu'
   pod 'Whisper'
 
   pod 'Alamofire', '~> 4.4'
