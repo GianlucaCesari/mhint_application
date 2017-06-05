@@ -452,7 +452,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let addressBookStore = CNContactStore()
         
         addressBookStore.requestAccess(for: CNEntityType.contacts) { (isGranted, error) in
-            GlobalFunc().loadingChat(s: self, frame: CGRect(x: 0, y: view.frame.height*0.7, width: view.frame.width, height: view.frame.width/2), nameGif: "load-chat")
+            GlobalFunc().loadingChat(s: self, frame: CGRect(x: 0, y: self.view.frame.height*0.7, width: self.view.frame.width, height: self.view.frame.width/2), nameGif: "load-chat")
             if ChatController.deniedAccessNeed == true {
                 self.sectionFood = true
                 saveData.set(true, forKey: "need")

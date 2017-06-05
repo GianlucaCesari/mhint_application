@@ -49,8 +49,7 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
     func navbar() {
         
         let name = UILabel()
-        name.text = saveData.value(forKey: "nameProfile") as! String?
-        name.text = GlobalUser.fullName
+        name.text = saveData.string(forKey: "nameProfile")
         name.textColor = .black
         name.textAlignment = .left
         name.font = UIFont(name: "AvenirLTStd-Medium", size: 14)
