@@ -443,6 +443,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             self.buttonChat[x].removeFromSuperview()
         }
         
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: 0, y: self.view.frame.height*0.7, width: self.view.frame.width, height: self.view.frame.width/2), nameGif: "load-chat")
+        
         ChatController.boolResponeWithoutButton = true
         archiveMessages?.remove(at: 0)
         archiveMessages?.insert("My info from Contacts", at: 0)
@@ -452,7 +454,6 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let addressBookStore = CNContactStore()
         
         addressBookStore.requestAccess(for: CNEntityType.contacts) { (isGranted, error) in
-            GlobalFunc().loadingChat(s: self, frame: CGRect(x: 0, y: self.view.frame.height*0.7, width: self.view.frame.width, height: self.view.frame.width/2), nameGif: "load-chat")
             if ChatController.deniedAccessNeed == true {
                 self.sectionFood = true
                 saveData.set(true, forKey: "need")
@@ -671,7 +672,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             //NAME
             if let user_name = result?["name"] as? String {
                 GlobalUser.fullNameFacebook = user_name
-                GlobalFunc().saveUserProfile(value: user_name, description: "nameProfile")
+                saveData.set(user_name, forKey: "nameProfile")
                 self.nameFacebook = "What a wonderful name \(user_name)"
             }
             

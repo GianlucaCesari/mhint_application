@@ -326,10 +326,6 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
                 self.printOnCollectionView(text: ((response.value! as AnyObject)["message"]! as! String), who: true)
             }
         }
-//        } else {
-//            startRecording()
-//            button.isEnabled = false
-//        }
     }
     
     func startRecording() {

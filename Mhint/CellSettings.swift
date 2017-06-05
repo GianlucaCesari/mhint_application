@@ -54,6 +54,7 @@ class CustomCellSetting: BaseCellSetting {
         switchDemo.isOn = false
         switchDemo.alpha = 0
         switchDemo.setOn(true, animated: false)
+        switchDemo.onTintColor = GlobalColor().greenSea
         return switchDemo
     }()
     
