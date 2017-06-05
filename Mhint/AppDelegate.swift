@@ -29,13 +29,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
     var chatbotController = ChatBotController()
     var locationManager: CLLocationManager!
     
+    
     func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
         //ALL'APERTURA DI UNA LOCALNOTIFICATION VA A SHOPPINGLIST 
         let controllerToShow = HomeShoppingListController(collectionViewLayout: layout)
         self.window!.rootViewController = controllerToShow
     }
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
 //        NOTIFICATIONS REMOTES
         if #available(iOS 10, *) {
             UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
@@ -212,11 +212,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
+            locationManager.startMonitoringSignificantLocationChanges()
         }
     }
     func applicationWillEnterForeground(_ application: UIApplication) {}
     func applicationDidBecomeActive(_ application: UIApplication) {}
-    func applicationWillTerminate(_ application: UIApplication) {}
+    func applicationWillTerminate(_ application: UIApplication) {
+        locationManager.startMonitoringSignificantLocationChanges()
+    }
 
     //LOGIN
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
