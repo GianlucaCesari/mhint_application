@@ -502,17 +502,13 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             let firstTextField = (alert?.textFields![0])! as UITextField
             if let number = firstTextField.text {
-                do {
-                    let num = try Int(number)!
+                    let num = Int(number)!
                     if num > 0 {
                         GlobalUser.phoneNumber = number
                         self.takeNumber(n: number)
                     } else {
                         self.alertNumber()
                     }
-                } catch {
-                    self.alertNumber()
-                }
             } else {
                 self.alertNumber()
             }
