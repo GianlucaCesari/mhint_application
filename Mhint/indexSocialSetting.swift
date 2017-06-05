@@ -68,14 +68,15 @@ class socialController: UICollectionViewController, UICollectionViewDelegateFlow
         customCell.titleTextView.frame = CGRect(x: 60, y: 0, width: Int(GlobalSize().widthScreen/2), height: Int(heightRow))
         customCell.switchSection.frame = CGRect(x: GlobalSize().widthScreen*0.8, y: (CGFloat(heightRow)-customCell.switchSection.frame.size.height)/2, width: 0, height: 0)
         
-        customCell.switchSection.isOn = false
         customCell.switchSection.isEnabled = false
         
-        if !saveData.bool(forKey: "loginFacebook") && indexPath.row == 0 {
-            customCell.switchSection.isOn = false
-        } else if !saveData.bool(forKey: "loginGoogle") && indexPath.row == 1 {
-            customCell.switchSection.isOn = false
-        } else if !saveData.bool(forKey: "loginTwitter") && indexPath.row == 2 {
+        if indexPath.row == 0 {
+            customCell.switchSection.isOn = saveData.bool(forKey: "loginFacebook")
+        } else if indexPath.row == 1 {
+            customCell.switchSection.isOn = saveData.bool(forKey: "loginGoogle")
+        } else if indexPath.row == 2 {
+            customCell.switchSection.isOn = saveData.bool(forKey: "loginTwitter")
+        } else {
             customCell.switchSection.isOn = false
         }
         
@@ -90,12 +91,18 @@ class socialController: UICollectionViewController, UICollectionViewDelegateFlow
             GIDSignIn.sharedInstance().uiDelegate = self
             GIDSignIn.sharedInstance().signIn()
             saveData.set(true, forKey: "loginGoogle")
+        } else if indexPath.row == 1 && cell.switchSection.isOn {
+            saveData.set(false, forKey: "loginGoogle")
         } else if indexPath.row == 0 && !cell.switchSection.isOn {
             facebook()
             saveData.set(true, forKey: "loginFacebook")
-        } else if indexPath.row == 2 && !cell.switchSection.isOn {
+        } else if indexPath.row == 0 && cell.switchSection.isOn {
+            saveData.set(false, forKey: "loginFacebook")
+        }else if indexPath.row == 2 && !cell.switchSection.isOn {
             twitter()
             saveData.set(true, forKey: "loginTwitter")
+        } else if indexPath.row == 2 && cell.switchSection.isOn {
+            saveData.set(false, forKey: "loginTwitter")
         }
         
         if indexPath.row < 3 {
