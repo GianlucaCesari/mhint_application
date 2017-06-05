@@ -112,14 +112,22 @@ class GlobalUser{
         print("mail: ", mail)
         print("password: ", password)
         
+        var token = ""
+        if saveData.string(forKey: "deviceTokenString") != nil {
+            token = saveData.string(forKey: "deviceTokenString")!
+        }
+        
         let parameter = [
-            "name": name//STRING
+            "name": GlobalUser.firstName//STRING
+            , "last_name": GlobalUser.lastName
+            , "full_name": name//STRING
             , "birthday": birthday//DATE
             , "imageProfile": imageProfile//STRING
             , "address": address//STRING
             , "height": height//FLOAT
             , "weight": weight//FLOAT
             , "sex": sex//INT (1,2,3)
+            , "device_token": token
             , "lifestyle": lifestyle//NUMBER
             , "sectionsEnabled": [
                 "food": sectionEnabled[0]

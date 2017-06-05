@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+import Alamofire
+
 //SOCIAL IMPORT
 import FBSDKLoginKit //FACEBOOK SDK
 import Firebase //FIREBASE
@@ -93,16 +95,21 @@ class socialController: UICollectionViewController, UICollectionViewDelegateFlow
             saveData.set(true, forKey: "loginGoogle")
         } else if indexPath.row == 1 && cell.switchSection.isOn {
             saveData.set(false, forKey: "loginGoogle")
+            updateSocial()
         } else if indexPath.row == 0 && !cell.switchSection.isOn {
             facebook()
             saveData.set(true, forKey: "loginFacebook")
+            updateSocial()
         } else if indexPath.row == 0 && cell.switchSection.isOn {
             saveData.set(false, forKey: "loginFacebook")
+            updateSocial()
         }else if indexPath.row == 2 && !cell.switchSection.isOn {
             twitter()
             saveData.set(true, forKey: "loginTwitter")
+            updateSocial()
         } else if indexPath.row == 2 && cell.switchSection.isOn {
             saveData.set(false, forKey: "loginTwitter")
+            updateSocial()
         }
         
         if indexPath.row < 3 {
@@ -123,6 +130,23 @@ class socialController: UICollectionViewController, UICollectionViewDelegateFlow
     }
     //COLLECTIONVIEW
     
+    func updateSocial() {
+        
+        let parameter = [
+            "mail": GlobalUser.email
+            , "logins": [
+                "facebook": saveData.bool(forKey: "loginFacebook") ? 1 : 0
+                , "twitter": saveData.bool(forKey: "loginTwitter") ? 1 : 0
+                , "google": saveData.bool(forKey: "loginGoogle") ? 1 : 0
+                , "health": saveData.bool(forKey: "loginHealth") ? 1 : 0
+            ]
+        ] as [String : Any]
+        
+        Alamofire.request("https://api.mhint.eu/user", method: .put, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
+            print(response)
+        }
+        
+    }
     
     //TWITTER
     func twitter() {

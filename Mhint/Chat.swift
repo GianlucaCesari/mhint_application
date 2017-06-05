@@ -104,6 +104,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             ChatController.loginGoogleBool = saveData.bool(forKey: "loginGoogle")
             loginTwitterBool = saveData.bool(forKey: "loginTwitter")
         }
+        saveData.set(false, forKey: "loginHealth")
         
         //TITOLO BARRA DI NAVIGAZIONE SUPERIORE
         GlobalFunc().navBar(nav: navigationItem, s: self, show: false)
@@ -368,6 +369,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 self.heightResponseTimer()
             } else {
                 self.requestHealth()
+                saveData.set(true, forKey: "loginHealth")
             }
             GlobalFunc().removeLoadingChat(s: self)
         }
@@ -1106,7 +1108,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         else if collectionView == self.collectionVHeight {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdHeight, for: indexPath) as! ChatControllerCellHeight
             cell.backgroundV.frame = CGRect(x: GlobalSize().heightScreen*0.015, y: GlobalSize().heightScreen*0.015, width: GlobalSize().heightScreen*0.07, height: GlobalSize().heightScreen*0.07)
-            let height:Float = Float(GlobalSize().minHeight+indexPath.row)
+            let height:Int = Int(GlobalSize().minHeight+indexPath.row)
             cell.titleTextView.text = String(height)
             cell.titleTextView.textAlignment = .center
             cell.titleTextView.frame = CGRect(x: 0, y: 0, width: GlobalSize().heightScreen*0.1, height: GlobalSize().heightScreen*0.1)

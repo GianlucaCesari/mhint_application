@@ -137,8 +137,40 @@ class SettingsController: UICollectionViewController, UICollectionViewDelegateFl
             self.navigationController?.pushViewController(newViewController, animated: true)
         } else if indexPath.row == 3 && cell.switchSection.isOn {
             accessToHealth()
+            saveData.set(cell.switchSection.isOn, forKey: "food")
+            saveData.set(cell.switchSection.isOn, forKey: "loginHealth")
+            updateSection()
+        } else if indexPath.row == 3 && !cell.switchSection.isOn {
+            saveData.set(cell.switchSection.isOn, forKey: "food")
+            saveData.set(cell.switchSection.isOn, forKey: "loginHealth")
+            updateSection()
         } else if indexPath.row == 4 && cell.switchSection.isOn {
             takeNumber()
+            saveData.set(cell.switchSection.isOn, forKey: "need")
+            updateSection()
+        } else if indexPath.row == 4 && !cell.switchSection.isOn {
+            saveData.set(cell.switchSection.isOn, forKey: "need")
+            updateSection()
+        }
+    }
+    
+    func updateSection() {
+        let parameter = [
+            "mail": GlobalUser.email
+            , "sectionsEnabled": [
+                "food": (saveData.bool(forKey: "food") ? 1 : 0)
+                , "need": (saveData.bool(forKey: "need") ? 1 : 0)
+            ]
+            , "logins": [
+                "facebook": saveData.bool(forKey: "loginFacebook") ? 1 : 0
+                , "twitter": saveData.bool(forKey: "loginTwitter") ? 1 : 0
+                , "google": saveData.bool(forKey: "loginGoogle") ? 1 : 0
+                , "health": saveData.bool(forKey: "loginHealth") ? 1 : 0
+            ]
+        ] as [String : Any]
+        
+        Alamofire.request("https://api.mhint.eu/user", method: .put, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
+            print(response)
         }
     }
     
