@@ -83,15 +83,15 @@
 		</dict>
 	</dict>
 	<key>NSContactsUsageDescription</key>
-	<string>This permission generate a custom emergency for you from Mhint</string>
+	<string>We access your contacts to know if other user using Mhint are your friends</string>
 	<key>NSHealthShareUsageDescription</key>
-	<string>This permission generate a custom diet for you from Mhint</string>
+	<string>We use this information to generate a correct diet plan</string>
 	<key>NSHealthUpdateUsageDescription</key>
-	<string>This permission generate a custom diet for you from Mhint</string>
+	<string>We use this information to generate a correct diet plan</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This permission generate a custom experience for you from Mhint</string>
+	<string>We use location services to collect data for the needs and emergency section</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This permission generate a custom experience for you from Mhint</string>
+	<string>We use location services to collect data for the needs and emergency section</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We need to use the microphone to enable dictation</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
