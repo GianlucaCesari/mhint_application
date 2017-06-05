@@ -438,11 +438,9 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     //NEED SECTION
     func needSupply() {
-        
         for x in 0..<self.buttonChat.count {
             self.buttonChat[x].removeFromSuperview()
         }
-        
         GlobalFunc().loadingChat(s: self, frame: CGRect(x: 0, y: self.view.frame.height*0.7, width: self.view.frame.width, height: self.view.frame.width/2), nameGif: "load-chat")
         
         ChatController.boolResponeWithoutButton = true
@@ -470,7 +468,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 ChatController.deniedAccessNeed = false
                 GlobalFunc().getContacts()
                 archiveMessages?.insert("Take my friends contacts", at: 0)
-                if GlobalUser.phoneNumber != nil && (GlobalUser.email.range(of:"@") != nil || GlobalUser.emailGoogle?.range(of:"@") != nil || GlobalUser.emailTwitter?.range(of:"@") != nil || GlobalUser.emailFacebook?.range(of:"@") != nil ) {
+                if GlobalUser.phoneNumber != nil && (GlobalUser.emailGoogle?.range(of:"@") != nil || GlobalUser.emailFacebook?.range(of:"@") != nil ) {
                     archiveMessages?.insert("Is your number \(GlobalUser.phoneNumber!)?", at: 1)
                     archiveMessages?.insert("Yes;Nope", at: 2)
                 } else {

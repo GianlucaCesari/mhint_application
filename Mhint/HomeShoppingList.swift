@@ -9,15 +9,17 @@
 import Foundation
 import UserNotifications
 import UIKit
+import Alamofire
+
+var shoppingList = [String]()
+var shoppingListQuantity = [String]()
+var shoppingListId = [String]()
+var arrayImageHidden = [Bool]()
 
 class HomeShoppingListController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UNUserNotificationCenterDelegate, UITextFieldDelegate {
     
     let cellId = "cellShoppingList"
     
-    var shoppingList = GlobalVariable.listItem
-    var shoppingListQuantity = GlobalVariable.listItemQuantity
-    
-    var arrayImageHidden = [Bool]()
     
     let heightCell = GlobalSize().widthScreen*0.15
     let widthCollectionView = GlobalSize().widthScreen
@@ -26,9 +28,13 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
     var progressBarTimer:Timer!
     var progressBarStop:Float! = 0.0
     
+    var idList:String = ""
+    
     let btnAlert = UITextField()
     let btnAlertQuantity = UITextField()
     let btnAlertUnity = UITextField()
+    
+    let lbl = UILabel()
     
     var tap = UITapGestureRecognizer()
     
@@ -44,6 +50,8 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         btnMenu.setImage(imgMenu, for: .normal)
         btnMenu.addTarget(self, action: #selector(self.back(sender:)), for: .touchUpInside)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: btnMenu)
+        
+        getShoppingList()
         
         loadingShoppingList()
         header()
@@ -62,6 +70,7 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         collectionView?.collectionViewLayout = layout
         collectionView?.backgroundColor = GlobalColor().backgroundCollectionView
         collectionView?.delegate = self
+        collectionView?.backgroundColor = .white
         collectionView?.dataSource = self
         collectionView?.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.285, width: widthCollectionView, height: GlobalSize().heightScreen*0.61)
         collectionView?.register(CustomCellChooseHomeShoppingList.self, forCellWithReuseIdentifier: cellId)
@@ -71,8 +80,46 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         if UIApplication.shared.applicationIconBadgeNumber > 0 {
             UIApplication.shared.applicationIconBadgeNumber = 0
         }
+        if shoppingList.count < 1 {
+            insertClearData()
+        }
     }
     
+    
+    //SHOPPINGLIST
+    func getShoppingList() {
+        
+        shoppingList.removeAll()
+        shoppingListId.removeAll()
+        shoppingListQuantity.removeAll()
+        arrayImageHidden.removeAll()
+        
+        var x = 0
+        
+        Alamofire.request("https://api.mhint.eu/shoppinglist?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { JSON in
+            if let json = JSON.result.value as? [String: Any]{
+                self.idList = json["_id"] as! String
+                if let items = json["items"] as? [[String: Any]] {
+                    for item in items {
+                        x += 1
+                        shoppingList.append(item["name"]! as! String)
+                        shoppingListQuantity.append("\(item["value"]!) \(item["unit"]!)")
+                        shoppingListId.append(item["_id"]! as! String)
+                        arrayImageHidden.append(item["checked"]! as! Bool)
+                        if items.count == x {
+                            shoppingList.reverse()
+                            shoppingListQuantity.reverse()
+                            shoppingListId.reverse()
+                            arrayImageHidden.reverse()
+                            self.view.willRemoveSubview(self.lbl)
+                            self.lbl.removeFromSuperview()
+                            self.collectionView?.reloadData()
+                        }
+                    }
+                }
+            }
+        }
+    }
     
     //COLLECTIONVIEW
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -144,6 +191,17 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
             cell.quantityDiet.alpha = 0.6
             cell.titleDiet.alpha = 0.6
             cell.lineGetItem.alpha = 0.1
+        }
+        
+        
+        let parameter = [
+            "item_id": shoppingListId[indexPath.row]
+            , "checked": boolImage
+            ] as [String : Any]
+        
+        
+        Alamofire.request("https://api.mhint.eu/itemchecked", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in
+            print(JSON)
         }
         
         let imageGreen = UIImage(named: stringImage)
@@ -221,6 +279,10 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
     func insertShoppingList() {
         let textTrimmed = (btnAlert.text!).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         if textTrimmed != "" {
+            
+            self.view.willRemoveSubview(lbl)
+            lbl.removeFromSuperview()
+            
             shoppingList.insert(textTrimmed, at: 0)
             shoppingListQuantity.insert(btnAlertQuantity.text! + " " + btnAlertUnity.text!, at: 0)
             arrayImageHidden.insert(false, at: 0)
@@ -229,9 +291,39 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
             GlobalVariable.listItem.insert(textTrimmed, at: 0)
             GlobalVariable.listItem.insert(btnAlertQuantity.text! + " " + btnAlertUnity.text!, at: 0)
             
+            print(idList)
+            var parameter = [:] as [String : Any]
+            if idList == "" {
+                parameter = [
+                    "mail": GlobalUser.email
+                    , "item": [
+                        "name": textTrimmed
+                        , "value": btnAlertQuantity.text!
+                        , "unit": btnAlertUnity.text!
+                    ]
+                ] as [String : Any]
+            } else {
+                parameter = [
+                "list_id": idList
+                , "item": [
+                    "name": textTrimmed
+                    , "value": btnAlertQuantity.text!
+                    , "unit": btnAlertUnity.text!
+                    ]
+                ] as [String : Any]
+            }
+            
+            Alamofire.request("https://api.mhint.eu/additem", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in
+                if let json = JSON.result.value as? [String: Any]{
+                    self.idList = json["_id"] as! String
+                }
+            }
+            
             btnAlert.text = ""
             btnAlertQuantity.text = ""
             btnAlertUnity.text = ""
+            
+            
         } else {
             GlobalFunc().alertCustom(stringAlertTitle: "No valid name", stringAlertDescription: "Insert the name of the item", button: "OK", s: self)
         }
@@ -263,12 +355,30 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         let settingsAction = UIAlertAction(title: "Yes", style: .default) { (_) -> Void in
             GlobalVariable.listItem.removeAll()
             GlobalVariable.listItemQuantity.removeAll()
-            self.shoppingList.removeAll()
-            self.shoppingListQuantity.removeAll()
+            shoppingList.removeAll()
+            shoppingListQuantity.removeAll()
             self.collectionView?.reloadData()
+            self.insertClearData()
+            
+            let parameter = [
+                "list_id": self.idList
+                ] as [String : Any]
+            
+            Alamofire.request("https://api.mhint.eu/listcomplete", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in }
+            
         }
         controller.addAction(settingsAction)
         self.present(controller, animated: true, completion: nil)
+    }
+    
+    func insertClearData() {
+        lbl.text = "Your shopping list is empty."
+        lbl.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.37, width: widthCollectionView, height: GlobalSize().heightScreen*0.536)
+        lbl.backgroundColor = .white
+        lbl.textAlignment = .center
+        lbl.font = UIFont(name: "AvenirLTStd-Heavy", size: GlobalSize().widthScreen*0.031)
+        lbl.textColor = .black
+        self.view.addSubview(lbl)
     }
     
     func loadingShoppingList() {
