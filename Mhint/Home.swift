@@ -13,6 +13,7 @@ import AudioToolbox
 
 import SwiftyGif //GIF
 import SwiftGifOrigin //GIF
+import Gifu
 
 import RevealingSplashView //SPLASH SCREEN
 
@@ -40,7 +41,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
     
     let lblTimer = UILabel()
     
-    var imageListeningGif = UIImageView()
+    var imageView = GIFImageView()
     
 //    SPEECH RECOGNIZER
     
@@ -135,14 +136,12 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         self.inputText.rightViewMode = .always
         self.inputText.addTarget(self, action: #selector(self.textFieldDidChange(inputText:)), for: UIControlEvents.editingChanged)
         
-        
         self.view.addSubview(self.imgWave)
         
-        self.imageListeningGif = UIImageView()
-        self.imageListeningGif.loadGif(name: "load-voice")
-        self.imageListeningGif.frame = CGRect(x: 0, y: self.view.frame.height*0.7, width: self.view.frame.width, height: self.view.frame.width/2)
-        self.imageListeningGif.alpha = 0
-        self.view.addSubview(self.imageListeningGif)
+        self.imageView = GIFImageView(frame: CGRect(x: 0, y: self.view.frame.height*0.7, width: self.view.frame.width, height: self.view.frame.width/2))
+        self.imageView.animate(withGIFNamed: "load-voice")
+        self.imageView.alpha = 0
+        self.view.addSubview(self.imageView)
         
         self.view.addSubview(self.inputText)
         //        self.view.addSubview(self.imgMic)
@@ -215,7 +214,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             timerListening = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.listeningTime), userInfo: nil, repeats: true)
             button?.isEnabled = false
             self.inputText.placeholder = "I'm listening..."
-            imageListeningGif.alpha = 1
+            imageView.alpha = 1
         } else if sender.state == .ended {
             audioEngine.stop()
             timerListening.invalidate()
@@ -223,7 +222,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             button?.isEnabled = false
             lblTimer.text = ""
             self.inputText.placeholder = "Say something..."
-            imageListeningGif.alpha = 0
+            imageView.alpha = 0
         }
     }
     
