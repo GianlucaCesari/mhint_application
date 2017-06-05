@@ -133,6 +133,7 @@ class GlobalUser{
             ]//FACEBOOK, TWITTER, GOOGLE, HEALTH
             , "mail": mail//STRING
             , "password": password//STRING
+            , "tel_number": GlobalUser.phoneNumber!//STRING
         ] as [String : Any]
         
         Alamofire.request("https://api.mhint.eu/user", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in

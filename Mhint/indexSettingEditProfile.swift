@@ -8,7 +8,8 @@
 
 import Foundation
 import UIKit
-import Alamofire
+
+import Alamofire //INTERNET
 
 class editProfileController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextFieldDelegate{
     

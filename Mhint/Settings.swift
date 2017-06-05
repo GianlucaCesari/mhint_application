@@ -8,12 +8,18 @@
 import UIKit
 import SwiftyGif
 
+import Alamofire //INTERNET
+import HealthKit //SALUTE
+
 class SettingsController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate{
     
     //CLASSI ESTERNE2
     let globalColor = GlobalColor()
     let globalFunction = GlobalFunc()
     let globalSize = GlobalSize()
+    
+    //HEALTHKIT
+    let healthManager:HKHealthStore = HKHealthStore()
     
     //PROFILE
     var imgProfileImage = UIImage()
@@ -82,6 +88,8 @@ class SettingsController: UICollectionViewController, UICollectionViewDelegateFl
             
             customCell.switchSection.alpha = 1
             customCell.switchSection.frame = CGRect(x: self.globalSize.widthScreen*0.8, y: (CGFloat(heightRow)-customCell.switchSection.frame.size.height)/2, width: 0, height: 0)
+            customCell.switchSection.isEnabled = false
+            
             if indexPath.row == 3 {
                 customCell.switchSection.isOn = saveData.bool(forKey: "food")
             } else if indexPath.row == 4 {
@@ -115,6 +123,11 @@ class SettingsController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let cell = collectionView.cellForItem(at: indexPath) as! CustomCellSetting
+        
+        cell.switchSection.isOn = !cell.switchSection.isOn
+        
         if indexPath.row == 0 {
             let newViewController = socialController(collectionViewLayout: layout)
             self.navigationController?.pushViewController(newViewController, animated: true)
@@ -122,6 +135,10 @@ class SettingsController: UICollectionViewController, UICollectionViewDelegateFl
         else if indexPath.row == 1 {
             let newViewController = botController()
             self.navigationController?.pushViewController(newViewController, animated: true)
+        } else if indexPath.row == 3 && cell.switchSection.isOn {
+            accessToHealth()
+        } else if indexPath.row == 4 && cell.switchSection.isOn {
+            takeNumber()
         }
     }
     
@@ -144,14 +161,58 @@ class SettingsController: UICollectionViewController, UICollectionViewDelegateFl
     }
     //COLLECTIONVIEW
     
+    //ALERT HEALHTKIT
+    func accessToHealth() {
+        var readTypes = Set<HKObjectType>()
+        readTypes.insert(HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.height)!)
+        readTypes.insert(HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!)
+        readTypes.insert(HKObjectType.characteristicType(forIdentifier: HKCharacteristicTypeIdentifier.dateOfBirth)!)
+        readTypes.insert(HKObjectType.characteristicType(forIdentifier: HKCharacteristicTypeIdentifier.biologicalSex)!)
+        
+        guard timerHeight == nil else { return }
+        
+        healthManager.requestAuthorization(toShare: nil, read: readTypes) { (success, error) -> Void in
+            GlobalFunc().alertCustom(stringAlertTitle: "Health succefully connect", stringAlertDescription: "", button: "OK", s: self)
+        }
+    }
     
-    
+    //ALERT NUMBER
+    func takeNumber() {
+        let alert = UIAlertController(title: "What's your number ?", message: "Type here", preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            textField.text = ""
+            textField.keyboardType = UIKeyboardType.phonePad
+        }
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { [] (_) in
+            self.dismiss(animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+            let firstTextField = (alert?.textFields![0])! as UITextField
+            if let number = firstTextField.text {
+                let num = Int(number)!
+                if num > 0 {
+                    GlobalUser.phoneNumber = number
+                    
+                    let parameter = [
+                        "mail": GlobalUser.email
+                        , "tel_number": number
+                        ] as [String : Any]
+                    
+                    Alamofire.request("https://api.mhint.eu/user", method: .put, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
+                        print(response)
+                    }
+                    
+                } else {
+                    self.takeNumber()
+                }
+            }
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
     
     func socialConnection() {
-        
         let socialButton = UIButton()
         socialButton.frame = CGRect(x: self.globalSize.widthScreen*0.08, y: self.globalSize.heightScreen*0.09, width: self.globalSize.widthScreen, height: self.globalSize.widthScreen*0.1)
-        
     }
     
     func header() {
