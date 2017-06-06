@@ -35,13 +35,16 @@ class FoodController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let layoutHeight:UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
         layoutHeight.sectionInset = UIEdgeInsetsMake(-50, 5, 0, 5)
         layoutHeight.scrollDirection = .vertical
-        layoutHeight.itemSize = CGSize(width: GlobalSize().heightScreen*0.06, height: GlobalSize().heightScreen*0.06)
+        layoutHeight.itemSize = CGSize(width: GlobalSize().heightScreen*0.1, height: GlobalSize().heightScreen*0.1)
         collectionView?.collectionViewLayout = layoutHeight
         collectionView?.backgroundColor = .clear
         collectionView?.frame = CGRect(x: GlobalSize().widthScreen*0.1, y: GlobalSize().heightScreen*0.33, width: GlobalSize().widthScreen*0.8, height: GlobalSize().heightScreen*0.55)
         collectionView?.register(CustomCellChooseIngredient.self, forCellWithReuseIdentifier: cellId)
         collectionView?.showsHorizontalScrollIndicator = false
         collectionView?.showsVerticalScrollIndicator = false
+        
+        nextPage()
+        
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -52,14 +55,14 @@ class FoodController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CustomCellChooseIngredient
         
         //LOADING
-        cell.loadingBackground.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen*0.16-5, height: GlobalSize().widthScreen*0.16-5)
+        cell.loadingBackground.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen*0.235-5, height: GlobalSize().widthScreen*0.2352-5)
         
         //IMMAGINE INGREDIENTI
-        cell.imageIngredientBackground.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen*0.16-5, height: GlobalSize().widthScreen*0.16-5)
+        cell.imageIngredientBackground.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen*0.235-5, height: GlobalSize().widthScreen*0.235-5)
         cell.imageIngredientBackground.sd_setImage(with: URL(string: arrayImageUrl[indexPath.row]), placeholderImage: nil)
         
         //OVERLAY
-        cell.overlayImageButton.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen*0.16-5, height: GlobalSize().widthScreen*0.16-5)
+        cell.overlayImageButton.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen*0.235-5, height: GlobalSize().widthScreen*0.235-5)
 
         if arrayImageHidden.count < (indexPath.row + 1) {
             arrayImageHidden.append(false)
@@ -80,7 +83,7 @@ class FoodController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: GlobalSize().heightScreen*0.08, height: GlobalSize().heightScreen*0.08)
+        return CGSize(width: GlobalSize().heightScreen*0.13, height: GlobalSize().heightScreen*0.13)
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -100,28 +103,18 @@ class FoodController: UICollectionViewController, UICollectionViewDelegateFlowLa
         cell.overlayImageButton.image = imageGreen
         arrayImageHidden[indexPath.row] = boolImage
         
-        nextPage()
     }
     //COLLECTIONVIEW
     
     //BOTTONE NEXT PAGE
     func nextPage() {
-        var boolNextPage = false
-        for x in arrayImageHidden {
-            if x {
-                btnNextPage.setTitle("Go to the next page", for: .normal)
-                btnNextPage.setTitleColor(.black, for: .normal)
-                btnNextPage.titleLabel?.font = UIFont(name: "AvenirLTStd-Heavy", size: GlobalSize().widthScreen*0.03)
-                btnNextPage.titleLabel?.textAlignment = .center
-                btnNextPage.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.92, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.05)
-                btnNextPage.addTarget(self, action: #selector(goToDiet), for: .touchUpInside)
-                self.view.addSubview(btnNextPage)
-                boolNextPage = true
-            }
-        }
-        if !boolNextPage {
-            btnNextPage.removeFromSuperview()
-        }
+        btnNextPage.setTitle("Go to the next page", for: .normal)
+        btnNextPage.setTitleColor(.black, for: .normal)
+        btnNextPage.titleLabel?.font = UIFont(name: "AvenirLTStd-Heavy", size: GlobalSize().widthScreen*0.03)
+        btnNextPage.titleLabel?.textAlignment = .center
+        btnNextPage.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.92, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.05)
+        btnNextPage.addTarget(self, action: #selector(goToDiet), for: .touchUpInside)
+        self.view.addSubview(btnNextPage)
     }
     
     func goToDiet() {

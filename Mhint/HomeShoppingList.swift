@@ -42,6 +42,8 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         
         self.view.backgroundColor = .white
         
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: 0, y: GlobalSize().heightScreen*0.37, width: widthCollectionView, height: GlobalSize().heightScreen*0.536), nameGif: "load")
+        
         GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "Shopping list")
         
         let btnMenu = UIButton.init(type: .custom)
@@ -98,7 +100,9 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         
         Alamofire.request("https://api.mhint.eu/shoppinglist?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { JSON in
             if let json = JSON.result.value as? [String: Any]{
-                self.idList = json["_id"] as! String
+                if self.idList == "" {
+                    self.idList = json["_id"] as! String
+                }
                 if let items = json["items"] as? [[String: Any]] {
                     for item in items {
                         
@@ -124,6 +128,7 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
                             shoppingListId.reverse()
                             arrayImageHidden.reverse()
                             self.view.willRemoveSubview(self.lbl)
+                            GlobalFunc().removeLoadingChat(s: self)
                             self.lbl.removeFromSuperview()
                             self.collectionView?.reloadData()
                         }
@@ -205,16 +210,11 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
             cell.lineGetItem.alpha = 0.1
         }
         
-        
         let parameter = [
             "item_id": shoppingListId[indexPath.row]
             , "checked": boolImage
-            ] as [String : Any]
-        
-        
-        Alamofire.request("https://api.mhint.eu/itemchecked", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in
-            print(JSON)
-        }
+        ] as [String : Any]
+        Alamofire.request("https://api.mhint.eu/itemchecked", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in }
         
         let imageGreen = UIImage(named: stringImage)
         cell.checkImageBtn.image = imageGreen
@@ -334,7 +334,6 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
             btnAlertQuantity.text = ""
             btnAlertUnity.text = ""
             
-            
         } else {
             GlobalFunc().alertCustom(stringAlertTitle: "No valid name", stringAlertDescription: "Insert the name of the item", button: "OK", s: self)
         }
@@ -370,13 +369,12 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
             shoppingListQuantity.removeAll()
             self.collectionView?.reloadData()
             self.insertClearData()
-            
             let parameter = [
                 "list_id": self.idList
                 ] as [String : Any]
-            
-            Alamofire.request("https://api.mhint.eu/listcomplete", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in }
-            
+            Alamofire.request("https://api.mhint.eu/listcomplete", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in
+                self.idList = ""
+            }
         }
         controller.addAction(settingsAction)
         self.present(controller, animated: true, completion: nil)
@@ -390,6 +388,7 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         lbl.font = UIFont(name: "AvenirLTStd-Heavy", size: GlobalSize().widthScreen*0.031)
         lbl.textColor = .black
         self.view.addSubview(lbl)
+        GlobalFunc().removeLoadingChat(s: self)
     }
     
     func loadingShoppingList() {

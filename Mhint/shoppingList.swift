@@ -30,6 +30,7 @@ class ShoppingListController: UICollectionViewController, UICollectionViewDelega
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
+        getShoppingList()
         GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "Shopping List")
         header()
         nextPage()

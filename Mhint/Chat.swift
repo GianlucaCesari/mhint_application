@@ -380,8 +380,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             timerHeight?.invalidate()
             timerHeight = nil
             archiveMessages?.insert("Get my info from Apple Health", at: 0)
-            if saveData.float(forKey: "height") > 178 {
-                archiveMessages?.insert("Wow you are so tall, \(saveData.float(forKey: "height")) cm.\nWhat's your lifestyle ?", at: 1)
+            if saveData.integer(forKey: "height") > 178 {
+                archiveMessages?.insert("Wow you are so tall, \(saveData.integer(forKey: "height")) cm.\nWhat's your lifestyle ?", at: 1)
             }
             else if saveData.float(forKey: "weight") > 120 || saveData.float(forKey: "weight") < 60 && saveData.float(forKey: "weight") > 30 {
                 archiveMessages?.insert("Come on, start to do better than \(saveData.float(forKey: "weight"))kg.\nWhat's your lifestyle ?", at: 1)
@@ -468,7 +468,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 ChatController.deniedAccessNeed = false
                 GlobalFunc().getContacts()
                 archiveMessages?.insert("Take my friends contacts", at: 0)
-                if GlobalUser.phoneNumber != nil && (GlobalUser.emailGoogle?.range(of:"@") != nil || GlobalUser.emailFacebook?.range(of:"@") != nil ) {
+                if GlobalUser.phoneNumber != nil && GlobalUser.phoneNumber != "" && (GlobalUser.emailGoogle?.range(of:"@") != nil || GlobalUser.emailFacebook?.range(of:"@") != nil ) {
                     archiveMessages?.insert("Is your number \(GlobalUser.phoneNumber!)?", at: 1)
                     archiveMessages?.insert("Yes;Nope", at: 2)
                 } else {
@@ -645,6 +645,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 self.showNameFromFacebook()
             } else {
                 self.promptLogin()
+                GlobalFunc().removeLoadingChat(s: self)
                 GlobalFunc().alert(stringAlertTitle: "Error Facebook login", stringAlertDescription: "Ops, something went wrong while authenticating with facebook.", s: self)
             }
         })
@@ -687,6 +688,15 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 saveData.set(lastName, forKey: "lastName")
             }
             
+            //HOMETOWN
+            if let user_home = result?["hometown"] as? NSDictionary {
+                if let hometown = user_home["name"]! as? String {
+                    GlobalUser.address = hometown
+                    GlobalFunc().saveUserProfile(value: hometown, description: "address")
+                    self.nameFacebook = "\(hometown)\nIt's a wonderful place."
+                }
+            }
+            
             //BIRTHDAY
             GlobalFunc().saveUserProfile(value: String(describing: result?["birthday"]), description: "birthday")
             if let user_birthday = result?["birthday"] as? DateComponents {
@@ -694,17 +704,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 dateBirthday = String(describing: user_birthday.day!) + "/" + String(describing: user_birthday.month!) + "/" + String(describing: user_birthday.year!)
                 GlobalFunc().saveUserProfile(value: dateBirthday.replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: ""), description: "birthday")
                 GlobalUser.birthday = dateBirthday.replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "")
-                if user_birthday.year! > 1980 {
+                if user_birthday.year! > 1985 {
                     self.nameFacebook = "You are so younger."
-                }
-            }
-            
-            //HOMETOWN
-            if let user_home = result?["hometown"] as? NSDictionary {
-                if let hometown = user_home["name"]! as? String {
-                    GlobalUser.address = hometown
-                    GlobalFunc().saveUserProfile(value: hometown, description: "address")
-                    self.nameFacebook = "\(hometown)\nIt's a wonderful place."
                 }
             }
             
@@ -895,6 +896,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 
             } else {
                 self.promptLogin()
+                GlobalFunc().removeLoadingChat(s: self)
                 NSLog("Login error: %@", error!.localizedDescription);
             }
         }

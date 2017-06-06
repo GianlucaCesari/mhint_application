@@ -20,6 +20,8 @@ class EmergencyController: UIViewController{
         
         globalFunction.navBar(nav: navigationItem, s: self, show: true) //navigation bar
         
+        
+        
     }
     
 }
