@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Alamofire
 
 class ShoppingListController: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     
@@ -16,8 +17,12 @@ class ShoppingListController: UICollectionViewController, UICollectionViewDelega
     let heightCell = GlobalSize().widthScreen*0.15
     let widthCollectionView = GlobalSize().widthScreen*0.8
     
-    let shoppingList = GlobalVariable.listItem
-    let shoppingListQuantity = GlobalVariable.listItemQuantity
+    var shoppingList = [String]()
+    var shoppingListQuantity = [String]()
+    var shoppingListId = [String]()
+    var arrayImageHidden = [Bool]()
+    
+    var idList:String = ""
     
     let btnNextPage = UIButton()
     
@@ -51,6 +56,49 @@ class ShoppingListController: UICollectionViewController, UICollectionViewDelega
         collectionView?.showsVerticalScrollIndicator = false
     }
     
+    //SHOPPINGLIST
+    func getShoppingList() {
+        
+        shoppingList.removeAll()
+        shoppingListId.removeAll()
+        shoppingListQuantity.removeAll()
+        arrayImageHidden.removeAll()
+        
+        var x = 0
+        
+        Alamofire.request("https://api.mhint.eu/shoppinglist?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { JSON in
+            if let json = JSON.result.value as? [String: Any]{
+                self.idList = json["_id"] as! String
+                if let items = json["items"] as? [[String: Any]] {
+                    for item in items {
+                        var value = ""
+                        if let v = item["value"] {
+                            value = v as! String
+                        }
+                        
+                        var unit = ""
+                        if let u = item["unit"] {
+                            unit = u as! String
+                        }
+                        
+                        x += 1
+                        self.shoppingList.append(item["name"]! as! String)
+                        self.shoppingListQuantity.append("\(value) \(unit)")
+                        self.shoppingListId.append(item["_id"]! as! String)
+                        self.arrayImageHidden.append(item["checked"]! as! Bool)
+                        
+                        if items.count == x {
+                            self.shoppingList.reverse()
+                            self.shoppingListQuantity.reverse()
+                            self.shoppingListId.reverse()
+                            self.arrayImageHidden.reverse()
+                            self.collectionView?.reloadData()
+                        }
+                    }
+                }
+            }
+        }
+    }
     
     //COLLECTIONVIEW
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

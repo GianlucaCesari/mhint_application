@@ -101,11 +101,23 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
                 self.idList = json["_id"] as! String
                 if let items = json["items"] as? [[String: Any]] {
                     for item in items {
+                        
+                        var value = ""
+                        if let v = item["value"] {
+                            value = v as! String
+                        }
+                        
+                        var unit = ""
+                        if let u = item["unit"] {
+                            unit = u as! String
+                        }
+                        
                         x += 1
                         shoppingList.append(item["name"]! as! String)
-                        shoppingListQuantity.append("\(item["value"]!) \(item["unit"]!)")
+                        shoppingListQuantity.append("\(value) \(unit)")
                         shoppingListId.append(item["_id"]! as! String)
                         arrayImageHidden.append(item["checked"]! as! Bool)
+                        
                         if items.count == x {
                             shoppingList.reverse()
                             shoppingListQuantity.reverse()
@@ -291,7 +303,6 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
             GlobalVariable.listItem.insert(textTrimmed, at: 0)
             GlobalVariable.listItem.insert(btnAlertQuantity.text! + " " + btnAlertUnity.text!, at: 0)
             
-            print(idList)
             var parameter = [:] as [String : Any]
             if idList == "" {
                 parameter = [
