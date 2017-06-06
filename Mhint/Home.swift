@@ -112,9 +112,9 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         
         self.view.backgroundColor = .white
         self.imgWave = UIImageView (image: self.imgUrlLogo)
-        let marginTopImage = (self.view.frame.height*0.85 - (self.view.frame.width/4))
-        self.imgWave.alpha = 0.2
-        self.imgWave.frame = CGRect(x: 0, y: marginTopImage, width: self.view.frame.width, height: self.view.frame.width/2)
+        self.imgWave.alpha = 0.8
+        self.imgWave.frame = CGRect(x: -self.view.frame.width*0.5, y: self.view.frame.height*0.55, width: self.view.frame.width*2, height: self.view.frame.width)
+        self.view.addSubview(self.imgWave)
         
         self.inputText = UITextField(frame: CGRect(x: 0, y: self.view.frame.height*0.92, width: self.view.frame.width, height: self.view.frame.height*0.08))
         self.inputText.backgroundColor = UIColor.init(red: 250/255, green: 250/255, blue: 250/255, alpha: 1)
@@ -137,9 +137,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         self.inputText.rightViewMode = .always
         self.inputText.addTarget(self, action: #selector(self.textFieldDidChange(inputText:)), for: UIControlEvents.editingChanged)
         
-        self.view.addSubview(self.imgWave)
-        
-        self.imageView = GIFImageView(frame: CGRect(x: 0, y: self.view.frame.height*0.7, width: self.view.frame.width, height: self.view.frame.width/2))
+        self.imageView = GIFImageView(frame: CGRect(x: -self.view.frame.width*0.5, y: self.view.frame.height*0.55, width: self.view.frame.width*2, height: self.view.frame.width))
         self.imageView.animate(withGIFNamed: "load-voice")
         self.imageView.alpha = 0
         self.view.addSubview(self.imageView)
@@ -209,10 +207,10 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         generator.impactOccurred()
         if sender.state == .began {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-            timerListening = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(self.listeningTime), userInfo: nil, repeats: false)
+//            timerListening = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(self.listeningTime), userInfo: nil, repeats: false)
             startRecording()
             startTime = Date().timeIntervalSinceReferenceDate
-            timerListening = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.listeningTime), userInfo: nil, repeats: true)
+//            timerListening = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.listeningTime), userInfo: nil, repeats: true)
             button?.isEnabled = false
             self.inputText.placeholder = "I'm listening..."
             imageView.alpha = 1
