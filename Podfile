@@ -30,6 +30,7 @@ target 'Mhint' do
 
   pod 'Alamofire', '~> 4.4'
   pod 'DMSwipeCards'
+  pod 'ApiAI'
 
   pod 'RevealingSplashView'
  

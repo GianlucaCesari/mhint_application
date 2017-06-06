@@ -17,6 +17,7 @@ import Fabric
 import Firebase
 import Alamofire
 import Whisper
+import ApiAI
 
 //MENU
 import AKSideMenu
@@ -28,6 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
     var chatController = ChatController()
     var chatbotController = ChatBotController()
     var locationManager: CLLocationManager!
+    let apiai = ApiAI.shared()!
     
     
     func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
@@ -36,6 +38,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         self.window!.rootViewController = controllerToShow
     }
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+//        API AI
+        
+        let configuration: AIConfiguration = AIDefaultConfiguration()
+        
+        configuration.clientAccessToken = "fb6d48f1ebf04969b8791576731e4f5b"
+        
+        apiai.configuration = configuration
+        
+        
+        
 //        NOTIFICATIONS REMOTES
         if #available(iOS 10, *) {
             UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }

@@ -1,6 +1,31 @@
 PODS:
   - AKSideMenu (1.3.5)
   - Alamofire (4.4.0)
+  - ApiAI (0.7.0):
+    - ApiAI/AudioFileConverter (= 0.7.0)
+    - ApiAI/Core (= 0.7.0)
+    - ApiAI/Events (= 0.7.0)
+    - ApiAI/ResponseMapping (= 0.7.0)
+    - ApiAI/UIKit (= 0.7.0)
+    - ApiAI/UserEntities (= 0.7.0)
+    - ApiAI/VoiceFileRequest (= 0.7.0)
+    - ApiAI/VoiceRequest (= 0.7.0)
+  - ApiAI/AudioFileConverter (0.7.0):
+    - ApiAI/Core
+  - ApiAI/Core (0.7.0)
+  - ApiAI/Events (0.7.0):
+    - ApiAI/Core
+  - ApiAI/ResponseMapping (0.7.0):
+    - ApiAI/Core
+  - ApiAI/UIKit (0.7.0):
+    - ApiAI/Core
+    - ApiAI/VoiceRequest
+  - ApiAI/UserEntities (0.7.0):
+    - ApiAI/Core
+  - ApiAI/VoiceFileRequest (0.7.0):
+    - ApiAI/Core
+  - ApiAI/VoiceRequest (0.7.0):
+    - ApiAI/Core
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
     - Bolts/Tasks (= 1.8.4)
@@ -72,6 +97,7 @@ PODS:
 DEPENDENCIES:
   - AKSideMenu
   - Alamofire (~> 4.4)
+  - ApiAI
   - DMSwipeCards
   - Fabric
   - FBSDKCoreKit
@@ -92,6 +118,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AKSideMenu: 15c78ef0f6b4fee7e7175f8828b08ae4bcbc86ac
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
+  ApiAI: 25f763ddd88139dc5fe6794a905300244190d168
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   DMSwipeCards: 0f2488120c13eb73366f01e87d1423495cde8ed4
   Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
@@ -117,6 +144,6 @@ SPEC CHECKSUMS:
   TwitterKit: 3b6044a7320340326a4098f3e37aa1dbaeb94942
   Whisper: 051f25e704bf8992641ffd28b20d5682ddc5f5d3
 
-PODFILE CHECKSUM: 4736dce2abe78dd94157ef64402434bce619d71c
+PODFILE CHECKSUM: 1cef823ea4170c0fc3c7d8dc79be97a364d0144d
 
-COCOAPODS: 1.2.0.beta.1
+COCOAPODS: 1.2.1
