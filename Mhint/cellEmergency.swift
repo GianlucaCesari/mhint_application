@@ -32,17 +32,20 @@ class CustomCellEmergency: BaseCellEmergency {
         titleView.textColor = .black
         return titleView
     }()
-    var descriptionEmergency: UILabel = {
-        let titleView = UILabel()
+    var descriptionEmergency: UITextView = {
+        let titleView = UITextView()
         titleView.textColor = .black
+        titleView.layoutMargins.left = -10
+        titleView.isEditable = false
+        titleView.textContainerInset = UIEdgeInsetsMake(0, -4, 0, 0)
         titleView.font = UIFont(name: "AvenirLTStd-Medium", size: 13)
         titleView.backgroundColor = GlobalColor().backgroundCollectionView
         return titleView
     }()
     var peopleRequestEmergency: UILabel = {
         let titleView = UILabel()
-        titleView.textColor = .black
-        titleView.font = UIFont(name: "AvenirLTStd-Medium", size: 14)
+        titleView.textColor = .darkGray
+        titleView.font = UIFont(name: "AvenirLTStd-Light", size: 12)
         titleView.backgroundColor = GlobalColor().backgroundCollectionView
         return titleView
     }()
@@ -50,11 +53,11 @@ class CustomCellEmergency: BaseCellEmergency {
     //BUTTON
     var btnOk: UIButton = {
         var btn = UIButton()
-        let img = UIImage(named: "like")
+        let img = UIImage(named: "ok")
         btn.setImage(img, for: .normal)
         return btn
     }()
-    var btnNope: UIButton = {
+    var btnNo: UIButton = {
         var btn = UIButton()
         let img = UIImage(named: "unlike")
         btn.setImage(img, for: .normal)
@@ -62,16 +65,18 @@ class CustomCellEmergency: BaseCellEmergency {
     }()
     var btnMaps: UIButton = {
         var btn = UIButton()
-        btn.setTitleColor(.black, for: .normal)
+        btn.titleLabel?.textAlignment = .center
+        btn.setTitleColor(.darkGray, for: .normal)
         btn.setTitle("View in map", for: .normal)
-        btn.titleLabel?.font = UIFont(name: "AvenirLTStd-Medium", size: 14)
+        btn.titleLabel?.font = UIFont(name: "AvenirLTStd-Light", size: 12)
         return btn
     }()
     
     //DIVIDE EMERGENCY
     var titleTextViewDivide: UILabel = {
         let titleView = UILabel()
-        titleView.font = UIFont(name: "AvenirLTStd-Heavy", size: 25)
+        titleView.font = UIFont(name: "AvenirLTStd-Heavy", size: 11)
+        titleView.addTextSpacing()
         titleView.text = "[divide]"
         titleView.textColor = .black
         return titleView
@@ -85,7 +90,7 @@ class CustomCellEmergency: BaseCellEmergency {
         self.addSubview(peopleRequestEmergency)
         
         self.addSubview(btnOk)
-        self.addSubview(btnNope)
+        self.addSubview(btnNo)
         self.addSubview(btnMaps)
         
         self.addSubview(titleTextViewDivide)

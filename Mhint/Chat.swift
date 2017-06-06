@@ -154,10 +154,10 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView?.backgroundColor = UIColor.white
         collectionView?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height*0.7)
         collectionView?.collectionViewLayout = layout
-        self.view.addSubview(collectionView!)
         let itemA = self.collectionView(self.collectionView!, numberOfItemsInSection: 0) - 1
         let lastItemIndex = NSIndexPath(item: itemA, section: 0)
         self.collectionView?.scrollToItem(at: lastItemIndex as IndexPath, at: UICollectionViewScrollPosition.bottom, animated: true)
+        self.view.addSubview(collectionView!)
     }
     
     //POSIZIONE

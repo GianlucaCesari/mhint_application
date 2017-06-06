@@ -78,9 +78,9 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
         var imgWave: UIImageView!
         let imgUrlLogo = UIImage(named: "wave")
         imgWave = UIImageView (image: imgUrlLogo)
-        let marginTopImage = (view.frame.height*0.6)
-        imgWave.frame = CGRect(x: 0, y: marginTopImage, width: view.frame.width, height: view.frame.width/2)
-        imgWave.alpha = 1
+        let marginTopImage = (view.frame.height*0.47)
+        imgWave.frame = CGRect(x: -view.frame.width*0.5, y: marginTopImage, width: view.frame.width*2, height: view.frame.width)
+        imgWave.alpha = 0.7
         self.view.addSubview(imgWave)
     }
     

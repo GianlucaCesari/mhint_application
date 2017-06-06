@@ -69,10 +69,12 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             revealingSplashView.startAnimation(){
                 firstOpenHome = true
                 self.openHome()
+                self.view.addSubview(self.collectionView!)
             }
             
         } else {
             openHome()
+            self.view.addSubview(collectionView!)
         }
         
         collectionVieShow()
