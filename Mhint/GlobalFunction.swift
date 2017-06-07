@@ -304,9 +304,7 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
             saveData.set(lat, forKey: "latitudeHistory")
             saveData.set(lon, forKey: "longitudeHistory")
             
-            print("POSIZIONE INVIATA")
-            print("Longitudine: ", lon)
-            print("Latitudine: ", lat)
+            print("POSIZIONE: lon", lon, " lat", lat)
             
         }
         

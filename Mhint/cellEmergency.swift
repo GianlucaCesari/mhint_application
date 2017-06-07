@@ -41,6 +41,7 @@ class CustomCellEmergency: BaseCellEmergency {
         titleView.textContainerInset = UIEdgeInsetsMake(0, -4, 0, 0)
         titleView.font = UIFont(name: "AvenirLTStd-Medium", size: 13)
         titleView.backgroundColor = GlobalColor().backgroundCollectionView
+        titleView.isUserInteractionEnabled = false
         titleView.alpha = 0
         return titleView
     }()

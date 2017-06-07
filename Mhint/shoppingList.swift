@@ -129,7 +129,7 @@ class ShoppingListController: UICollectionViewController, UICollectionViewDelega
     
     //BOTTONE NEXT PAGE
     func nextPage() {
-        btnNextPage.setTitle("Ready go on", for: .normal)
+        btnNextPage.setTitle("Fantastic, go on!", for: .normal)
         btnNextPage.setTitleColor(.black, for: .normal)
         btnNextPage.titleLabel?.font = UIFont(name: "AvenirLTStd-Heavy", size: GlobalSize().widthScreen*0.03)
         btnNextPage.titleLabel?.textAlignment = .center
@@ -147,12 +147,14 @@ class ShoppingListController: UICollectionViewController, UICollectionViewDelega
     func header() {
         GlobalFunc().titlePage(titlePage: "Food & Diet.", s: self)
         
-        let description = UILabel()
-        description.text = "Welcome on Food & Diet section\nHelp you to make\nCiao!"
+        let description = UITextView()
+        description.text = "I already prepared a shopping list for you\nso you don't have to do it!"
         description.textColor = GlobalColor().colorBlack
-        description.numberOfLines = 3
+        description.isEditable = false
+        description.isScrollEnabled = false
+        description.isUserInteractionEnabled = false
         description.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.04)
-        description.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: GlobalSize().heightScreen*0.18, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.1)
+        description.frame = CGRect(x: GlobalSize().widthScreen*0.04, y: GlobalSize().heightScreen*0.18, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.15)
         self.view.addSubview(description)
         
         let titleListView = UILabel()

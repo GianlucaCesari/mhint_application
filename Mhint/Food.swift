@@ -158,11 +158,12 @@ class FoodController: UICollectionViewController, UICollectionViewDelegateFlowLa
         GlobalFunc().titlePage(titlePage: "Food & Diet.", s: self)
         
         let description = UITextView()
-        description.text = "We need to know if you are allergic to something.\nYou know, so we won't hurt you."
-        description.textColor = self.globalColor.colorBlack
+        description.text = "I need to know if you are allergic to something.\nYou know, so I won't hurt you."
+        description.textColor = GlobalColor().colorBlack
         description.isEditable = false
+        description.isScrollEnabled = false
         description.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.04)
-        description.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: GlobalSize().heightScreen*0.18, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.1)
+        description.frame = CGRect(x: GlobalSize().widthScreen*0.04, y: GlobalSize().heightScreen*0.18, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.15)
         self.view.addSubview(description)
         
         let titleListView = UILabel()

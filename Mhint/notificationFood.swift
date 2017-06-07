@@ -17,7 +17,7 @@ class NotificationFoodController: UICollectionViewController, UICollectionViewDe
     let heightCell = GlobalSize().widthScreen*0.14
     let widthCollectionView = GlobalSize().widthScreen*0.8
     
-    let daysInWeek = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+    let daysInWeek = ["On Sunday","On Monday","On Tuesday","On Wednesday","On Thursday","On Friday","On Saturday"]
     
     var indexWeek:Int!
     
@@ -116,7 +116,7 @@ class NotificationFoodController: UICollectionViewController, UICollectionViewDe
     
     //BOTTONE NEXT PAGE
     func nextPage() {
-        btnNextPage.setTitle("Oooooooow, that's all", for: .normal)
+        btnNextPage.setTitle("Perfect, that's all!", for: .normal)
         btnNextPage.setTitleColor(.black, for: .normal)
         btnNextPage.titleLabel?.font = UIFont(name: "AvenirLTStd-Heavy", size: GlobalSize().widthScreen*0.03)
         btnNextPage.titleLabel?.textAlignment = .center
@@ -160,17 +160,19 @@ class NotificationFoodController: UICollectionViewController, UICollectionViewDe
     func header() {
         GlobalFunc().titlePage(titlePage: "Food & Diet.", s: self)
         
-        let description = UILabel()
-        description.text = "Welcome on Food & Diet section\nHelp you to make\nCiao!"
+        let description = UITextView()
+        description.text = "Now just tell me when I can remind you\nto go grocery shopping."
         description.textColor = GlobalColor().colorBlack
-        description.numberOfLines = 3
+        description.isEditable = false
+        description.isScrollEnabled = false
+        description.isUserInteractionEnabled = false
         description.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.04)
-        description.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: GlobalSize().heightScreen*0.18, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.1)
+        description.frame = CGRect(x: GlobalSize().widthScreen*0.04, y: GlobalSize().heightScreen*0.18, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.15)
         self.view.addSubview(description)
         
         
         let titleListView = UILabel()
-        titleListView.text = "When do you want get notificated ?".uppercased()
+        titleListView.text = "When shall I bother you?".uppercased()
         titleListView.textColor = GlobalColor().colorBlack
         titleListView.textAlignment = .center
         titleListView.addTextSpacing()

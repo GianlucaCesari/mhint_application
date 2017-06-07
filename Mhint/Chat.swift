@@ -116,7 +116,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         self.view.addSubview(frameResponse)
         imgWave = UIImageView (image: imgUrlLogo)
         let marginTopImage = (view.frame.height*0.85 - (view.frame.width/4))
-        imgWave.frame = CGRect(x: 0, y: marginTopImage, width: view.frame.width, height: view.frame.width/2)
+        imgWave.frame = CGRect(x: -self.view.frame.width*0.5, y: self.view.frame.height*0.55, width: self.view.frame.width*2, height: self.view.frame.width)
         self.view.addSubview(imgWave)
         
         //FIRST BUTTON
@@ -346,7 +346,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         for x in 0..<self.buttonChat.count {
             self.buttonChat[x].removeFromSuperview()
         }
-        GlobalFunc().loadingChat(s: self, frame: CGRect(x: 0, y: view.frame.height*0.7, width: view.frame.width, height: view.frame.width/2), nameGif: "load-chat")
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: -self.view.frame.width*0.5, y: self.view.frame.height*0.55, width: self.view.frame.width*2, height: self.view.frame.width), nameGif: "load-chat")
         var readTypes = Set<HKObjectType>()
         readTypes.insert(HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.height)!)
         readTypes.insert(HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!)
@@ -441,7 +441,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         for x in 0..<self.buttonChat.count {
             self.buttonChat[x].removeFromSuperview()
         }
-        GlobalFunc().loadingChat(s: self, frame: CGRect(x: 0, y: self.view.frame.height*0.7, width: self.view.frame.width, height: self.view.frame.width/2), nameGif: "load-chat")
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: -self.view.frame.width*0.5, y: self.view.frame.height*0.55, width: self.view.frame.width*2, height: self.view.frame.width), nameGif: "load-chat")
         
         ChatController.boolResponeWithoutButton = true
         archiveMessages?.remove(at: 0)
@@ -637,7 +637,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         for x in 0..<self.buttonChat.count {
             self.buttonChat[x].removeFromSuperview()
         }
-        GlobalFunc().loadingChat(s: self, frame: CGRect(x: 0, y: view.frame.height*0.7, width: view.frame.width, height: view.frame.width/2), nameGif: "load-chat")
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: -self.view.frame.width*0.5, y: self.view.frame.height*0.55, width: self.view.frame.width*2, height: self.view.frame.width), nameGif: "load-chat")
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile", "user_birthday", "user_hometown"], from: self, handler: { //PERMESSI DA CHIEDERE
             (result, err) in
             if result?.token != nil {
@@ -782,7 +782,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         for x in 0..<self.buttonChat.count {
             self.buttonChat[x].removeFromSuperview()
         }
-        GlobalFunc().loadingChat(s: self, frame: CGRect(x: 0, y: view.frame.height*0.7, width: view.frame.width, height: view.frame.width/2), nameGif: "load-chat")
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: -self.view.frame.width*0.5, y: self.view.frame.height*0.55, width: self.view.frame.width*2, height: self.view.frame.width), nameGif: "load-chat")
         GIDSignIn.sharedInstance().signIn()
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.googleResponse), userInfo: nil, repeats: true)
     }
@@ -824,7 +824,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         for x in 0..<self.buttonChat.count {
             self.buttonChat[x].removeFromSuperview()
         }
-        GlobalFunc().loadingChat(s: self, frame: CGRect(x: 0, y: view.frame.height*0.7, width: view.frame.width, height: view.frame.width/2), nameGif: "load-chat")
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: -self.view.frame.width*0.5, y: self.view.frame.height*0.55, width: self.view.frame.width*2, height: self.view.frame.width), nameGif: "load-chat")
         Twitter.sharedInstance().logIn { (session, error) in
             if session != nil {
                 let client = TWTRAPIClient.withCurrentUser()

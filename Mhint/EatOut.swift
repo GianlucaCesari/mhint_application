@@ -135,7 +135,6 @@ class EatOutController: UICollectionViewController, UICollectionViewDelegateFlow
     }
     
     func goToDiet() {
-        print("L'utente: ", GlobalUser.email, " ha gradito: ", arrayImageHidden)
         let newViewController = ListRecipesController(collectionViewLayout: layout)
         self.navigationController?.pushViewController(newViewController, animated: true)
     }
@@ -149,8 +148,10 @@ class EatOutController: UICollectionViewController, UICollectionViewDelegateFlow
         description.text = "You can't possibly eat everyday at home."
         description.textColor = GlobalColor().colorBlack
         description.isEditable = false
+        description.isScrollEnabled = false
+        description.isUserInteractionEnabled = false
         description.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.04)
-        description.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: GlobalSize().heightScreen*0.18, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.1)
+        description.frame = CGRect(x: GlobalSize().widthScreen*0.04, y: GlobalSize().heightScreen*0.18, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.15)
         self.view.addSubview(description)
         
         

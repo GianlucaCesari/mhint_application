@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class EmergencyController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
@@ -22,6 +23,9 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        getEmergency()
+        
         self.view.backgroundColor = .white
         
         if emergencyReceive.count == 0 {
@@ -49,6 +53,12 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         collectionView?.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.29, width: GlobalSize().widthScreen, height:  GlobalSize().heightScreen*0.71)
         collectionView?.register(CustomCellEmergency.self, forCellWithReuseIdentifier: customCellIdentifier)
         self.view.addSubview(collectionView!)
+    }
+    
+    func getEmergency() {
+        Alamofire.request("https://api.mhint.eu/foodpreference?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { response in
+            print(response)
+        }
     }
     
     //COLLECTIONVIEW

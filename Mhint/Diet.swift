@@ -189,8 +189,10 @@ class DietController: UICollectionViewController, UICollectionViewDelegateFlowLa
         description.text = "Everybody has different tastes...\nWhat do you like to eat?"
         description.textColor = GlobalColor().colorBlack
         description.isEditable = false
+        description.isUserInteractionEnabled = false
+        description.isScrollEnabled = false
         description.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.04)
-        description.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: GlobalSize().heightScreen*0.18, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.1)
+        description.frame = CGRect(x: GlobalSize().widthScreen*0.04, y: GlobalSize().heightScreen*0.18, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.15)
         self.view.addSubview(description)
         
         

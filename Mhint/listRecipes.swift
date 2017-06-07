@@ -158,17 +158,19 @@ class ListRecipesController: UICollectionViewController, UICollectionViewDelegat
     func header() {
         GlobalFunc().titlePage(titlePage: "Food & Diet.", s: self)
         
-        let description = UILabel()
-        description.text = "Welcome on Food & Diet section\nHelp you to make\nCiao!"
+        let description = UITextView()
+        description.text = "Here's your weekly plan\nIt should fit you perfectly!"
         description.textColor = GlobalColor().colorBlack
-        description.numberOfLines = 3
+        description.isEditable = false
+        description.isScrollEnabled = false
+        description.isUserInteractionEnabled = false
         description.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.04)
-        description.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: GlobalSize().heightScreen*0.18, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.1)
+        description.frame = CGRect(x: GlobalSize().widthScreen*0.04, y: GlobalSize().heightScreen*0.18, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.15)
         self.view.addSubview(description)
         
         
         let titleListView = UILabel()
-        titleListView.text = "This is yout weekly recipes".uppercased()
+        titleListView.text = "these are your weekly recipes".uppercased()
         titleListView.textColor = GlobalColor().colorBlack
         titleListView.textAlignment = .center
         titleListView.addTextSpacing()
