@@ -143,7 +143,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     func openMaps(_ sender: UIButton) {
         print(sender.tag)
         if (UIApplication.shared.canOpenURL(URL(string:"comgooglemaps://")!)) {
-            let url = "comgooglemaps://?q=40.765819,-73.975866&zoom=14")
+            let url = "comgooglemaps://?q=40.765819,-73.975866&zoom=14"
             UIApplication.shared.open(URL(string: url)!)
         } else {
             if (UIApplication.shared.canOpenURL(URL(string:"http://maps.apple.com")!)) {
