@@ -249,13 +249,13 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                 customCell.descriptionEmergency.alpha = 1
                 customCell.peopleRequestEmergency.alpha = 1
                 
-                customCell.titleEmergency.text = emergencySendFalseName[indexPath.row-emergencyReceive.count].uppercased()
+//                customCell.titleEmergency.text = emergencySendFalseName[indexPath.row-emergencyReceive.count].uppercased()
                 customCell.titleEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.14, width: GlobalSize().widthScreen*0.95, height: heightCell*0.12)
                 
-                customCell.descriptionEmergency.text = emergencySendFalseDescription[indexPath.row-emergencyReceive.count]
+//                customCell.descriptionEmergency.text = emergencySendFalseDescription[indexPath.row-emergencyReceive.count]
                 customCell.descriptionEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.35, width: GlobalSize().widthScreen*0.95, height: heightCell*0.3)
                 
-                customCell.peopleRequestEmergency.text = "Accepted by \(emergencySendFalseUser[indexPath.row-emergencyReceive.count])"
+//                customCell.peopleRequestEmergency.text = "Accepted by \(emergencySendFalseUser[indexPath.row-emergencyReceive.count])"
                 customCell.peopleRequestEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.7, width: GlobalSize().widthScreen*0.95, height: heightCell*0.3)
             }
         } else if indexPath.row < (emergencyReceive.count + emergencySendFalse.count + emergencySendTrue.count) {
@@ -308,12 +308,13 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     //HEADER
     func header() {
         GlobalFunc().titlePage(titlePage: "Needs & Emergency.", s: self)
-        let description = UILabel()
-        description.text = "Welcome on Food & Diet section\nHelp you to make\nCiao!"
+        let description = UITextView()
+        description.text = "Welcome in the Needs & Emergency section\nAsk or answer somebody else needs!"
         description.textColor = GlobalColor().colorBlack
-        description.numberOfLines = 3
+        description.isEditable = false
+        description.isScrollEnabled = false
         description.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.04)
-        description.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: GlobalSize().heightScreen*0.18, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.1)
+        description.frame = CGRect(x: GlobalSize().widthScreen*0.04, y: GlobalSize().heightScreen*0.18, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.15)
         self.view.addSubview(description)
     }
     
@@ -336,7 +337,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     //OK/NO
     func emergencyOk(_ sender: UIButton) {
         
-        GlobalFunc().alertCustom(stringAlertTitle: "Thank's", stringAlertDescription: "You help your friends", button: "OK", s: self)
+        GlobalFunc().alertCustom(stringAlertTitle: "Thanks", stringAlertDescription: "You helped your friend!", button: "OK", s: self)
         emergencySendFalse.insert(emergencyReceive[sender.tag], at: 1)
         emergencyReceive.remove(at: sender.tag)
         allEmergency.removeAll()
