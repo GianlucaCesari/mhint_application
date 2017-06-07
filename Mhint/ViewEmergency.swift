@@ -22,7 +22,10 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     var emergencyReceiveLat = [Double]()
     var emergencyReceiveLon = [Double]()
     
-    var emergencySendFalse = ["accepted", "Empty4", "Empty5"]
+    var emergencySendFalse = ["accepted"]
+    var emergencySendFalseName = [String]()
+    var emergencySendFalseDescription = [String]()
+    var emergencySendFalseUser = [String]()
     
     
     var emergencySendTrue = ["pending"]
@@ -105,7 +108,6 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                         self.allEmergency.append(contentsOf: self.emergencySendFalse)
                         self.allEmergency.append(contentsOf: self.emergencySendTrue)
                         
-                        self.collectionView?.reloadData()
                     }
                 }
             }
@@ -115,7 +117,6 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     func getEmergencyAccepted() {
         Alamofire.request("https://api.mhint.eu/requests?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { response in
             
-            print(response)
             if let items = response.result.value as? [[String: Any]] {
                 self.emergencyReceive.removeAll()
                 for item in items {
@@ -123,7 +124,8 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                     if String(describing: item["status"]!) == "pending" {
                         self.emergencyReceive.append(item["_id"] as! String)
                         self.emergencyReceiveName.append(item["name"] as! String)
-                        if String(describing: item["description"]) != "" {
+                        
+                        if String(describing: item["description"]!) != "" {
                             self.emergencyReceiveDescription.append(item["description"]! as! String)
                         } else {
                             self.emergencyReceiveDescription.append("")
@@ -136,8 +138,31 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                             self.emergencyReceiveLat.append(position["lat"]!)
                             self.emergencyReceiveLon.append(position["long"]!)
                         }
+                    } else if String(describing: item["status"]!) == "accepted" {
+                        
+                        self.emergencySendFalse.append(item["_id"] as! String)
+                        self.emergencySendFalseName.append(item["name"] as! String)
+                        
+                        if String(describing: item["description"]!) != "" {
+                            self.emergencySendFalseDescription.append(item["description"]! as! String)
+                        } else {
+                            self.emergencySendFalseDescription.append("")
+                        }
+                        
+                        if let user = item["user_sender"] as? [String: Any] {
+                            self.emergencySendFalseUser.append(user["name"] as! String)
+                        }
                     }
-                    if self.emergencyReceive.count == items.count {
+                    
+                    print(items.count)
+                    print((self.emergencyReceive.count + self.emergencySendFalse.count))
+                    print((self.emergencyReceive.count))
+                    print((self.emergencySendFalse.count))
+                    
+                    print(self.emergencyReceive)
+                    print(self.emergencySendFalse)
+                    
+                    if (self.emergencyReceive.count + self.emergencySendFalse.count) == items.count {
                         self.allEmergency.removeAll()
                         self.allEmergency.append(contentsOf: self.emergencyReceive)
                         self.allEmergency.append(contentsOf: self.emergencySendFalse)
@@ -177,9 +202,6 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                 customCell.titleTextViewDivide.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: heightCell*0.6)
                 
             } else {
-                
-                print(emergencyReceiveName)
-                print(indexPath.row)
                 
                 customCell.titleEmergency.alpha = 1
                 customCell.descriptionEmergency.alpha = 1
@@ -222,17 +244,18 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                 customCell.titleTextViewDivide.text = "request accepted".uppercased()
                 customCell.titleTextViewDivide.frame = CGRect(x: marginLeft, y: heightCell*0.25, width: GlobalSize().widthScreen, height: heightCell*0.1)
             } else {
+                print(emergencySendFalseName)
                 customCell.titleEmergency.alpha = 1
                 customCell.descriptionEmergency.alpha = 1
                 customCell.peopleRequestEmergency.alpha = 1
                 
-                customCell.titleEmergency.text = "Birre".uppercased()
+                customCell.titleEmergency.text = emergencySendFalseName[indexPath.row-emergencyReceive.count].uppercased()
                 customCell.titleEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.14, width: GlobalSize().widthScreen*0.95, height: heightCell*0.12)
                 
-                customCell.descriptionEmergency.text = "6 bottiglie di Becks doppio malto nella confezione di cartone."
+                customCell.descriptionEmergency.text = emergencySendFalseDescription[indexPath.row-emergencyReceive.count]
                 customCell.descriptionEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.35, width: GlobalSize().widthScreen*0.95, height: heightCell*0.3)
                 
-                customCell.peopleRequestEmergency.text = "Accept by Merli Andrea at 12:13pm"
+                customCell.peopleRequestEmergency.text = "Accepted by \(emergencySendFalseUser[indexPath.row-emergencyReceive.count])"
                 customCell.peopleRequestEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.7, width: GlobalSize().widthScreen*0.95, height: heightCell*0.3)
             }
         } else if indexPath.row < (emergencyReceive.count + emergencySendFalse.count + emergencySendTrue.count) {
