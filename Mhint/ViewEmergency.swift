@@ -56,7 +56,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     }
     
     func getEmergency() {
-        Alamofire.request("https://api.mhint.eu/foodpreference?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { response in
+        Alamofire.request("https://api.mhint.eu/needs?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { response in
             print(response)
         }
     }
