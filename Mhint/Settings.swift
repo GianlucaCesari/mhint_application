@@ -181,11 +181,11 @@ class SettingsController: UICollectionViewController, UICollectionViewDelegateFl
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.row == 2{
             return CGSize(width: view.frame.width, height: 70)
-        }
-        else if(indexPath.row > 2){
+        } else if(indexPath.row > 2){
             return CGSize(width: view.frame.width, height: 70)
+        } else {
+            return CGSize(width: view.frame.width, height: 90)
         }
-        return CGSize(width: view.frame.width, height: 90)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

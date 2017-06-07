@@ -78,9 +78,9 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
         var imgWave: UIImageView!
         let imgUrlLogo = UIImage(named: "wave")
         imgWave = UIImageView (image: imgUrlLogo)
-        let marginTopImage = (view.frame.height*0.6)
-        imgWave.frame = CGRect(x: 0, y: marginTopImage, width: view.frame.width, height: view.frame.width/2)
-        imgWave.alpha = 0.3
+        let marginTopImage = (view.frame.height*0.47)
+        imgWave.frame = CGRect(x: -view.frame.width*0.5, y: marginTopImage, width: view.frame.width*2, height: view.frame.width)
+        imgWave.alpha = 0.7
         self.view.addSubview(imgWave)
     }
     
@@ -104,7 +104,8 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
         
             case 1:
                 if saveData.bool(forKey: "need") {
-                    self.sideMenuViewController!.setContentViewController(UINavigationController.init(rootViewController: EmergencyController()), animated: true)
+                    let emergencyView = EmergencyController(collectionViewLayout: layout)
+                    self.sideMenuViewController!.setContentViewController(UINavigationController.init(rootViewController: emergencyView), animated: true)
                     self.sideMenuViewController!.hideMenuViewController()
                 } else {
                     GlobalFunc().alertCustom(stringAlertTitle: "Need section not available", stringAlertDescription: "You need to activate this section", button:"Ok", s: self)

@@ -170,8 +170,7 @@ class botController: UIViewController, UITextFieldDelegate, SKStoreProductViewCo
                 } else {
                     let url  = NSURL(string: "itms://itunes.apple.com/us/app/telegram-messenger/id686449807?mt=8")
                     if UIApplication.shared.canOpenURL(url! as URL) == true  {
-                        UIApplication.shared
-                            .openURL(url! as URL)
+                        UIApplication.shared.open(url! as URL)
                     }
                     
                 }
