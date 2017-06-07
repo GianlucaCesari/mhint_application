@@ -32,13 +32,13 @@
 		165458C21ED2E4B500088A22 /* eatOutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165458C11ED2E4B500088A22 /* eatOutCell.swift */; };
 		16561D7B1ED826AF0040509C /* HomeDetailsRecipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16561D7A1ED826AF0040509C /* HomeDetailsRecipes.swift */; };
 		16561D7D1ED8589A0040509C /* HomeDetailsRecipesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16561D7C1ED8589A0040509C /* HomeDetailsRecipesCell.swift */; };
+		165C45B81EE83E8100411CCD /* ViewEmergency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165C45B71EE83E8100411CCD /* ViewEmergency.swift */; };
 		166AFC961ED42128008FF8F4 /* listRecipesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166AFC951ED42128008FF8F4 /* listRecipesCell.swift */; };
 		166AFC981ED4706F008FF8F4 /* shoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166AFC971ED4706F008FF8F4 /* shoppingList.swift */; };
 		166AFC9B1ED471CC008FF8F4 /* shoppingListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166AFC9A1ED471CC008FF8F4 /* shoppingListCell.swift */; };
 		1688FA771EE71F950087A441 /* cellEmergency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688FA761EE71F950087A441 /* cellEmergency.swift */; };
 		168B94351ECEEC9C00372475 /* foodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168B94341ECEEC9C00372475 /* foodCell.swift */; };
 		168B94381ED061E600372475 /* Diet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168B94371ED061E600372475 /* Diet.swift */; };
-		168B943B1ED0642E00372475 /* Emergency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168B943A1ED0642E00372475 /* Emergency.swift */; };
 		168B943D1ED0643C00372475 /* Minth4you.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168B943C1ED0643C00372475 /* Minth4you.swift */; };
 		168B943F1ED0644600372475 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168B943E1ED0644600372475 /* Food.swift */; };
 		168B94411ED0657000372475 /* Teaching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168B94401ED0657000372475 /* Teaching.swift */; };
@@ -110,13 +110,13 @@
 		165458C11ED2E4B500088A22 /* eatOutCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = eatOutCell.swift; path = Mhint/eatOutCell.swift; sourceTree = "<group>"; };
 		16561D7A1ED826AF0040509C /* HomeDetailsRecipes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeDetailsRecipes.swift; path = Mhint/HomeDetailsRecipes.swift; sourceTree = "<group>"; };
 		16561D7C1ED8589A0040509C /* HomeDetailsRecipesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeDetailsRecipesCell.swift; path = Mhint/HomeDetailsRecipesCell.swift; sourceTree = "<group>"; };
+		165C45B71EE83E8100411CCD /* ViewEmergency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ViewEmergency.swift; path = Mhint/ViewEmergency.swift; sourceTree = "<group>"; };
 		166AFC951ED42128008FF8F4 /* listRecipesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = listRecipesCell.swift; path = Mhint/listRecipesCell.swift; sourceTree = "<group>"; };
 		166AFC971ED4706F008FF8F4 /* shoppingList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = shoppingList.swift; path = Mhint/shoppingList.swift; sourceTree = "<group>"; };
 		166AFC9A1ED471CC008FF8F4 /* shoppingListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = shoppingListCell.swift; path = Mhint/shoppingListCell.swift; sourceTree = "<group>"; };
 		1688FA761EE71F950087A441 /* cellEmergency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = cellEmergency.swift; path = Mhint/cellEmergency.swift; sourceTree = "<group>"; };
 		168B94341ECEEC9C00372475 /* foodCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = foodCell.swift; path = Mhint/foodCell.swift; sourceTree = "<group>"; };
 		168B94371ED061E600372475 /* Diet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Diet.swift; path = Mhint/Diet.swift; sourceTree = "<group>"; };
-		168B943A1ED0642E00372475 /* Emergency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Emergency.swift; sourceTree = "<group>"; };
 		168B943C1ED0643C00372475 /* Minth4you.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Minth4you.swift; path = Mhint/Minth4you.swift; sourceTree = "<group>"; };
 		168B943E1ED0644600372475 /* Food.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Food.swift; path = Mhint/Food.swift; sourceTree = "<group>"; };
 		168B94401ED0657000372475 /* Teaching.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Teaching.swift; path = Mhint/Teaching.swift; sourceTree = "<group>"; };
@@ -304,7 +304,7 @@
 		1688FA751EE71F640087A441 /* Emergency */ = {
 			isa = PBXGroup;
 			children = (
-				168B943A1ED0642E00372475 /* Emergency.swift */,
+				165C45B71EE83E8100411CCD /* ViewEmergency.swift */,
 				1688FA761EE71F950087A441 /* cellEmergency.swift */,
 			);
 			name = Emergency;
@@ -804,9 +804,9 @@
 				168B943D1ED0643C00372475 /* Minth4you.swift in Sources */,
 				168B94431ED08DF800372475 /* dietCell.swift in Sources */,
 				165458BF1ED2E34200088A22 /* EatOut.swift in Sources */,
+				165C45B81EE83E8100411CCD /* ViewEmergency.swift in Sources */,
 				16D917BB1EA7C1940049394A /* GlobalFunction.swift in Sources */,
 				160962161EC07B1A00C5B4B0 /* GlobalVariable.swift in Sources */,
-				168B943B1ED0642E00372475 /* Emergency.swift in Sources */,
 				1635E76A1EBF5D040079E64E /* CellSettings.swift in Sources */,
 				1620D9161ED47D5E0045873A /* notificationFoodCell.swift in Sources */,
 				160547001EDDA07300D1253E /* Home.swift in Sources */,
