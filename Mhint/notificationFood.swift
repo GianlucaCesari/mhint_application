@@ -87,9 +87,10 @@ class NotificationFoodController: UICollectionViewController, UICollectionViewDe
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         for x in 0..<arrayImageHidden.count {
-            let cell = collectionView.cellForItem(at: IndexPath(row: x, section: 0)) as! CustomCellChooseNotificationFood
-            let imageGreen = UIImage(named: "check-false")
-            cell.checkImageBtn.image = imageGreen
+            if let cell = collectionView.cellForItem(at: IndexPath(row: x, section: 0)) as? CustomCellChooseNotificationFood {
+                let imageGreen = UIImage(named: "check-false")
+                cell.checkImageBtn.image = imageGreen
+            }
             arrayImageHidden[x] = false
         }
         

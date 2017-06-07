@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class FoodController: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     
@@ -16,16 +17,35 @@ class FoodController: UICollectionViewController, UICollectionViewDelegateFlowLa
     let cellId = "cellFood"
     var arrayImageHidden = [Bool]()
     let btnNextPage = UIButton()
-    var arrayImageUrl = ["https://static.webshopapp.com/shops/117992/files/074289974/fragola-sciroppo-di-frutta.jpg", "http://2.bp.blogspot.com/-io5eUZyG3r4/UVsHVJE1m5I/AAAAAAAAAB0/TS6rpkOefuI/s1600/apples.jpg", "https://cdn.shopify.com/s/files/1/1266/3527/products/pears-imported_1024x1024.jpg?v=1464591452","https://cdn.shopify.com/s/files/1/1294/9917/products/mysore_bananas_-_miami_fruit_Cropped_1024x1024.jpg?v=1473362182", "https://static.webshopapp.com/shops/117992/files/074295791/mango-fruit-syrup.jpg", "http://cdn.shopify.com/s/files/1/0320/6761/products/vanilla_98d03448-4699-4754-b275-9d211246cd7c_1024x1024.jpeg?v=1459328219", "http://www.labottegadiviola.it/img_up/big/20161104134546-504.jpg", "https://cdn.shopify.com/s/files/1/1090/0504/products/shutterstock_189958823-OldCheddar.jpg?v=1457202813", "http://blogs.kcrw.com/goodfood/wp-content/uploads/2013/04/Avocado-1024x1024.jpg", "https://cdn.shopify.com/s/files/1/1143/3886/products/cucumber_1024x1024.jpg?v=1485981121", "https://cdn.shopify.com/s/files/1/0999/8746/products/brizilian10x10_1024x1024.jpg?v=1454165753", "http://static3.depositphotos.com/1005951/225/i/950/depositphotos_2252831-stock-photo-potato-pattern.jpg","https://static.webshopapp.com/shops/117992/files/074289974/fragola-sciroppo-di-frutta.jpg", "http://2.bp.blogspot.com/-io5eUZyG3r4/UVsHVJE1m5I/AAAAAAAAAB0/TS6rpkOefuI/s1600/apples.jpg", "https://static.webshopapp.com/shops/117992/files/074291696/pineapple-fruit-syrup.jpg", "https://cdn.shopify.com/s/files/1/1266/3527/products/pears-imported_1024x1024.jpg?v=1464591452","https://cdn.shopify.com/s/files/1/1294/9917/products/mysore_bananas_-_miami_fruit_Cropped_1024x1024.jpg?v=1473362182", "https://static.webshopapp.com/shops/117992/files/074295791/mango-fruit-syrup.jpg", "http://cdn.shopify.com/s/files/1/0320/6761/products/vanilla_98d03448-4699-4754-b275-9d211246cd7c_1024x1024.jpeg?v=1459328219", "http://www.labottegadiviola.it/img_up/big/20161104134546-504.jpg", "https://cdn.shopify.com/s/files/1/1090/0504/products/shutterstock_189958823-OldCheddar.jpg?v=1457202813", "http://blogs.kcrw.com/goodfood/wp-content/uploads/2013/04/Avocado-1024x1024.jpg", "https://cdn.shopify.com/s/files/1/1143/3886/products/cucumber_1024x1024.jpg?v=1485981121", "https://cdn.shopify.com/s/files/1/0999/8746/products/brizilian10x10_1024x1024.jpg?v=1454165753","https://cdn.shopify.com/s/files/1/1294/9917/products/mysore_bananas_-_miami_fruit_Cropped_1024x1024.jpg?v=1473362182", "https://static.webshopapp.com/shops/117992/files/074295791/mango-fruit-syrup.jpg", "http://cdn.shopify.com/s/files/1/0320/6761/products/vanilla_98d03448-4699-4754-b275-9d211246cd7c_1024x1024.jpeg?v=1459328219", "http://www.labottegadiviola.it/img_up/big/20161104134546-504.jpg", "https://cdn.shopify.com/s/files/1/1090/0504/products/shutterstock_189958823-OldCheddar.jpg?v=1457202813", "http://blogs.kcrw.com/goodfood/wp-content/uploads/2013/04/Avocado-1024x1024.jpg", "https://cdn.shopify.com/s/files/1/1143/3886/products/cucumber_1024x1024.jpg?v=1485981121", "https://cdn.shopify.com/s/files/1/0999/8746/products/brizilian10x10_1024x1024.jpg?v=1454165753","https://cdn.shopify.com/s/files/1/1294/9917/products/mysore_bananas_-_miami_fruit_Cropped_1024x1024.jpg?v=1473362182", "https://static.webshopapp.com/shops/117992/files/074295791/mango-fruit-syrup.jpg", "http://cdn.shopify.com/s/files/1/0320/6761/products/vanilla_98d03448-4699-4754-b275-9d211246cd7c_1024x1024.jpeg?v=1459328219", "http://www.labottegadiviola.it/img_up/big/20161104134546-504.jpg", "https://cdn.shopify.com/s/files/1/1090/0504/products/shutterstock_189958823-OldCheddar.jpg?v=1457202813", "http://blogs.kcrw.com/goodfood/wp-content/uploads/2013/04/Avocado-1024x1024.jpg", "https://cdn.shopify.com/s/files/1/1143/3886/products/cucumber_1024x1024.jpg?v=1485981121", "https://cdn.shopify.com/s/files/1/0999/8746/products/brizilian10x10_1024x1024.jpg?v=1454165753","https://cdn.shopify.com/s/files/1/1294/9917/products/mysore_bananas_-_miami_fruit_Cropped_1024x1024.jpg?v=1473362182", "https://static.webshopapp.com/shops/117992/files/074295791/mango-fruit-syrup.jpg", "http://cdn.shopify.com/s/files/1/0320/6761/products/vanilla_98d03448-4699-4754-b275-9d211246cd7c_1024x1024.jpeg?v=1459328219", "http://www.labottegadiviola.it/img_up/big/20161104134546-504.jpg", "https://cdn.shopify.com/s/files/1/1090/0504/products/shutterstock_189958823-OldCheddar.jpg?v=1457202813", "http://blogs.kcrw.com/goodfood/wp-content/uploads/2013/04/Avocado-1024x1024.jpg", "https://cdn.shopify.com/s/files/1/1143/3886/products/cucumber_1024x1024.jpg?v=1485981121", "https://cdn.shopify.com/s/files/1/0999/8746/products/brizilian10x10_1024x1024.jpg?v=1454165753","https://cdn.shopify.com/s/files/1/1294/9917/products/mysore_bananas_-_miami_fruit_Cropped_1024x1024.jpg?v=1473362182", "https://static.webshopapp.com/shops/117992/files/074295791/mango-fruit-syrup.jpg", "http://cdn.shopify.com/s/files/1/0320/6761/products/vanilla_98d03448-4699-4754-b275-9d211246cd7c_1024x1024.jpeg?v=1459328219", "http://www.labottegadiviola.it/img_up/big/20161104134546-504.jpg", "https://cdn.shopify.com/s/files/1/1090/0504/products/shutterstock_189958823-OldCheddar.jpg?v=1457202813", "http://blogs.kcrw.com/goodfood/wp-content/uploads/2013/04/Avocado-1024x1024.jpg", "https://cdn.shopify.com/s/files/1/1143/3886/products/cucumber_1024x1024.jpg?v=1485981121", "https://cdn.shopify.com/s/files/1/0999/8746/products/brizilian10x10_1024x1024.jpg?v=1454165753"]
+    var arrayImageUrl = [String]()
+    var arrayId = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
         globalFunction.navBar(nav: navigationItem, s: self, show: true) //navigation bar
+        GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "ALLERGIES")
         
+        getImage()
         header()
         collectionViewFunc()
+        
+    }
+    
+    //GET IMAGE
+    func getImage() {
+        Alamofire.request("https://api.mhint.eu/getallergens", encoding: JSONEncoding.default).responseJSON { response in
+            if let items = response.result.value as? [[String: Any]] {
+                for item in items {
+                    self.arrayImageUrl.append(item["img_url"]! as! String)
+                    self.arrayId.append(item["_id"]! as! String)
+                    if items.count == self.arrayImageUrl.count {
+                        self.collectionView?.reloadData()
+                    }
+                }
+            }
+        }
     }
     
     //COLLECTIONVIEW
@@ -42,13 +62,11 @@ class FoodController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView?.register(CustomCellChooseIngredient.self, forCellWithReuseIdentifier: cellId)
         collectionView?.showsHorizontalScrollIndicator = false
         collectionView?.showsVerticalScrollIndicator = false
-        
         nextPage()
-        
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 30
+        return self.arrayImageUrl.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -118,7 +136,20 @@ class FoodController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func goToDiet() {
-        print("L'utente: ", GlobalUser.email, " ha gradito: ", arrayImageHidden)
+        var arrayOk = [String]()
+        var x:Int = 0
+        for _ in arrayImageHidden {
+            if arrayImageHidden[x] == true {
+                arrayOk.append(arrayId[x])
+            }
+            x += 1
+        }
+        let parameter = [
+            "mail": GlobalUser.email
+            , "allergens": arrayOk
+        ] as [String : Any]
+        Alamofire.request("https://api.mhint.eu/userallergens", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in }
+        
         let newViewController = DietController(collectionViewLayout: layout)
         self.navigationController?.pushViewController(newViewController, animated: true)
     }
@@ -126,16 +157,16 @@ class FoodController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func header() {
         GlobalFunc().titlePage(titlePage: "Food & Diet.", s: self)
         
-        let description = UILabel()
-        description.text = "Welcome on Food & Diet section\nHelp you to make\nCiao!"
+        let description = UITextView()
+        description.text = "We need to know if you are allergic to something.\nYou know, so we won't hurt you."
         description.textColor = self.globalColor.colorBlack
-        description.numberOfLines = 3
+        description.isEditable = false
         description.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.04)
         description.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: GlobalSize().heightScreen*0.18, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.1)
         self.view.addSubview(description)
         
         let titleListView = UILabel()
-        titleListView.text = "SELEZIONA I TUOI CIBI PREFERITI"
+        titleListView.text = "CHOOSE THE ALLERGENS"
         titleListView.textColor = self.globalColor.colorBlack
         titleListView.textAlignment = .center
         titleListView.addTextSpacing()

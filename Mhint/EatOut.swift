@@ -16,7 +16,7 @@ class EatOutController: UICollectionViewController, UICollectionViewDelegateFlow
     let heightCell = GlobalSize().widthScreen*0.15
     let widthCollectionView = GlobalSize().widthScreen*0.8
     
-    let daysInWeek = ["1-2 Giorni", "3-4 Giorni", "5-6 Giorni", "Tutti i pranzi della settimana", "Tutte le cene del week-end", "Colazione al bar"]
+    let daysInWeek = ["1-2 days", "3-4 days", "5-6 days", "Every lunch", "week-end dinners", "Breakfast out"]
     
     var arrayImageHidden = [Bool]()
     let btnNextPage = UIButton()
@@ -87,9 +87,10 @@ class EatOutController: UICollectionViewController, UICollectionViewDelegateFlow
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         for x in 0..<arrayImageHidden.count {
-            let cell = collectionView.cellForItem(at: IndexPath(row: x, section: 0)) as! CustomCellChooseEatOut
-            let imageGreen = UIImage(named: "check-false")
-            cell.checkImageBtn.image = imageGreen
+            if let cell = collectionView.cellForItem(at: IndexPath(row: x, section: 0)) as? CustomCellChooseEatOut {
+                let imageGreen = UIImage(named: "check-false")
+                cell.checkImageBtn.image = imageGreen
+            }
             arrayImageHidden[x] = false
         }
         
@@ -144,10 +145,10 @@ class EatOutController: UICollectionViewController, UICollectionViewDelegateFlow
     func header() {
         GlobalFunc().titlePage(titlePage: "Food & Diet.", s: self)
         
-        let description = UILabel()
-        description.text = "Welcome on Food & Diet section\nHelp you to make\nCiao!"
+        let description = UITextView()
+        description.text = "You can't possibly eat everyday at home."
         description.textColor = GlobalColor().colorBlack
-        description.numberOfLines = 3
+        description.isEditable = false
         description.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.04)
         description.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: GlobalSize().heightScreen*0.18, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.1)
         self.view.addSubview(description)

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class DietController: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     
@@ -14,7 +15,14 @@ class DietController: UICollectionViewController, UICollectionViewDelegateFlowLa
     let heightCell = GlobalSize().widthScreen*0.44
     var arrayImageHidden = [Bool]()
     let btnNextPage = UIButton()
-    var arrayImageUrl = ["http://www.zcscompany.com/images/uploads/news/Food_Social.jpg", "https://8bnztmont6-flywheel.netdna-ssl.com/wp-content/uploads/2016/03/foodiesfeed.com_vegetable-party-snacks-e1459624020156.jpg", "http://www.getintofitnesstoday.net/wp-content/uploads/2016/12/Food-for-thought-1024x512.jpg","http://www.zcscompany.com/images/uploads/news/Food_Social.jpg", "https://8bnztmont6-flywheel.netdna-ssl.com/wp-content/uploads/2016/03/foodiesfeed.com_vegetable-party-snacks-e1459624020156.jpg", "http://www.getintofitnesstoday.net/wp-content/uploads/2016/12/Food-for-thought-1024x512.jpg","http://www.zcscompany.com/images/uploads/news/Food_Social.jpg", "https://8bnztmont6-flywheel.netdna-ssl.com/wp-content/uploads/2016/03/foodiesfeed.com_vegetable-party-snacks-e1459624020156.jpg", "http://www.getintofitnesstoday.net/wp-content/uploads/2016/12/Food-for-thought-1024x512.jpg", "http://www.getintofitnesstoday.net/wp-content/uploads/2016/12/Food-for-thought-1024x512.jpg","http://www.zcscompany.com/images/uploads/news/Food_Social.jpg", "https://8bnztmont6-flywheel.netdna-ssl.com/wp-content/uploads/2016/03/foodiesfeed.com_vegetable-party-snacks-e1459624020156.jpg", "http://www.getintofitnesstoday.net/wp-content/uploads/2016/12/Food-for-thought-1024x512.jpg","http://www.zcscompany.com/images/uploads/news/Food_Social.jpg", "https://8bnztmont6-flywheel.netdna-ssl.com/wp-content/uploads/2016/03/foodiesfeed.com_vegetable-party-snacks-e1459624020156.jpg", "http://www.getintofitnesstoday.net/wp-content/uploads/2016/12/Food-for-thought-1024x512.jpg", "http://www.getintofitnesstoday.net/wp-content/uploads/2016/12/Food-for-thought-1024x512.jpg","http://www.zcscompany.com/images/uploads/news/Food_Social.jpg", "https://8bnztmont6-flywheel.netdna-ssl.com/wp-content/uploads/2016/03/foodiesfeed.com_vegetable-party-snacks-e1459624020156.jpg", "http://www.getintofitnesstoday.net/wp-content/uploads/2016/12/Food-for-thought-1024x512.jpg","http://www.zcscompany.com/images/uploads/news/Food_Social.jpg", "https://8bnztmont6-flywheel.netdna-ssl.com/wp-content/uploads/2016/03/foodiesfeed.com_vegetable-party-snacks-e1459624020156.jpg", "http://www.getintofitnesstoday.net/wp-content/uploads/2016/12/Food-for-thought-1024x512.jpg"]
+    
+    var idClick = ""
+    
+    var arrayImageUrl = [String]()
+    var arrayId = [String]()
+    var arrayName = [String]()
+    var arrayDescription = [String]()
+    var arrayKcal = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +30,7 @@ class DietController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "DIET")
         header()
+        getImage()
         
         let btnMenu = UIButton.init(type: .custom)
         let imgMenu = UIImage(named: "arrowLeft")
@@ -45,9 +54,27 @@ class DietController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView?.showsVerticalScrollIndicator = false
     }
     
+    
+    func getImage() {
+        Alamofire.request("https://api.mhint.eu/getdiets", encoding: JSONEncoding.default).responseJSON { response in
+            if let items = response.result.value as? [[String: Any]] {
+                for item in items {
+                    self.arrayImageUrl.append(item["img_url"]! as! String)
+                    self.arrayId.append(item["_id"]! as! String)
+                    self.arrayName.append(item["name"]! as! String)
+                    self.arrayDescription.append(item["description"]! as! String)
+                    self.arrayKcal.append(item["kcal"]! as! String)
+                    if items.count == self.arrayImageUrl.count {
+                        self.collectionView?.reloadData()
+                    }
+                }
+            }
+        }
+    }
+    
     //COLLECTIONVIEW
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return arrayImageUrl.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -63,15 +90,15 @@ class DietController: UICollectionViewController, UICollectionViewDelegateFlowLa
         cell.imageIngredientBackground.frame = CGRect(x: marginPhoto/2, y: 0, width: heightCell-marginPhoto, height: GlobalSize().widthScreen*0.2)
         cell.overlayImageButton.frame = CGRect(x: marginPhoto/2, y: 0, width: heightCell-marginPhoto, height: GlobalSize().widthScreen*0.2)
         
-        cell.titleDiet.text = "italian style".uppercased()
+        cell.titleDiet.text = arrayName[indexPath.row].uppercased()
         cell.titleDiet.addTextSpacing()
         cell.titleDiet.frame = CGRect(x: marginPhoto/2, y: GlobalSize().widthScreen*0.225, width: heightCell-marginPhoto, height: GlobalSize().widthScreen*0.04)
         
-        cell.calorieDiet.text = ("Calorie medie: 45kcal").capitalized
+        cell.calorieDiet.text = (arrayKcal[indexPath.row]).capitalized
         cell.calorieDiet.frame = CGRect(x: marginPhoto/2, y: GlobalSize().widthScreen*0.27, width: heightCell-marginPhoto, height: GlobalSize().widthScreen*0.04)
         
         cell.ingridientDiet.numberOfLines = 2
-        cell.ingridientDiet.text = "Latte, Yogurt, Cereali,\nCaffe, Te..."
+        cell.ingridientDiet.text = arrayDescription[indexPath.row]
         cell.ingridientDiet.frame = CGRect(x: marginPhoto/2, y: GlobalSize().widthScreen*0.315, width: heightCell-marginPhoto, height: GlobalSize().widthScreen*0.1)
         
         if arrayImageHidden.count < (indexPath.row + 1) {
@@ -94,6 +121,15 @@ class DietController: UICollectionViewController, UICollectionViewDelegateFlowLa
         return CGSize(width: heightCell, height: heightCell)
     }
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        for x in 0..<arrayImageHidden.count {
+            if let cell = collectionView.cellForItem(at: IndexPath(row: x, section: 0)) as? CustomCellChooseDiet {
+                let imageGreen = UIImage(named: "overlayIngredientImage0")
+                cell.overlayImageButton.image = imageGreen
+            }
+            arrayImageHidden[x] = false
+        }
+        
         let cell = collectionView.cellForItem(at: indexPath) as! CustomCellChooseDiet
         
         var boolImage = Bool()
@@ -109,6 +145,7 @@ class DietController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let imageGreen = UIImage(named: stringImage)
         cell.overlayImageButton.image = imageGreen
         arrayImageHidden[indexPath.row] = boolImage
+        idClick = arrayId[indexPath.row]
         
         nextPage()
     }
@@ -135,7 +172,11 @@ class DietController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func goToDiet() {
-        print("L'utente: ", GlobalUser.email, " ha gradito: ", arrayImageHidden)
+        let parameter = [
+            "mail": GlobalUser.email
+            , "diet_id": idClick
+        ] as [String : Any]
+        Alamofire.request("https://api.mhint.eu/userdiet", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in }
         let newViewController = EatOutController(collectionViewLayout: layout)
         self.navigationController?.pushViewController(newViewController, animated: true)
     }
@@ -144,17 +185,17 @@ class DietController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func header() {
         GlobalFunc().titlePage(titlePage: "Food & Diet.", s: self)
         
-        let description = UILabel()
-        description.text = "Welcome on Food & Diet section\nHelp you to make\nCiao!"
+        let description = UITextView()
+        description.text = "Everybody has different tastes...\nWhat do you like to eat?"
         description.textColor = GlobalColor().colorBlack
-        description.numberOfLines = 3
+        description.isEditable = false
         description.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.04)
         description.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: GlobalSize().heightScreen*0.18, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.1)
         self.view.addSubview(description)
         
         
         let titleListView = UILabel()
-        titleListView.text = "SELECT SOME DIET"
+        titleListView.text = "SELECT A DIET"
         titleListView.textColor = GlobalColor().colorBlack
         titleListView.textAlignment = .center
         titleListView.addTextSpacing()
