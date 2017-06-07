@@ -30,6 +30,7 @@ class CustomCellEmergency: BaseCellEmergency {
         titleView.font = UIFont(name: "AvenirLTStd-Heavy", size: 12)
         titleView.backgroundColor = GlobalColor().backgroundCollectionView
         titleView.textColor = .black
+        titleView.alpha = 0
         return titleView
     }()
     var descriptionEmergency: UITextView = {
@@ -40,6 +41,7 @@ class CustomCellEmergency: BaseCellEmergency {
         titleView.textContainerInset = UIEdgeInsetsMake(0, -4, 0, 0)
         titleView.font = UIFont(name: "AvenirLTStd-Medium", size: 13)
         titleView.backgroundColor = GlobalColor().backgroundCollectionView
+        titleView.alpha = 0
         return titleView
     }()
     var peopleRequestEmergency: UILabel = {
@@ -47,6 +49,7 @@ class CustomCellEmergency: BaseCellEmergency {
         titleView.textColor = .darkGray
         titleView.font = UIFont(name: "AvenirLTStd-Light", size: 12)
         titleView.backgroundColor = GlobalColor().backgroundCollectionView
+        titleView.alpha = 0
         return titleView
     }()
     
@@ -55,12 +58,14 @@ class CustomCellEmergency: BaseCellEmergency {
         var btn = UIButton()
         let img = UIImage(named: "ok")
         btn.setImage(img, for: .normal)
+        btn.alpha = 0
         return btn
     }()
     var btnNo: UIButton = {
         var btn = UIButton()
         let img = UIImage(named: "unlike")
         btn.setImage(img, for: .normal)
+        btn.alpha = 0
         return btn
     }()
     var btnMaps: UIButton = {
@@ -69,6 +74,7 @@ class CustomCellEmergency: BaseCellEmergency {
         btn.setTitleColor(.darkGray, for: .normal)
         btn.setTitle("View in map", for: .normal)
         btn.titleLabel?.font = UIFont(name: "AvenirLTStd-Light", size: 12)
+        btn.alpha = 0
         return btn
     }()
     
@@ -79,6 +85,7 @@ class CustomCellEmergency: BaseCellEmergency {
         titleView.addTextSpacing()
         titleView.text = "[divide]"
         titleView.textColor = .black
+        titleView.alpha = 0
         return titleView
     }()
     

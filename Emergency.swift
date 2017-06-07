@@ -14,9 +14,9 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     
     let heightCell = GlobalSize().heightScreen*0.2
     
-    var emergencyReceive = ["Empty", "Empty"]
-    let emergencySendFalse = ["accepted", "Empty", "Empty"]
-    let emergencySendTrue = ["pending", "Empty", "Empty"]
+    var emergencyReceive = ["Empty1", "Empty2", "Empty3"]
+    var emergencySendFalse = ["accepted", "Empty4", "Empty5"]
+    var emergencySendTrue = ["pending", "Empty6", "Empty7"]
     
     var allEmergency = [String]()
     
@@ -24,6 +24,9 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
+        if emergencyReceive.count == 0 {
+            emergencyReceive.append("no-request")
+        }
         allEmergency.append(contentsOf: emergencyReceive)
         allEmergency.append(contentsOf: emergencySendFalse)
         allEmergency.append(contentsOf: emergencySendTrue)
@@ -45,7 +48,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         collectionView?.contentInset.top = -60
         collectionView?.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.29, width: GlobalSize().widthScreen, height:  GlobalSize().heightScreen*0.71)
         collectionView?.register(CustomCellEmergency.self, forCellWithReuseIdentifier: customCellIdentifier)
-        
+        self.view.addSubview(collectionView!)
     }
     
     //COLLECTIONVIEW
@@ -53,34 +56,73 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         let customCell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier, for: indexPath) as! CustomCellEmergency
         let marginLeft = GlobalSize().widthScreen*0.05
         
+        customCell.backgroundColor = GlobalColor().backgroundCollectionView
+        
+        customCell.titleEmergency.alpha = 0
+        customCell.descriptionEmergency.alpha = 0
+        customCell.peopleRequestEmergency.alpha = 0
+        customCell.btnNo.alpha = 0
+        customCell.btnOk.alpha = 0
+        customCell.btnMaps.alpha = 0
+        customCell.titleTextViewDivide.alpha = 0
+        
         if indexPath.row < emergencyReceive.count {
-            customCell.titleEmergency.text = "Birre".uppercased()
-            customCell.titleEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.14, width: GlobalSize().widthScreen*0.7, height: heightCell*0.12)
-            
-            customCell.descriptionEmergency.text = "6 bottiglie di Becks doppio malto nella confezione di cartone."
-            customCell.descriptionEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.35, width: GlobalSize().widthScreen*0.65, height: heightCell*0.3)
-            
-            customCell.peopleRequestEmergency.text = "Request by Merli Andrea"
-            customCell.peopleRequestEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.7, width: GlobalSize().widthScreen*0.6, height: heightCell*0.3)
-            
-            customCell.btnMaps.frame = CGRect(x: GlobalSize().widthScreen*0.7, y: heightCell*0.7, width: GlobalSize().widthScreen*0.3, height: heightCell*0.3)
-            customCell.btnOk.frame = CGRect(x: GlobalSize().widthScreen*0.75, y: heightCell*0.3, width: heightCell*0.2, height: heightCell*0.2)
-            customCell.btnNo.frame = CGRect(x: ((GlobalSize().widthScreen*0.8)+(heightCell*0.2)), y: heightCell*0.3, width: heightCell*0.2, height: heightCell*0.2)
-            
-            customCell.btnNo.tag = indexPath.row
-            customCell.btnOk.tag = indexPath.row
-            customCell.btnMaps.tag = indexPath.row
-            
-            customCell.btnNo.addTarget(self, action: #selector(emergencyNo), for: .touchUpInside)
-            customCell.btnOk.addTarget(self, action: #selector(emergencyOk), for: .touchUpInside)
-            customCell.btnMaps.addTarget(self, action: #selector(openMaps), for: .touchUpInside)
-            
-        } else if indexPath.row < (emergencyReceive.count + emergencySendTrue.count) {
-            if allEmergency[indexPath.row] == "accepted" {
+            if emergencyReceive[indexPath.row] == "no-request" {
+                
+                customCell.titleTextViewDivide.alpha = 1
+                customCell.titleTextViewDivide.text = "No one ask your help yet".uppercased()
+                customCell.titleTextViewDivide.font = UIFont(name: "AvenirLTStd-Black", size: 13)
+                customCell.titleTextViewDivide.textAlignment = .center
+                customCell.titleTextViewDivide.addTextSpacing()
+                customCell.titleTextViewDivide.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: heightCell*0.6)
+                
+            } else {
+                
+                customCell.titleEmergency.alpha = 1
+                customCell.descriptionEmergency.alpha = 1
+                customCell.peopleRequestEmergency.alpha = 1
+                customCell.btnNo.alpha = 1
+                customCell.btnOk.alpha = 1
+                customCell.btnMaps.alpha = 1
+                
+                customCell.titleEmergency.text = "Birre".uppercased()
+                customCell.titleEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.14, width: GlobalSize().widthScreen*0.7, height: heightCell*0.12)
+                
+                customCell.descriptionEmergency.text = "6 bottiglie di Becks doppio malto nella confezione di cartone."
+                customCell.descriptionEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.35, width: GlobalSize().widthScreen*0.65, height: heightCell*0.3)
+                
+                customCell.peopleRequestEmergency.text = "Request by Merli Andrea"
+                customCell.peopleRequestEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.7, width: GlobalSize().widthScreen*0.6, height: heightCell*0.3)
+                
+                customCell.btnMaps.frame = CGRect(x: GlobalSize().widthScreen*0.7, y: heightCell*0.7, width: GlobalSize().widthScreen*0.3, height: heightCell*0.3)
+                customCell.btnOk.frame = CGRect(x: GlobalSize().widthScreen*0.75, y: heightCell*0.3, width: heightCell*0.2, height: heightCell*0.2)
+                customCell.btnNo.frame = CGRect(x: ((GlobalSize().widthScreen*0.8)+(heightCell*0.2)), y: heightCell*0.3, width: heightCell*0.2, height: heightCell*0.2)
+                
+                customCell.btnNo.tag = indexPath.row
+                customCell.btnOk.tag = indexPath.row
+                customCell.btnMaps.tag = indexPath.row
+                
+                customCell.btnNo.addTarget(self, action: #selector(emergencyNo), for: .touchUpInside)
+                customCell.btnOk.addTarget(self, action: #selector(emergencyOk), for: .touchUpInside)
+                customCell.btnMaps.addTarget(self, action: #selector(openMaps), for: .touchUpInside)
+            }
+        } else if indexPath.row < (emergencyReceive.count + emergencySendFalse.count) {
+            if emergencySendTrue.count == 1 {
                 customCell.backgroundColor = .white
+                customCell.titleTextViewDivide.alpha = 1
+                customCell.titleTextViewDivide.text = "no request accepted".uppercased()
+                customCell.titleTextViewDivide.frame = CGRect(x: marginLeft, y: heightCell*0.25, width: GlobalSize().widthScreen, height: heightCell*0.1)
+            }
+            else if allEmergency[indexPath.row] == "accepted" {
+                customCell.backgroundColor = .white
+                customCell.titleTextViewDivide.alpha = 1
                 customCell.titleTextViewDivide.text = "your request accepted".uppercased()
                 customCell.titleTextViewDivide.frame = CGRect(x: marginLeft, y: heightCell*0.25, width: GlobalSize().widthScreen, height: heightCell*0.1)
             } else {
+                customCell.titleEmergency.alpha = 1
+                customCell.descriptionEmergency.alpha = 1
+                customCell.peopleRequestEmergency.alpha = 1
+                
                 customCell.titleEmergency.text = "Birre".uppercased()
                 customCell.titleEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.14, width: GlobalSize().widthScreen*0.95, height: heightCell*0.12)
                 
@@ -90,12 +132,23 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                 customCell.peopleRequestEmergency.text = "Accept by Merli Andrea at 12:13pm"
                 customCell.peopleRequestEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.7, width: GlobalSize().widthScreen*0.95, height: heightCell*0.3)
             }
-        } else if indexPath.row < (emergencyReceive.count + emergencySendTrue.count+emergencySendFalse.count) {
-            if allEmergency[indexPath.row] == "pending" {
+        } else if indexPath.row < (emergencyReceive.count + emergencySendFalse.count + emergencySendTrue.count) {
+            if emergencySendFalse.count == 1 {
                 customCell.backgroundColor = .white
+                customCell.titleTextViewDivide.alpha = 1
+                customCell.titleTextViewDivide.text = "no request pending".uppercased()
+                customCell.titleTextViewDivide.frame = CGRect(x: marginLeft, y: heightCell*0.25, width: GlobalSize().widthScreen, height: heightCell*0.1)
+            }
+            else if allEmergency[indexPath.row] == "pending" {
+                customCell.backgroundColor = .white
+                customCell.titleTextViewDivide.alpha = 1
                 customCell.titleTextViewDivide.text = "your request pending".uppercased()
                 customCell.titleTextViewDivide.frame = CGRect(x: marginLeft, y: heightCell*0.25, width: GlobalSize().widthScreen, height: heightCell*0.1)
             } else {
+                customCell.titleEmergency.alpha = 1
+                customCell.descriptionEmergency.alpha = 1
+                customCell.peopleRequestEmergency.alpha = 1
+                
                 customCell.titleEmergency.text = "Birre".uppercased()
                 customCell.titleEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.14, width: GlobalSize().widthScreen*0.95, height: heightCell*0.12)
                 
@@ -115,10 +168,10 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if allEmergency[indexPath.row] == "accepted" {
+        if allEmergency[indexPath.row] == "accepted" || allEmergency[indexPath.row] == "pending" {
             return CGSize(width: view.frame.width, height: heightCell*0.4)
-        } else if allEmergency[indexPath.row] == "pending" {
-            return CGSize(width: view.frame.width, height: heightCell*0.4)
+        } else if allEmergency[indexPath.row] == "no-request" {
+            return CGSize(width: view.frame.width, height: heightCell*0.6)
         } else {
             return CGSize(width: view.frame.width, height: heightCell)
         }
@@ -141,7 +194,6 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     
     //MAPPE
     func openMaps(_ sender: UIButton) {
-        print(sender.tag)
         if (UIApplication.shared.canOpenURL(URL(string:"comgooglemaps://")!)) {
             let url = "comgooglemaps://?q=40.765819,-73.975866&zoom=14"
             UIApplication.shared.open(URL(string: url)!)
@@ -157,19 +209,40 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     
     //OK/NO
     func emergencyOk(_ sender: UIButton) {
-        allEmergency.remove(at: sender.tag)
-        emergencyReceive.remove(at: sender.tag)
-        print(sender.tag)
-        print("L'utente ", GlobalUser.email, " vuole aiutare la tua emergenza ", sender.tag)
+        
         GlobalFunc().alertCustom(stringAlertTitle: "Thank's", stringAlertDescription: "You help your friends", button: "OK", s: self)
+        emergencySendFalse.insert(emergencyReceive[sender.tag], at: 1)
+        emergencyReceive.remove(at: sender.tag)
+        allEmergency.removeAll()
+        
+        print("L'utente ", GlobalUser.email, " vuole aiutare la tua emergenza ", sender.tag)
+        
+        if emergencyReceive.count == 0 {
+            emergencyReceive.append("no-request")
+        }
+        
+        allEmergency.append(contentsOf: emergencyReceive)
+        allEmergency.append(contentsOf: emergencySendFalse)
+        allEmergency.append(contentsOf: emergencySendTrue)
+        
         self.collectionView?.reloadData()
     }
     func emergencyNo(_ sender: UIButton) {
-        allEmergency.remove(at: sender.tag)
+        
         emergencyReceive.remove(at: sender.tag)
-        print(sender.tag)
+        allEmergency.removeAll()
+        
         print("L'utente ", GlobalUser.email, " non vuole aiutare la tua emergenza ", sender.tag)
         GlobalFunc().alertCustom(stringAlertTitle: "Come on", stringAlertDescription: "You don't help your friends", button: "Sorry I'm busy", s: self)
+        
+        if emergencyReceive.count == 0 {
+            emergencyReceive.append("no-request")
+        }
+        
+        allEmergency.append(contentsOf: emergencyReceive)
+        allEmergency.append(contentsOf: emergencySendFalse)
+        allEmergency.append(contentsOf: emergencySendTrue)
+        
         self.collectionView?.reloadData()
     }
     
