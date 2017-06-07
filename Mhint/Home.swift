@@ -337,6 +337,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             
             request?.setMappedCompletionBlockSuccess({ (request, response) in
                 let response = response as! AIResponse
+                                print(response.result! as AnyObject)
                 print(response.result.fulfillment.messages[0]["speech"]!)
                 self.printOnCollectionView(text: response.result.fulfillment.messages[0]["speech"]! as! String, who: true)
 //                if response.result.action == "money" {
