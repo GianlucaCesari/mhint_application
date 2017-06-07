@@ -121,10 +121,9 @@ class GlobalUser{
         print("device_token", token)
         print("password: ", password)
         
-        let parameter = [
-            "name": GlobalUser.firstName//STRING
-            , "last_name": GlobalUser.lastName
-            , "full_name": name//STRING
+        
+        var parameter = [
+            "name": name//STRING
             , "birthday": b//DATE
             , "imageProfile": imageProfile//STRING
             , "address": address//STRING
@@ -146,7 +145,35 @@ class GlobalUser{
             , "mail": mail//STRING
             , "password": password//STRING
             , "tel_number": number//STRING
-        ] as [String : Any]
+            ] as [String : Any]
+        
+        if GlobalUser.firstName != "" && GlobalUser.lastName != "" {
+            parameter = [
+                "name": GlobalUser.firstName//STRING
+                , "last_name": GlobalUser.lastName
+                , "birthday": b//DATE
+                , "imageProfile": imageProfile//STRING
+                , "address": address//STRING
+                , "height": height//FLOAT
+                , "weight": weight//FLOAT
+                , "sex": sex//INT (1,2,3)
+                , "device_token": token
+                , "lifestyle": lifestyle//NUMBER
+                , "sectionsEnabled": [
+                    "food": sectionEnabled[0]
+                    , "need": sectionEnabled[1]
+                ]//FOOD, NEED
+                , "logins": [
+                    "facebook": logins[0]
+                    , "twitter": logins[1]
+                    , "google": logins[2]
+                    , "health": logins[3]
+                ]//FACEBOOK, TWITTER, GOOGLE, HEALTH
+                , "mail": mail//STRING
+                , "password": password//STRING
+                , "tel_number": number//STRING
+            ] as [String : Any]
+        }
         
         Alamofire.request("https://api.mhint.eu/user", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
             print(response)
