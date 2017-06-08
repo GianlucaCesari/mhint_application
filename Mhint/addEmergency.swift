@@ -154,9 +154,11 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
     
     func sendEmergency() {
         let textTrimmed = (titleEmergency.text)?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        let textTrimmedDescription = (descriptionEmergency.text)?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        var textTrimmedDescription = (descriptionEmergency.text)?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         if textTrimmed != "" {
-            
+            if textTrimmedDescription! == "Be more precise" {
+                textTrimmedDescription = ""
+            }
             titleEmergency.text = ""
             descriptionEmergency.text = "Be more precise"
             descriptionEmergency.textColor = .lightGray

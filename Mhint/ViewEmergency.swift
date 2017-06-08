@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 
-class EmergencyController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class EmergencyController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextViewDelegate, UITextFieldDelegate {
     
     let customCellIdentifier = "cellId"
     
@@ -27,6 +27,8 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     var emergencySendFalseDescription = [""]
     var emergencySendFalseUser = [""]
     var emergencySendFalseUserImage = [""]
+    var emergencySendFalseLat = [0.0]
+    var emergencySendFalseLon = [0.0]
     
     var emergencySendTrue = ["pending"]
     var emergencySendTrueName = [""]
@@ -80,30 +82,45 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.showCollectionView), userInfo: nil, repeats: true)
         
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print(213)
         if saveData.bool(forKey: "earlyAddEmergency") {
+            boolCall1 = false
+            boolCall2 = false
+            emergencyReceive.removeAll()
+            emergencyReceiveName.removeAll()
+            emergencyReceiveDescription.removeAll()
+            emergencyReceiveUser.removeAll()
+            emergencyReceiveLat.removeAll()
+            emergencyReceiveLon.removeAll()
             
-             emergencyReceive.removeAll()
-             emergencyReceiveName.removeAll()
-             emergencyReceiveDescription.removeAll()
-             emergencyReceiveUser.removeAll()
-             emergencyReceiveLat.removeAll()
-             emergencyReceiveLon.removeAll()
-                
-             emergencySendFalse.removeAll()
-             emergencySendFalseName.removeAll()
-             emergencySendFalseDescription.removeAll()
-             emergencySendFalseUser.removeAll()
-             emergencySendFalseUserImage.removeAll()
-                
-             emergencySendTrue.removeAll()
-             emergencySendTrueName.removeAll()
-             emergencySendTrueDescription.removeAll()
-             emergencySendTrueUser.removeAll()
-             emergencySendTrueUserImage.removeAll()
+            emergencySendFalse.removeAll()
+            emergencySendFalseName.removeAll()
+            emergencySendFalseDescription.removeAll()
+            emergencySendFalseUser.removeAll()
+            emergencySendFalseUserImage.removeAll()
+            emergencySendFalseLat.removeAll()
+            emergencySendFalseLon.removeAll()
+            
+            emergencySendTrue.removeAll()
+            emergencySendTrueName.removeAll()
+            emergencySendTrueDescription.removeAll()
+            emergencySendTrueUser.removeAll()
+            emergencySendTrueUserImage.removeAll()
+            
+            emergencySendFalse.append("accepted")
+            emergencySendFalseName.append("")
+            emergencySendFalseDescription.append("")
+            emergencySendFalseUser.append("")
+            emergencySendFalseUserImage.append("")
+            
+            emergencySendTrue.append("pending")
+            emergencySendTrueName.append("")
+            emergencySendTrueDescription.append("")
+            emergencySendTrueUser.append("")
+            emergencySendTrueUserImage.append("")
             
             self.view.willRemoveSubview(collectionView!)
             
@@ -133,7 +150,6 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         
         if boolCall1 && boolCall2 {
             timer.invalidate()
-            self.view.willRemoveSubview(collectionView!)
             
             print("FINITO\n\n\n\n")
             
@@ -190,10 +206,11 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
             print(emergencySendTrueDescription)
             print(emergencySendTrueUser)
             
+            print(allEmergency)
+            
             GlobalFunc().removeLoadingChat(s: self)
             collectionView?.reloadData()
             self.view.addSubview(collectionView!)
-//            timer = Timer.scheduledTimer(timeInterval: 120, target: self, selector: #selector(self.showCollectionView), userInfo: nil, repeats: true)
             
         }
     }
@@ -285,6 +302,10 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                                 self.emergencySendFalseUser.append(user["name"] as! String)
                                 self.emergencySendFalseUserImage.append(user["image_profile"] as! String)
                             }
+                            if let position = item["display_position"] as? [String: Double] {
+                                self.emergencySendFalseLat.append(position["lat"]!)
+                                self.emergencySendFalseLon.append(position["long"]!)
+                            }
                         }
                         
                         if (self.emergencyReceive.count + self.emergencySendFalse.count) == items.count+1 {
@@ -316,9 +337,11 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         customCell.btnMaps.alpha = 0
         customCell.titleTextViewDivide.alpha = 0
         customCell.userImg.alpha = 0
+        customCell.btnClose.alpha = 0
+        customCell.btnPosition.alpha = 0
         
         if indexPath.row < emergencyReceive.count {
-            if emergencyReceive[indexPath.row] == "no-request" {
+            if allEmergency[indexPath.row] == "no-request" {
                 
                 customCell.titleTextViewDivide.alpha = 1
                 customCell.titleTextViewDivide.text = "No one ask your help yet".uppercased()
@@ -340,7 +363,11 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                 customCell.titleEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.14, width: GlobalSize().widthScreen*0.7, height: heightCell*0.12)
                 
                 customCell.descriptionEmergency.text = emergencyReceiveDescription[indexPath.row]
-                customCell.descriptionEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.35, width: GlobalSize().widthScreen*0.65, height: heightCell*0.3)
+                if emergencyReceiveDescription[indexPath.row] == "" {
+                    customCell.descriptionEmergency.text = "Was in a hurry he couldn't even write a description."
+                    customCell.descriptionEmergency.textColor = .lightGray
+                }
+                customCell.descriptionEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.3, width: GlobalSize().widthScreen*0.65, height: heightCell*0.3)
                 
                 customCell.peopleRequestEmergency.text = "Request by \(emergencyReceiveUser[indexPath.row])"
                 customCell.peopleRequestEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.7, width: GlobalSize().widthScreen*0.6, height: heightCell*0.3)
@@ -371,19 +398,29 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                 customCell.descriptionEmergency.alpha = 1
                 customCell.peopleRequestEmergency.alpha = 1
                 customCell.userImg.alpha = 1
+                customCell.btnPosition.alpha = 1
                 
                 customCell.titleEmergency.text = emergencySendFalseName[indexPath.row-emergencyReceive.count].uppercased()
                 customCell.titleEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.14, width: GlobalSize().widthScreen*0.95, height: heightCell*0.12)
                 
                 customCell.descriptionEmergency.text = emergencySendFalseDescription[indexPath.row-emergencyReceive.count]
-                customCell.descriptionEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.35, width: GlobalSize().widthScreen*0.95, height: heightCell*0.3)
+                customCell.descriptionEmergency.delegate = self
+                if emergencySendFalseDescription[indexPath.row-emergencyReceive.count] == "" {
+                    customCell.descriptionEmergency.text = emergencySendFalseUser[indexPath.row-emergencyReceive.count] + " was too busy."
+                    customCell.descriptionEmergency.textColor = .lightGray
+                }
+                customCell.descriptionEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.3, width: GlobalSize().widthScreen*0.8, height: heightCell*0.3)
                 
                 customCell.peopleRequestEmergency.text = "You accepted \(emergencySendFalseUser[indexPath.row-emergencyReceive.count])'s need"
-                customCell.peopleRequestEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.7, width: GlobalSize().widthScreen*0.95, height: heightCell*0.3)
+                customCell.peopleRequestEmergency.frame = CGRect(x: marginLeft+heightCell*0.3, y: heightCell*0.65, width: GlobalSize().widthScreen*0.95, height: heightCell*0.3)
                 
-                customCell.userImg.frame = CGRect(x: GlobalSize().widthScreen*0.85, y: heightCell*0.7, width: heightCell*0.24, height: heightCell*0.24)
-                customCell.userImg.layer.cornerRadius = heightCell*0.12
+                customCell.userImg.frame = CGRect(x: marginLeft, y: heightCell*0.66, width: heightCell*0.22, height: heightCell*0.22)
+                customCell.userImg.layer.cornerRadius = heightCell*0.11
                 customCell.userImg.sd_setImage(with: URL(string: emergencySendFalseUserImage[indexPath.row-emergencyReceive.count]), placeholderImage: nil)
+                
+                customCell.btnPosition.frame = CGRect(x: GlobalSize().widthScreen*0.87, y: heightCell*0.7, width: heightCell*0.2, height: heightCell*0.2)
+                customCell.btnPosition.tag = indexPath.row-emergencyReceive.count
+                customCell.btnPosition.addTarget(self, action: #selector(openMapsToAccept), for: .touchUpInside)
             }
         } else if indexPath.row < (emergencyReceive.count + emergencySendFalse.count + emergencySendTrue.count) {
             if allEmergency[indexPath.row] == "no-pending" {
@@ -399,19 +436,29 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                 customCell.descriptionEmergency.alpha = 1
                 customCell.peopleRequestEmergency.alpha = 1
                 customCell.userImg.alpha = 1
+                customCell.btnClose.alpha = 1
                 
                 customCell.titleEmergency.text = emergencySendTrueName[indexPath.row - (emergencyReceive.count + emergencySendFalse.count)].uppercased()
-                customCell.titleEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.14, width: GlobalSize().widthScreen*0.95, height: heightCell*0.12)
+                customCell.titleEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.14, width: GlobalSize().widthScreen*0.8, height: heightCell*0.12)
                 
                 customCell.descriptionEmergency.text = emergencySendTrueDescription[indexPath.row - (emergencyReceive.count + emergencySendFalse.count)]
-                customCell.descriptionEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.35, width: GlobalSize().widthScreen*0.95, height: heightCell*0.3)
+                customCell.descriptionEmergency.delegate = self
+                if emergencySendTrueDescription[indexPath.row - (emergencyReceive.count + emergencySendFalse.count)] == "" {
+                    customCell.descriptionEmergency.text = emergencySendTrueUser[indexPath.row - (emergencyReceive.count + emergencySendFalse.count)] + " was too busy."
+                    customCell.descriptionEmergency.textColor = .lightGray
+                }
+                customCell.descriptionEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.3, width: GlobalSize().widthScreen*0.85, height: heightCell*0.3)
                 
                 customCell.peopleRequestEmergency.text = emergencySendTrueUser[indexPath.row - (emergencyReceive.count + emergencySendFalse.count)]
-                customCell.peopleRequestEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.7, width: GlobalSize().widthScreen*0.95, height: heightCell*0.3)
+                customCell.peopleRequestEmergency.frame = CGRect(x: marginLeft+heightCell*0.3, y: heightCell*0.65, width: GlobalSize().widthScreen*0.95, height: heightCell*0.3)
                 
-                customCell.userImg.frame = CGRect(x: GlobalSize().widthScreen*0.85, y: heightCell*0.7, width: heightCell*0.24, height: heightCell*0.24)
-                customCell.userImg.layer.cornerRadius = heightCell*0.12
+                customCell.userImg.frame = CGRect(x: marginLeft, y: heightCell*0.66, width: heightCell*0.22, height: heightCell*0.22)
+                customCell.userImg.layer.cornerRadius = heightCell*0.11
                 customCell.userImg.sd_setImage(with: URL(string: emergencySendTrueUserImage[indexPath.row - (emergencyReceive.count + emergencySendFalse.count)]), placeholderImage: nil)
+                
+                customCell.btnClose.frame = CGRect(x: GlobalSize().widthScreen*0.87, y: heightCell*0.7, width: heightCell*0.2, height: heightCell*0.2)
+                customCell.btnClose.tag = indexPath.row
+                customCell.btnClose.addTarget(self, action: #selector(removeEmergency), for: .touchUpInside)
             }
         }
         
@@ -464,6 +511,19 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
             }
         }
     }
+    func openMapsToAccept(_ sender: UIButton) {
+        if (UIApplication.shared.canOpenURL(URL(string:"comgooglemaps://")!)) {
+            let url = "comgooglemaps://?q=\(self.emergencySendFalseLat[sender.tag]),\(self.emergencySendFalseLon[sender.tag])&zoom=14"
+            UIApplication.shared.open(URL(string: url)!)
+        } else {
+            if (UIApplication.shared.canOpenURL(URL(string:"http://maps.apple.com")!)) {
+                let url = "http://maps.apple.com?q=\(self.emergencySendFalseLat[sender.tag]),\(self.emergencySendFalseLon[sender.tag])&z=14"
+                UIApplication.shared.open(URL(string: url)!)
+            } else {
+                GlobalFunc().alertCustom(stringAlertTitle: "Not location map available", stringAlertDescription: "Download Apple Maps or Google maps", button: "Cancel", s: self)
+            }
+        }
+    }
     
     //OK/NO
     func emergencyOk(_ sender: UIButton) {
@@ -472,11 +532,59 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
             "request_id": emergencyReceive[sender.tag]
             , "status": "accepted"
             ] as [String : Any]
-        Alamofire.request("https://api.mhint.eu/needresponse", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in
-            print(JSON)
-        }
+        Alamofire.request("https://api.mhint.eu/needresponse", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in }
         
         GlobalFunc().alertCustom(stringAlertTitle: "Thanks", stringAlertDescription: "You helped your friend!", button: "OK", s: self)
+        
+        boolCall1 = false
+        boolCall2 = false
+        
+        emergencyReceive.removeAll()
+        emergencyReceiveName.removeAll()
+        emergencyReceiveDescription.removeAll()
+        emergencyReceiveUser.removeAll()
+        emergencyReceiveLat.removeAll()
+        emergencyReceiveLon.removeAll()
+        
+        emergencySendFalse.removeAll()
+        emergencySendFalseName.removeAll()
+        emergencySendFalseDescription.removeAll()
+        emergencySendFalseUser.removeAll()
+        emergencySendFalseUserImage.removeAll()
+        
+        emergencySendTrue.removeAll()
+        emergencySendTrueName.removeAll()
+        emergencySendTrueDescription.removeAll()
+        emergencySendTrueUser.removeAll()
+        emergencySendTrueUserImage.removeAll()
+        
+        emergencySendFalse.append("accepted")
+        emergencySendFalseName.append("")
+        emergencySendFalseDescription.append("")
+        emergencySendFalseUser.append("")
+        emergencySendFalseUserImage.append("")
+        
+        emergencySendTrue.append("pending")
+        emergencySendTrueName.append("")
+        emergencySendTrueDescription.append("")
+        emergencySendTrueUser.append("")
+        emergencySendTrueUserImage.append("")
+        
+        self.view.willRemoveSubview(collectionView!)
+        
+        let layout = UICollectionViewFlowLayout.init()
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 3
+        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        layout.itemSize = CGSize(width: GlobalSize().widthScreen, height: heightCell)
+        
+        collectionView?.collectionViewLayout = layout
+        collectionView?.delegate = self
+        collectionView?.dataSource = self
+        collectionView?.backgroundColor = .white
+        collectionView?.contentInset.top = -60
+        collectionView?.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.29, width: GlobalSize().widthScreen, height:  GlobalSize().heightScreen*0.71)
+        collectionView?.register(CustomCellEmergency.self, forCellWithReuseIdentifier: customCellIdentifier)
         
         getEmergencyPending()
         getEmergencyAccepted()
@@ -490,11 +598,125 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
             "request_id": emergencyReceive[sender.tag]
             , "status": "refused"
             ] as [String : Any]
-        Alamofire.request("https://api.mhint.eu/needresponse", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in
-            print(JSON)
-        }
+        Alamofire.request("https://api.mhint.eu/needresponse", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in }
         
         GlobalFunc().alertCustom(stringAlertTitle: "Come on", stringAlertDescription: "You don't help your friends", button: "Sorry I'm busy", s: self)
+        
+        boolCall1 = false
+        boolCall2 = false
+        
+        emergencyReceive.removeAll()
+        emergencyReceiveName.removeAll()
+        emergencyReceiveDescription.removeAll()
+        emergencyReceiveUser.removeAll()
+        emergencyReceiveLat.removeAll()
+        emergencyReceiveLon.removeAll()
+        
+        emergencySendFalse.removeAll()
+        emergencySendFalseName.removeAll()
+        emergencySendFalseDescription.removeAll()
+        emergencySendFalseUser.removeAll()
+        emergencySendFalseUserImage.removeAll()
+        
+        emergencySendTrue.removeAll()
+        emergencySendTrueName.removeAll()
+        emergencySendTrueDescription.removeAll()
+        emergencySendTrueUser.removeAll()
+        emergencySendTrueUserImage.removeAll()
+        
+        emergencySendFalse.append("accepted")
+        emergencySendFalseName.append("")
+        emergencySendFalseDescription.append("")
+        emergencySendFalseUser.append("")
+        emergencySendFalseUserImage.append("")
+        
+        emergencySendTrue.append("pending")
+        emergencySendTrueName.append("")
+        emergencySendTrueDescription.append("")
+        emergencySendTrueUser.append("")
+        emergencySendTrueUserImage.append("")
+        
+        self.view.willRemoveSubview(collectionView!)
+        
+        let layout = UICollectionViewFlowLayout.init()
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 3
+        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        layout.itemSize = CGSize(width: GlobalSize().widthScreen, height: heightCell)
+        
+        collectionView?.collectionViewLayout = layout
+        collectionView?.delegate = self
+        collectionView?.dataSource = self
+        collectionView?.backgroundColor = .white
+        collectionView?.contentInset.top = -60
+        collectionView?.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.29, width: GlobalSize().widthScreen, height:  GlobalSize().heightScreen*0.71)
+        collectionView?.register(CustomCellEmergency.self, forCellWithReuseIdentifier: customCellIdentifier)
+        
+        getEmergencyPending()
+        getEmergencyAccepted()
+        
+        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.showCollectionView), userInfo: nil, repeats: true)
+        
+    }
+    
+    func removeEmergency(_ sender: UIButton) {
+        
+        let parameter = [
+            "request_id": allEmergency[sender.tag]
+            ] as [String : Any]
+        Alamofire.request("https://api.mhint.eu/needcomplete", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in }
+        
+        GlobalFunc().alertCustom(stringAlertTitle: "Emergency completed", stringAlertDescription: "This emergency was remove", button: "Perfect", s: self)
+        
+        boolCall1 = false
+        boolCall2 = false
+        
+        emergencyReceive.removeAll()
+        emergencyReceiveName.removeAll()
+        emergencyReceiveDescription.removeAll()
+        emergencyReceiveUser.removeAll()
+        emergencyReceiveLat.removeAll()
+        emergencyReceiveLon.removeAll()
+        
+        emergencySendFalse.removeAll()
+        emergencySendFalseName.removeAll()
+        emergencySendFalseDescription.removeAll()
+        emergencySendFalseUser.removeAll()
+        emergencySendFalseUserImage.removeAll()
+        
+        emergencySendTrue.removeAll()
+        emergencySendTrueName.removeAll()
+        emergencySendTrueDescription.removeAll()
+        emergencySendTrueUser.removeAll()
+        emergencySendTrueUserImage.removeAll()
+        
+        emergencySendFalse.append("accepted")
+        emergencySendFalseName.append("")
+        emergencySendFalseDescription.append("")
+        emergencySendFalseUser.append("")
+        emergencySendFalseUserImage.append("")
+        
+        emergencySendTrue.append("pending")
+        emergencySendTrueName.append("")
+        emergencySendTrueDescription.append("")
+        emergencySendTrueUser.append("")
+        emergencySendTrueUserImage.append("")
+        
+        self.view.willRemoveSubview(collectionView!)
+        
+        let layout = UICollectionViewFlowLayout.init()
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 3
+        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        layout.itemSize = CGSize(width: GlobalSize().widthScreen, height: heightCell)
+        
+        collectionView?.collectionViewLayout = layout
+        collectionView?.delegate = self
+        collectionView?.dataSource = self
+        collectionView?.backgroundColor = .white
+        collectionView?.contentInset.top = -60
+        collectionView?.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.29, width: GlobalSize().widthScreen, height:  GlobalSize().heightScreen*0.71)
+        collectionView?.register(CustomCellEmergency.self, forCellWithReuseIdentifier: customCellIdentifier)
         
         getEmergencyPending()
         getEmergencyAccepted()

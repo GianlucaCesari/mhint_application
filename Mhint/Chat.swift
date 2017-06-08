@@ -76,10 +76,14 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if saveData.bool(forKey: "welcomeFinish") {
+        if saveData.bool(forKey: "welcomeFinish0") {
             sideMenuViewController?.panGestureLeftEnabled = true //DA ATTIVARE ALLA FINE DELLA CHAT
             GlobalFunc().navBarMenu(nav: navigationItem, s: self) //MOSTRA IL MENU, DEVE ESSERE FATTO ALLA FINE DELLA CHAT
         } else {
+            
+            UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
+            UserDefaults.standard.synchronize()
+            
             sideMenuViewController?.panGestureLeftEnabled = false //DA DISATTIVARE ALLA PRIMA APERTURA DELL'APP
         }
         
@@ -568,7 +572,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         sideMenuViewController?.panGestureLeftEnabled = true //DA ATTIVARE ALLA FINE DELLA CHAT
         GlobalFunc().navBarMenu(nav: navigationItem, s: self) //MOSTRA IL MENU, DEVE ESSERE FATTO ALLA FINE DELLA CHAT
-        saveData.set(true, forKey: "welcomeFinish")
+        saveData.set(true, forKey: "welcomeFinish0")
         
         //CARICA UTENTE SUL SERVER
         if GlobalUser.fullNameFacebook != nil {

@@ -33,12 +33,13 @@ class CustomCellEmergency: BaseCellEmergency {
         titleView.alpha = 0
         return titleView
     }()
-    var descriptionEmergency: UITextView = {
-        let titleView = UITextView()
-        titleView.textColor = .black
+    var descriptionEmergency: UITextField = {
+        let titleView = UITextField()
+        titleView.textColor = .darkGray
+        titleView.adjustsFontSizeToFitWidth = true
         titleView.layoutMargins.left = -10
-        titleView.isEditable = false
-        titleView.textContainerInset = UIEdgeInsetsMake(0, -4, 0, 0)
+//        titleView.isEditable = false
+//        titleView.textContainerInset = UIEdgeInsetsMake(0, -4, 0, 0)
         titleView.font = UIFont(name: "AvenirLTStd-Medium", size: 13)
         titleView.backgroundColor = GlobalColor().backgroundCollectionView
         titleView.isUserInteractionEnabled = false
@@ -90,6 +91,20 @@ class CustomCellEmergency: BaseCellEmergency {
         btn.alpha = 0
         return btn
     }()
+    var btnClose: UIButton = {
+        var btn = UIButton()
+        let img = UIImage(named: "remove")
+        btn.setImage(img, for: .normal)
+        btn.alpha = 0
+        return btn
+    }()
+    var btnPosition: UIButton = {
+        var btn = UIButton()
+        let img = UIImage(named: "location")
+        btn.setImage(img, for: .normal)
+        btn.alpha = 0
+        return btn
+    }()
     
     //DIVIDE EMERGENCY
     var titleTextViewDivide: UILabel = {
@@ -112,6 +127,8 @@ class CustomCellEmergency: BaseCellEmergency {
         self.addSubview(btnOk)
         self.addSubview(btnNo)
         self.addSubview(btnMaps)
+        self.addSubview(btnClose)
+        self.addSubview(btnPosition)
         
         self.addSubview(titleTextViewDivide)
         
