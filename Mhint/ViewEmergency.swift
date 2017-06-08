@@ -23,9 +23,9 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     var emergencyReceiveLon = [Double]()
     
     var emergencySendFalse = ["accepted"]
-    var emergencySendFalseName = [String]()
-    var emergencySendFalseDescription = [String]()
-    var emergencySendFalseUser = [String]()
+    var emergencySendFalseName = [""]
+    var emergencySendFalseDescription = [""]
+    var emergencySendFalseUser = [""]
     
     
     var emergencySendTrue = ["pending"]
@@ -35,19 +35,22 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     
     var allEmergency = [String]()
     
+    var timer:Timer!
+    
+    var boolCall1 = false
+    var boolCall2 = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getEmergencyPending()
-        getEmergencyAccepted()
-        
-        GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "NEEDS & EMERGENCY")
+        GlobalUser.email = "merliandrea.com@gmail.com"
         
         self.view.backgroundColor = .white
+        GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "NEEDS & EMERGENCY")
         
-        if emergencyReceive.count == 0 {
-            emergencyReceive.append("no-request")
-        }
+        //RICHIEDE DAL SERVER
+        getEmergencyPending()
+        getEmergencyAccepted()
         
         GlobalFunc().navBar(nav: navigationItem, s: self, show: true) //navigation bar
         GlobalFunc().navBarRightChat(nav: navigationItem, s: self) //navigation v.a.
@@ -74,8 +77,81 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         collectionView?.contentInset.top = -60
         collectionView?.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.29, width: GlobalSize().widthScreen, height:  GlobalSize().heightScreen*0.71)
         collectionView?.register(CustomCellEmergency.self, forCellWithReuseIdentifier: customCellIdentifier)
-        self.view.addSubview(collectionView!)
+        
+        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.showCollectionView), userInfo: nil, repeats: true)
+        
     }
+    
+    func showCollectionView() {
+        
+        if boolCall1 && boolCall2 {
+            timer.invalidate()
+            
+            print("FINITO\n\n\n\n")
+            
+            print(allEmergency)
+            
+            if emergencyReceive.count == 0 {
+                emergencyReceive.append("no-request")
+                allEmergency.insert("no-request", at: 0)
+            }
+            
+            print(emergencyReceive)
+            print(emergencyReceiveName)
+            print(emergencyReceiveDescription)
+            print(emergencyReceiveUser)
+            
+            print("\n")
+            
+            if emergencySendFalse.count == 1 {
+                emergencySendFalse.removeAll()
+                emergencySendFalse.append("no-accepted")
+                if let index = allEmergency.index(of: "accepted") {
+                    allEmergency[index] = "no-accepted"
+                }
+            } else {
+                emergencySendFalse[0] = "accepted"
+                if let index = allEmergency.index(of: "no-accepted") {
+                    allEmergency[index] = "accepted"
+                }
+            }
+            
+            print(emergencySendFalse)
+            print(emergencySendFalseName)
+            print(emergencySendFalseDescription)
+            print(emergencySendFalseUser)
+            
+            print("\n")
+            
+            
+            if emergencySendTrue.count == 1 {
+                emergencySendTrue.removeAll()
+                emergencySendTrue.append("no-pending")
+                if let index = allEmergency.index(of: "pending") {
+                    allEmergency[index] = "no-pending"
+                }
+            } else {
+                emergencySendTrue[0] = "pending"
+                if let index = allEmergency.index(of: "no-pending") {
+                    allEmergency[index] = "pending"
+                }
+            }
+            
+            print(emergencySendTrue)
+            print(emergencySendTrueName)
+            print(emergencySendTrueDescription)
+            print(emergencySendTrueUser)
+            
+            collectionView?.reloadData()
+            
+            timer = Timer.scheduledTimer(timeInterval: 120, target: self, selector: #selector(self.showCollectionView), userInfo: nil, repeats: true)
+            
+        } else {
+            print("OPS")
+        }
+        
+    }
+    
     
     func getEmergencyPending() {
         Alamofire.request("https://api.mhint.eu/needs?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { response in
@@ -102,12 +178,12 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                         }
                     }
                     
-                    if self.emergencySendTrue.count == items.count {
+                    if self.emergencySendTrue.count == items.count+1 {
                         self.allEmergency.removeAll()
                         self.allEmergency.append(contentsOf: self.emergencyReceive)
                         self.allEmergency.append(contentsOf: self.emergencySendFalse)
                         self.allEmergency.append(contentsOf: self.emergencySendTrue)
-                        
+                        self.boolCall1 = true
                     }
                 }
             }
@@ -125,12 +201,20 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                         self.emergencyReceive.append(item["_id"] as! String)
                         self.emergencyReceiveName.append(item["name"] as! String)
                         
-                        if String(describing: item["description"]!) != "" {
-                            self.emergencyReceiveDescription.append(item["description"]! as! String)
-                        } else {
-                            self.emergencyReceiveDescription.append("")
-                        }
+                        print(item)
                         
+//                        let description = item["description"] as! String
+//
+//                        print(description)
+                        
+//                        if description != "" {
+//                            print(description)
+                            self.emergencyReceiveDescription.append("")
+                            //self.emergencyReceiveDescription.append(item["description"]! as! String)
+//                        } else {
+//                            self.emergencyReceiveDescription.append("")
+//                        }
+                            
                         if let user = item["user_sender"] as? [String: Any] {
                             self.emergencyReceiveUser.append(user["name"] as! String)
                         }
@@ -154,21 +238,13 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                         }
                     }
                     
-                    print(items.count)
-                    print((self.emergencyReceive.count + self.emergencySendFalse.count))
-                    print((self.emergencyReceive.count))
-                    print((self.emergencySendFalse.count))
-                    
-                    print(self.emergencyReceive)
-                    print(self.emergencySendFalse)
-                    
-                    if (self.emergencyReceive.count + self.emergencySendFalse.count) == items.count {
+                    if (self.emergencyReceive.count + self.emergencySendFalse.count) == items.count+1 {
                         self.allEmergency.removeAll()
                         self.allEmergency.append(contentsOf: self.emergencyReceive)
                         self.allEmergency.append(contentsOf: self.emergencySendFalse)
                         self.allEmergency.append(contentsOf: self.emergencySendTrue)
                         
-                        self.collectionView?.reloadData()
+                        self.boolCall2 = true
                     }
                 }
             }
@@ -232,11 +308,11 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                 customCell.btnMaps.addTarget(self, action: #selector(openMaps), for: .touchUpInside)
             }
         } else if indexPath.row < (emergencyReceive.count + emergencySendFalse.count) {
-            if emergencySendTrue.count == 1 {
+            if allEmergency[indexPath.row] == "no-accepted" {
                 customCell.backgroundColor = .white
-                customCell.titleTextViewDivide.alpha = 1
-                customCell.titleTextViewDivide.text = "no request accepted".uppercased()
-                customCell.titleTextViewDivide.frame = CGRect(x: marginLeft, y: heightCell*0.25, width: GlobalSize().widthScreen, height: heightCell*0.1)
+//                customCell.titleTextViewDivide.alpha = 1
+//                customCell.titleTextViewDivide.text = "no request accepted".uppercased()
+//                customCell.titleTextViewDivide.frame = CGRect(x: marginLeft, y: heightCell*0.25, width: GlobalSize().widthScreen, height: heightCell*0.1)
             }
             else if allEmergency[indexPath.row] == "accepted" {
                 customCell.backgroundColor = .white
@@ -249,21 +325,21 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                 customCell.descriptionEmergency.alpha = 1
                 customCell.peopleRequestEmergency.alpha = 1
                 
-//                customCell.titleEmergency.text = emergencySendFalseName[indexPath.row-emergencyReceive.count].uppercased()
+                customCell.titleEmergency.text = emergencySendFalseName[indexPath.row-emergencyReceive.count].uppercased()
                 customCell.titleEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.14, width: GlobalSize().widthScreen*0.95, height: heightCell*0.12)
                 
-//                customCell.descriptionEmergency.text = emergencySendFalseDescription[indexPath.row-emergencyReceive.count]
+                customCell.descriptionEmergency.text = emergencySendFalseDescription[indexPath.row-emergencyReceive.count]
                 customCell.descriptionEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.35, width: GlobalSize().widthScreen*0.95, height: heightCell*0.3)
                 
-//                customCell.peopleRequestEmergency.text = "Accepted by \(emergencySendFalseUser[indexPath.row-emergencyReceive.count])"
+                customCell.peopleRequestEmergency.text = "Accepted by \(emergencySendFalseUser[indexPath.row-emergencyReceive.count])"
                 customCell.peopleRequestEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.7, width: GlobalSize().widthScreen*0.95, height: heightCell*0.3)
             }
         } else if indexPath.row < (emergencyReceive.count + emergencySendFalse.count + emergencySendTrue.count) {
-            if emergencySendFalse.count == 1 {
+            if allEmergency[indexPath.row] == "no-pending" {
                 customCell.backgroundColor = .white
-                customCell.titleTextViewDivide.alpha = 1
-                customCell.titleTextViewDivide.text = "no request pending".uppercased()
-                customCell.titleTextViewDivide.frame = CGRect(x: marginLeft, y: heightCell*0.25, width: GlobalSize().widthScreen, height: heightCell*0.1)
+//                customCell.titleTextViewDivide.alpha = 1
+//                customCell.titleTextViewDivide.text = "no request pending".uppercased()
+//                customCell.titleTextViewDivide.frame = CGRect(x: marginLeft, y: heightCell*0.25, width: GlobalSize().widthScreen, height: heightCell*0.1)
             }
             else if allEmergency[indexPath.row] == "pending" {
                 customCell.backgroundColor = .white
@@ -298,6 +374,8 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
             return CGSize(width: view.frame.width, height: heightCell*0.4)
         } else if allEmergency[indexPath.row] == "no-request" {
             return CGSize(width: view.frame.width, height: heightCell*0.6)
+        } else if allEmergency[indexPath.row] == "no-accepted" || allEmergency[indexPath.row] == "no-pending" {
+            return CGSize(width: view.frame.width, height: 0)
         } else {
             return CGSize(width: view.frame.width, height: heightCell)
         }
