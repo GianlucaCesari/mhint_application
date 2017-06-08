@@ -142,9 +142,9 @@ class NotificationFoodController: UICollectionViewController, UICollectionViewDe
         
         var dateComponents = DateComponents()
         dateComponents.weekday = saveData.integer(forKey: "notificationDay")
-        dateComponents.hour = 18
-        dateComponents.minute = 56
-        let trigger = UNCalendarNotificationTrigger.init(dateMatching: (dateComponents), repeats: true)
+        dateComponents.hour = 12
+        dateComponents.minute = 00
+        let trigger = UNCalendarNotificationTrigger.init(dateMatching: (dateComponents), repeats:  true)
         let request = UNNotificationRequest(identifier:"SampleRequest", content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().delegate = self
