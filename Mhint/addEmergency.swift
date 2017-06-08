@@ -47,7 +47,7 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
         
         map.showsBuildings = true
         let coordinates = CLLocationCoordinate2DMake(saveData.double(forKey: "latitudeHistory"),saveData.double(forKey: "longitudeHistory"))
-        map.region = MKCoordinateRegionMakeWithDistance(coordinates, 1000,100)
+        map.region = MKCoordinateRegionMakeWithDistance(coordinates, 0,0)
         
         map.mapType = MKMapType.standard
         
@@ -55,8 +55,8 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
         let mapCamera = MKMapCamera()
         mapCamera.centerCoordinate = coordinates
         mapCamera.pitch = 45
-        mapCamera.altitude = 500
-        mapCamera.heading = 45
+        mapCamera.altitude = 100
+        mapCamera.heading = 0
         
         // Set MKmapView camera property
         self.map.camera = mapCamera
@@ -65,16 +65,6 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
         map.layer.cornerRadius = 7
         map.layer.masksToBounds = true
         map.mapType = MKMapType.standard
-//        let mapCamera = MKMapCamera()
-//        mapCamera.pitch = 45
-//        mapCamera.altitude = 500
-//        mapCamera.heading = 45
-        
-//        map.camera = mapCamera
-//
-//        let center = CLLocationCoordinate2D(latitude: saveData.double(forKey: "latitudeHistory"), longitude: saveData.double(forKey: "longitudeHistory"))
-//        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001))
-//        self.map.setRegion(region, animated: true)
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinates
         self.map.addAnnotation(annotation)
