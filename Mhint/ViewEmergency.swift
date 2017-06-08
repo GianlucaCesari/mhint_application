@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import Whisper
 
 class EmergencyController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextViewDelegate, UITextFieldDelegate {
     
@@ -174,8 +175,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
             
             GlobalFunc().removeLoadingChat(s: self)
             collectionView?.reloadData()
-            self.view.addSubview(collectionView!)
-            
+//            self.view.addSubview(collectionView!)
         }
     }
     
@@ -308,7 +308,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
             if allEmergency[indexPath.row] == "no-request" {
                 
                 customCell.titleTextViewDivide.alpha = 1
-                customCell.titleTextViewDivide.text = "No one ask your help yet".uppercased()
+                customCell.titleTextViewDivide.text = "No one asked for your help yet".uppercased()
                 customCell.titleTextViewDivide.font = UIFont(name: "AvenirLTStd-Black", size: 13)
                 customCell.titleTextViewDivide.textAlignment = .center
                 customCell.titleTextViewDivide.addTextSpacing()
@@ -393,7 +393,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
             else if allEmergency[indexPath.row] == "pending" {
                 customCell.backgroundColor = .white
                 customCell.titleTextViewDivide.alpha = 1
-                customCell.titleTextViewDivide.text = "your request".uppercased()
+                customCell.titleTextViewDivide.text = "your requests".uppercased()
                 customCell.titleTextViewDivide.frame = CGRect(x: marginLeft, y: heightCell*0.25, width: GlobalSize().widthScreen, height: heightCell*0.1)
             } else {
                 customCell.titleEmergency.alpha = 1
@@ -496,149 +496,119 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
             "request_id": emergencyReceive[sender.tag]
             , "status": "accepted"
             ] as [String : Any]
-        Alamofire.request("https://api.mhint.eu/needresponse", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in }
-        
-        GlobalFunc().alertCustom(stringAlertTitle: "Thanks", stringAlertDescription: "You helped your friend!", button: "OK", s: self)
-        
-        boolCall1 = false
-        boolCall2 = false
-        
-        emergencyReceive.removeAll()
-        emergencyReceiveName.removeAll()
-        emergencyReceiveDescription.removeAll()
-        emergencyReceiveUser.removeAll()
-        emergencyReceiveLat.removeAll()
-        emergencyReceiveLon.removeAll()
-        
-        emergencySendFalse.removeAll()
-        emergencySendFalseName.removeAll()
-        emergencySendFalseDescription.removeAll()
-        emergencySendFalseUser.removeAll()
-        emergencySendFalseUserImage.removeAll()
-        
-        emergencySendTrue.removeAll()
-        emergencySendTrueName.removeAll()
-        emergencySendTrueDescription.removeAll()
-        emergencySendTrueUser.removeAll()
-        emergencySendTrueUserImage.removeAll()
-        
-        emergencySendFalse.append("accepted")
-        emergencySendFalseName.append("")
-        emergencySendFalseDescription.append("")
-        emergencySendFalseUser.append("")
-        emergencySendFalseUserImage.append("")
-        
-        emergencySendTrue.append("pending")
-        emergencySendTrueName.append("")
-        emergencySendTrueDescription.append("")
-        emergencySendTrueUser.append("")
-        emergencySendTrueUserImage.append("")
-        
-        getEmergencyPending()
-        getEmergencyAccepted()
-        
-        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.showCollectionView), userInfo: nil, repeats: true)
-        
+        Alamofire.request("https://api.mhint.eu/needresponse", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in
+            self.animationImage(i: "ok-popup", n: "Ok I'll do it!", color: GlobalColor().greenSea.cgColor)
+        }
     }
+    
     func emergencyNo(_ sender: UIButton) {
-        
         let parameter = [
             "request_id": emergencyReceive[sender.tag]
             , "status": "refused"
             ] as [String : Any]
-        Alamofire.request("https://api.mhint.eu/needresponse", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in }
-        
-        GlobalFunc().alertCustom(stringAlertTitle: "Come on", stringAlertDescription: "You don't help your friends", button: "Sorry I'm busy", s: self)
-        
-        boolCall1 = false
-        boolCall2 = false
-        
-        emergencyReceive.removeAll()
-        emergencyReceiveName.removeAll()
-        emergencyReceiveDescription.removeAll()
-        emergencyReceiveUser.removeAll()
-        emergencyReceiveLat.removeAll()
-        emergencyReceiveLon.removeAll()
-        
-        emergencySendFalse.removeAll()
-        emergencySendFalseName.removeAll()
-        emergencySendFalseDescription.removeAll()
-        emergencySendFalseUser.removeAll()
-        emergencySendFalseUserImage.removeAll()
-        
-        emergencySendTrue.removeAll()
-        emergencySendTrueName.removeAll()
-        emergencySendTrueDescription.removeAll()
-        emergencySendTrueUser.removeAll()
-        emergencySendTrueUserImage.removeAll()
-        
-        emergencySendFalse.append("accepted")
-        emergencySendFalseName.append("")
-        emergencySendFalseDescription.append("")
-        emergencySendFalseUser.append("")
-        emergencySendFalseUserImage.append("")
-        
-        emergencySendTrue.append("pending")
-        emergencySendTrueName.append("")
-        emergencySendTrueDescription.append("")
-        emergencySendTrueUser.append("")
-        emergencySendTrueUserImage.append("")
-        
-        getEmergencyPending()
-        getEmergencyAccepted()
-        
-        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.showCollectionView), userInfo: nil, repeats: true)
-        
+        Alamofire.request("https://api.mhint.eu/needresponse", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in
+            self.animationImage(i: "no-popup", n: "Sorry I'm busy", color: GlobalColor().red.cgColor)
+        }
     }
     
     func removeEmergency(_ sender: UIButton) {
-        
         let parameter = [
             "request_id": allEmergency[sender.tag]
             ] as [String : Any]
-        Alamofire.request("https://api.mhint.eu/needcomplete", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in }
+        Alamofire.request("https://api.mhint.eu/needcomplete", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in
+            self.animationImage(i: "remove", n: "I don't need it anymore", color: UIColor.darkGray.cgColor)
+        }
+    }
+    
+    func animationImage(i: String, n: String, color: CGColor) {
         
-        GlobalFunc().alertCustom(stringAlertTitle: "Emergency completed", stringAlertDescription: "This emergency was remove", button: "Perfect", s: self)
+        self.boolCall1 = false
+        self.boolCall2 = false
         
-        boolCall1 = false
-        boolCall2 = false
+        self.emergencyReceive.removeAll()
+        self.emergencyReceiveName.removeAll()
+        self.emergencyReceiveDescription.removeAll()
+        self.emergencyReceiveUser.removeAll()
+        self.emergencyReceiveLat.removeAll()
+        self.emergencyReceiveLon.removeAll()
         
-        emergencyReceive.removeAll()
-        emergencyReceiveName.removeAll()
-        emergencyReceiveDescription.removeAll()
-        emergencyReceiveUser.removeAll()
-        emergencyReceiveLat.removeAll()
-        emergencyReceiveLon.removeAll()
+        self.emergencySendFalse.removeAll()
+        self.emergencySendFalseName.removeAll()
+        self.emergencySendFalseDescription.removeAll()
+        self.emergencySendFalseUser.removeAll()
+        self.emergencySendFalseUserImage.removeAll()
         
-        emergencySendFalse.removeAll()
-        emergencySendFalseName.removeAll()
-        emergencySendFalseDescription.removeAll()
-        emergencySendFalseUser.removeAll()
-        emergencySendFalseUserImage.removeAll()
+        self.emergencySendTrue.removeAll()
+        self.emergencySendTrueName.removeAll()
+        self.emergencySendTrueDescription.removeAll()
+        self.emergencySendTrueUser.removeAll()
+        self.emergencySendTrueUserImage.removeAll()
         
-        emergencySendTrue.removeAll()
-        emergencySendTrueName.removeAll()
-        emergencySendTrueDescription.removeAll()
-        emergencySendTrueUser.removeAll()
-        emergencySendTrueUserImage.removeAll()
+        self.emergencySendFalse.append("accepted")
+        self.emergencySendFalseName.append("")
+        self.emergencySendFalseDescription.append("")
+        self.emergencySendFalseUser.append("")
+        self.emergencySendFalseUserImage.append("")
         
-        emergencySendFalse.append("accepted")
-        emergencySendFalseName.append("")
-        emergencySendFalseDescription.append("")
-        emergencySendFalseUser.append("")
-        emergencySendFalseUserImage.append("")
+        self.emergencySendTrue.append("pending")
+        self.emergencySendTrueName.append("")
+        self.emergencySendTrueDescription.append("")
+        self.emergencySendTrueUser.append("")
+        self.emergencySendTrueUserImage.append("")
         
-        emergencySendTrue.append("pending")
-        emergencySendTrueName.append("")
-        emergencySendTrueDescription.append("")
-        emergencySendTrueUser.append("")
-        emergencySendTrueUserImage.append("")
+        self.getEmergencyPending()
+        self.getEmergencyAccepted()
+        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.showCollectionView), userInfo: nil, repeats: true)
         
-        getEmergencyPending()
-        getEmergencyAccepted()
+        let viewOverlay = UIView()
+        viewOverlay.backgroundColor = .black
+        viewOverlay.alpha = 0
+        viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
+        self.view.addSubview(viewOverlay)
         
-        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.showCollectionView), userInfo: nil, repeats: true)
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+            viewOverlay.alpha = 0.6
+        }, completion: nil)
         
+        let v = UIView()
+        v.frame = CGRect(x: GlobalSize().widthScreen*0.4, y: GlobalSize().heightScreen*1.5, width: GlobalSize().widthScreen*0.2, height: GlobalSize().widthScreen*0.2)
+        v.backgroundColor = .white
+        v.layer.cornerRadius = GlobalSize().widthScreen*0.1
+        v.layer.masksToBounds = true
+        v.alpha = 1
+        self.view.addSubview(v)
+        
+        let imgProfile = UIImageView()
+        imgProfile.frame = CGRect(x: GlobalSize().widthScreen*0.42, y: GlobalSize().heightScreen*1.5, width: GlobalSize().widthScreen*0.16, height: GlobalSize().widthScreen*0.16)
+        let img = UIImage(named: i)
+        imgProfile.image = img
+        self.view.addSubview(imgProfile)
+        
+        let label = UILabel()
+        label.text = n.uppercased()
+        label.alpha = 0
+        label.addTextSpacing()
+        label.textColor = .white
+        label.font = UIFont(name: "AvenirLTStd-Black", size: GlobalSize().widthScreen*0.03)
+        label.textAlignment = .center
+        label.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.475, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
+        self.view.addSubview(label)
+        
+        UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
+            imgProfile.frame.origin.y = GlobalSize().heightScreen*0.38
+            v.frame.origin.y = GlobalSize().heightScreen*0.37
+        }, completion: nil)
+        
+        UIView.animate(withDuration: 0.5, delay: 1, options: .curveLinear, animations: {
+            label.alpha = 1
+        }, completion: { (finished: Bool) -> Void in
+            UIView.animate(withDuration: 0.2, delay: 1, options: .curveLinear, animations: {
+                label.alpha = 0
+                imgProfile.alpha = 0
+                viewOverlay.alpha = 0
+                v.alpha = 0
+            }, completion: nil)
+        })
     }
     
     func addNeed() {

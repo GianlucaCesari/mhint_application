@@ -43,17 +43,43 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         
+        
+        
+        map.showsBuildings = true
+        let coordinates = CLLocationCoordinate2DMake(saveData.double(forKey: "latitudeHistory"),saveData.double(forKey: "longitudeHistory"))
+        map.region = MKCoordinateRegionMakeWithDistance(coordinates, 1000,100)
+        
+        map.mapType = MKMapType.standard
+        
+        // 3D Camera
+        let mapCamera = MKMapCamera()
+        mapCamera.centerCoordinate = coordinates
+        mapCamera.pitch = 45
+        mapCamera.altitude = 500
+        mapCamera.heading = 45
+        
+        // Set MKmapView camera property
+        self.map.camera = mapCamera
+        
         map.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: GlobalSize().heightScreen*0.12, width: GlobalSize().widthScreen*0.84, height: GlobalSize().heightScreen*0.3)
         map.layer.cornerRadius = 7
         map.layer.masksToBounds = true
-        self.view.addSubview(map)
+        map.mapType = MKMapType.standard
+//        let mapCamera = MKMapCamera()
+//        mapCamera.pitch = 45
+//        mapCamera.altitude = 500
+//        mapCamera.heading = 45
         
-        let center = CLLocationCoordinate2D(latitude: saveData.double(forKey: "latitudeHistory"), longitude: saveData.double(forKey: "longitudeHistory"))
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-        self.map.setRegion(region, animated: true)
+//        map.camera = mapCamera
+//
+//        let center = CLLocationCoordinate2D(latitude: saveData.double(forKey: "latitudeHistory"), longitude: saveData.double(forKey: "longitudeHistory"))
+//        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001))
+//        self.map.setRegion(region, animated: true)
         let annotation = MKPointAnnotation()
-        annotation.coordinate = center
+        annotation.coordinate = coordinates
         self.map.addAnnotation(annotation)
+        
+        self.view.addSubview(map)
         
         tap = UITapGestureRecognizer(target: self, action: #selector(textFieldShouldReturnClose))
         self.view.addGestureRecognizer(tap)

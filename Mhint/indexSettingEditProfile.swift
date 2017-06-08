@@ -272,7 +272,8 @@ class editProfileController: UICollectionViewController, UICollectionViewDelegat
     }
     
     func saveProfile() {
-        GlobalFunc().alertCustom(stringAlertTitle: "Profile succefully edit", stringAlertDescription: "", button: "Ok", s: self)
+        
+        animationImage(i: "ok-popup", n: "Perfect you are updated!")
         
         let parameter = [
             "mail": GlobalUser.email
@@ -283,10 +284,59 @@ class editProfileController: UICollectionViewController, UICollectionViewDelegat
             , "weight": GlobalUser.weight
             ] as [String : Any]
         
-        Alamofire.request("https://api.mhint.eu/user", method: .put, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
-            print(response)
-        }
+        Alamofire.request("https://api.mhint.eu/user", method: .put, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in }
         saveDataProfile = true
+    }
+    func animationImage(i: String, n: String) {
+        
+        let viewOverlay = UIView()
+        viewOverlay.backgroundColor = .black
+        viewOverlay.alpha = 0
+        viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
+        self.view.addSubview(viewOverlay)
+        
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+            viewOverlay.alpha = 0.6
+        }, completion: nil)
+        
+        let v = UIView()
+        v.frame = CGRect(x: GlobalSize().widthScreen*0.4, y: GlobalSize().heightScreen*1.5, width: GlobalSize().widthScreen*0.2, height: GlobalSize().widthScreen*0.2)
+        v.backgroundColor = .white
+        v.layer.cornerRadius = GlobalSize().widthScreen*0.1
+        v.layer.masksToBounds = true
+        v.alpha = 1
+        self.view.addSubview(v)
+        
+        let imgProfile = UIImageView()
+        imgProfile.frame = CGRect(x: GlobalSize().widthScreen*0.43, y: GlobalSize().heightScreen*1.5, width: GlobalSize().widthScreen*0.14, height: GlobalSize().widthScreen*0.14)
+        let img = UIImage(named: i)
+        imgProfile.image = img
+        self.view.addSubview(imgProfile)
+        
+        let label = UILabel()
+        label.text = n.uppercased()
+        label.alpha = 0
+        label.addTextSpacing()
+        label.textColor = .white
+        label.font = UIFont(name: "AvenirLTStd-Black", size: GlobalSize().widthScreen*0.03)
+        label.textAlignment = .center
+        label.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.475, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
+        self.view.addSubview(label)
+        
+        UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
+            imgProfile.frame.origin.y = GlobalSize().heightScreen*0.39
+            v.frame.origin.y = GlobalSize().heightScreen*0.37
+        }, completion: nil)
+        UIView.animate(withDuration: 0.5, delay: 1, options: .curveLinear, animations: {
+            label.alpha = 1
+        }, completion: { (finished: Bool) -> Void in
+            UIView.animate(withDuration: 0.2, delay: 1, options: .curveLinear, animations: {
+                label.alpha = 0
+                imgProfile.alpha = 0
+                viewOverlay.alpha = 0
+                v.alpha = 0
+            }, completion: nil)
+        })
     }
     
 }

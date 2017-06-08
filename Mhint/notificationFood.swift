@@ -140,8 +140,6 @@ class NotificationFoodController: UICollectionViewController, UICollectionViewDe
         content.sound = UNNotificationSound.default()
         content.badge = (UIApplication.shared.applicationIconBadgeNumber + 1) as NSNumber
         
-        
-        
         var dateComponents = DateComponents()
         dateComponents.weekday = saveData.integer(forKey: "notificationDay")
         dateComponents.hour = 12

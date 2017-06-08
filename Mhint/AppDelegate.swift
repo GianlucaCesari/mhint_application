@@ -34,9 +34,60 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
     
     
     func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
-        //ALL'APERTURA DI UNA LOCALNOTIFICATION VA A SHOPPINGLIST 
-        let controllerToShow = HomeShoppingListController(collectionViewLayout: layout)
-        self.window!.rootViewController = controllerToShow
+        if application.applicationState == UIApplicationState.inactive || application.applicationState == UIApplicationState.background {
+            var navigationController = UINavigationController()
+            
+            let layoutChat = UICollectionViewFlowLayout.init()
+            layoutChat.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
+            layoutChat.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
+            let emergency = HomeFoodController(collectionViewLayout: layoutChat)
+            navigationController = UINavigationController(rootViewController: emergency)
+            
+            let leftMenuViewController = LeftMenuViewController()
+            let rightMenuViewController = LeftMenuViewController()
+            let sideMenuViewController: AKSideMenu = AKSideMenu(contentViewController: navigationController, leftMenuViewController: leftMenuViewController, rightMenuViewController: rightMenuViewController)
+            sideMenuViewController.setContentViewController(UINavigationController.init(rootViewController: HomeFoodController(collectionViewLayout: layout)), animated: true)
+            
+            sideMenuViewController.panGestureRightEnabled = false
+            sideMenuViewController.menuPreferredStatusBarStyle = .lightContent
+            sideMenuViewController.delegate = self
+            sideMenuViewController.contentViewShadowColor = .darkGray
+            sideMenuViewController.contentViewShadowOffset = CGSize(width: 0, height: 0)
+            sideMenuViewController.contentViewShadowOpacity = 0.4
+            sideMenuViewController.contentViewShadowRadius = 12
+            sideMenuViewController.contentViewShadowEnabled = true
+            self.window!.rootViewController = sideMenuViewController
+            self.window!.backgroundColor = .white
+            self.window?.makeKeyAndVisible()
+        } else {
+            let announcement = Announcement(title: "It's time to go grocery-shopping!", subtitle: "Click here to see your grocery list.", image: UIImage(named: "iconChat"), duration: 4, action: {
+                var navigationController = UINavigationController()
+                
+                let layoutChat = UICollectionViewFlowLayout.init()
+                layoutChat.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
+                layoutChat.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
+                let emergency = HomeFoodController(collectionViewLayout: layoutChat)
+                navigationController = UINavigationController(rootViewController: emergency)
+                
+                let leftMenuViewController = LeftMenuViewController()
+                let rightMenuViewController = LeftMenuViewController()
+                let sideMenuViewController: AKSideMenu = AKSideMenu(contentViewController: navigationController, leftMenuViewController: leftMenuViewController, rightMenuViewController: rightMenuViewController)
+                sideMenuViewController.setContentViewController(UINavigationController.init(rootViewController: HomeFoodController(collectionViewLayout: layout)), animated: true)
+                
+                sideMenuViewController.panGestureRightEnabled = false
+                sideMenuViewController.menuPreferredStatusBarStyle = .lightContent
+                sideMenuViewController.delegate = self
+                sideMenuViewController.contentViewShadowColor = .darkGray
+                sideMenuViewController.contentViewShadowOffset = CGSize(width: 0, height: 0)
+                sideMenuViewController.contentViewShadowOpacity = 0.4
+                sideMenuViewController.contentViewShadowRadius = 12
+                sideMenuViewController.contentViewShadowEnabled = true
+                self.window!.rootViewController = sideMenuViewController
+                self.window!.backgroundColor = .white
+                self.window?.makeKeyAndVisible()
+            })
+            Whisper.show(shout: announcement, to: (self.window?.rootViewController)!, completion: {})
+        }
     }
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 //        API AI
@@ -146,41 +197,60 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification data: [AnyHashable : Any]) {
-        // Print notification payload data
-        print("Push notification received: \(data)")
-        
-        let announcement = Announcement(title: String(describing:data["user"]!), subtitle: String(describing:data["text"]!),image: UIImage(named: "iconChat"), duration: 4)
-        
-        Whisper.show(shout: announcement, to: (self.window?.rootViewController)!, completion: {
-            
-            let layout = UICollectionViewFlowLayout.init()
-            layout.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
-            layout.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
-            self.emergencyController = EmergencyController(collectionViewLayout: layout)
+        if application.applicationState == UIApplicationState.inactive || application.applicationState == UIApplicationState.background {
             var navigationController = UINavigationController()
-            navigationController = UINavigationController(rootViewController: self.emergencyController)
-            self.window?.rootViewController?.present(navigationController, animated: true, completion: nil)
-//            self.window!.rootViewController = navigationController
-//            self.window?.makeKeyAndVisible()
             
-//            print("Entra qui dentro quando schiacci") //QUESTO ANDRA A NEEDSVIEWCONTROLLER
-//            let viewController = EmergencyController(collectionViewLayout: layout)
-//            self.window?.rootViewController?.present(viewController, animated: true, completion: nil)
-        })
-        
-        
-//        let alertController = UIAlertController(title: "Title", message: "Any message", preferredStyle: .actionSheet)
-//        let okAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.default) {
-//            UIAlertAction in
-//            NSLog("OK Pressed")
-//        }
-//        let cancelAction = UIAlertAction(title: "No", style: UIAlertActionStyle.cancel) {
-//            UIAlertAction in
-//            NSLog("Cancel Pressed")
-//        }
-//        alertController.addAction(okAction)
-//        alertController.addAction(cancelAction)
-//        self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
+            let layoutChat = UICollectionViewFlowLayout.init()
+            layoutChat.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
+            layoutChat.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
+            let emergency = EmergencyController(collectionViewLayout: layoutChat)
+            navigationController = UINavigationController(rootViewController: emergency)
+            
+            let leftMenuViewController = LeftMenuViewController()
+            let rightMenuViewController = LeftMenuViewController()
+            let sideMenuViewController: AKSideMenu = AKSideMenu(contentViewController: navigationController, leftMenuViewController: leftMenuViewController, rightMenuViewController: rightMenuViewController)
+            sideMenuViewController.setContentViewController(UINavigationController.init(rootViewController: EmergencyController(collectionViewLayout: layout)), animated: true)
+            
+            sideMenuViewController.panGestureRightEnabled = false
+            sideMenuViewController.menuPreferredStatusBarStyle = .lightContent
+            sideMenuViewController.delegate = self
+            sideMenuViewController.contentViewShadowColor = .darkGray
+            sideMenuViewController.contentViewShadowOffset = CGSize(width: 0, height: 0)
+            sideMenuViewController.contentViewShadowOpacity = 0.4
+            sideMenuViewController.contentViewShadowRadius = 12
+            sideMenuViewController.contentViewShadowEnabled = true
+            self.window!.rootViewController = sideMenuViewController
+            self.window!.backgroundColor = .white
+            self.window?.makeKeyAndVisible()
+        } else {
+            let announcement = Announcement(title: String(describing:data["user"]!), subtitle: String(describing:data["text"]!),image: UIImage(named: "iconChat"), duration: 4, action: {
+                var navigationController = UINavigationController()
+                
+                let layoutChat = UICollectionViewFlowLayout.init()
+                layoutChat.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
+                layoutChat.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
+                let emergency = EmergencyController(collectionViewLayout: layoutChat)
+                navigationController = UINavigationController(rootViewController: emergency)
+                
+                let leftMenuViewController = LeftMenuViewController()
+                let rightMenuViewController = LeftMenuViewController()
+                let sideMenuViewController: AKSideMenu = AKSideMenu(contentViewController: navigationController, leftMenuViewController: leftMenuViewController, rightMenuViewController: rightMenuViewController)
+                sideMenuViewController.setContentViewController(UINavigationController.init(rootViewController: EmergencyController(collectionViewLayout: layout)), animated: true)
+                
+                sideMenuViewController.panGestureRightEnabled = false
+                sideMenuViewController.menuPreferredStatusBarStyle = .lightContent
+                sideMenuViewController.delegate = self
+                sideMenuViewController.contentViewShadowColor = .darkGray
+                sideMenuViewController.contentViewShadowOffset = CGSize(width: 0, height: 0)
+                sideMenuViewController.contentViewShadowOpacity = 0.4
+                sideMenuViewController.contentViewShadowRadius = 12
+                sideMenuViewController.contentViewShadowEnabled = true
+                self.window!.rootViewController = sideMenuViewController
+                self.window!.backgroundColor = .white
+                self.window?.makeKeyAndVisible()
+            })
+            Whisper.show(shout: announcement, to: (self.window?.rootViewController)!, completion: {})
+        }
         
     }
     
