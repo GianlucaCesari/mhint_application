@@ -138,7 +138,9 @@ class NotificationFoodController: UICollectionViewController, UICollectionViewDe
         content.title = "It's time to go grocery-shopping!"
         content.body = "Click here to see your grocery list."
         content.sound = UNNotificationSound.default()
-        content.badge = 1
+        content.badge = (UIApplication.shared.applicationIconBadgeNumber + 1) as NSNumber
+        
+        
         
         var dateComponents = DateComponents()
         dateComponents.weekday = saveData.integer(forKey: "notificationDay")
