@@ -162,6 +162,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let lastItemIndex = NSIndexPath(item: itemA, section: 0)
         self.collectionView?.scrollToItem(at: lastItemIndex as IndexPath, at: UICollectionViewScrollPosition.bottom, animated: true)
         self.view.addSubview(collectionView!)
+        
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     //POSIZIONE

@@ -46,6 +46,8 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        saveData.set(false, forKey: "earlyAddEmergency")
+        
         self.view.backgroundColor = .white
         GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "NEEDS & EMERGENCY")
         GlobalFunc().loadingChat(s: self, frame: CGRect(x: GlobalSize().widthScreen*0.25, y: GlobalSize().heightScreen*0.4, width: GlobalSize().widthScreen*0.5, height:  GlobalSize().widthScreen*0.5), nameGif: "load")
@@ -79,6 +81,8 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         collectionView?.contentInset.top = -60
         collectionView?.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.29, width: GlobalSize().widthScreen, height:  GlobalSize().heightScreen*0.71)
         collectionView?.register(CustomCellEmergency.self, forCellWithReuseIdentifier: customCellIdentifier)
+        collectionView?.showsHorizontalScrollIndicator = false
+        collectionView?.showsVerticalScrollIndicator = false
         
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.showCollectionView), userInfo: nil, repeats: true)
         
@@ -87,8 +91,11 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     
     override func viewWillAppear(_ animated: Bool) {
         if saveData.bool(forKey: "earlyAddEmergency") {
+            saveData.set(false, forKey: "earlyAddEmergency")
+            
             boolCall1 = false
             boolCall2 = false
+            
             emergencyReceive.removeAll()
             emergencyReceiveName.removeAll()
             emergencyReceiveDescription.removeAll()
@@ -122,27 +129,10 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
             emergencySendTrueUser.append("")
             emergencySendTrueUserImage.append("")
             
-            self.view.willRemoveSubview(collectionView!)
-            
-            let layout = UICollectionViewFlowLayout.init()
-            layout.minimumInteritemSpacing = 0
-            layout.minimumLineSpacing = 3
-            layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
-            layout.itemSize = CGSize(width: GlobalSize().widthScreen, height: heightCell)
-            
-            collectionView?.collectionViewLayout = layout
-            collectionView?.delegate = self
-            collectionView?.dataSource = self
-            collectionView?.backgroundColor = .white
-            collectionView?.contentInset.top = -60
-            collectionView?.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.29, width: GlobalSize().widthScreen, height:  GlobalSize().heightScreen*0.71)
-            collectionView?.register(CustomCellEmergency.self, forCellWithReuseIdentifier: customCellIdentifier)
-            
             getEmergencyPending()
             getEmergencyAccepted()
             
             timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.showCollectionView), userInfo: nil, repeats: true)
-            saveData.set(false, forKey: "earlyAddEmergency")
         }
     }
     
@@ -151,21 +141,10 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         if boolCall1 && boolCall2 {
             timer.invalidate()
             
-            print("FINITO\n\n\n\n")
-            
-            print(allEmergency)
-            
             if emergencyReceive.count == 0 {
                 emergencyReceive.append("no-request")
                 allEmergency.insert("no-request", at: 0)
             }
-            
-            print(emergencyReceive)
-            print(emergencyReceiveName)
-            print(emergencyReceiveDescription)
-            print(emergencyReceiveUser)
-            
-            print("\n")
             
             if emergencySendFalse.count == 1 {
                 emergencySendFalse.removeAll()
@@ -180,14 +159,6 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                 }
             }
             
-            print(emergencySendFalse)
-            print(emergencySendFalseName)
-            print(emergencySendFalseDescription)
-            print(emergencySendFalseUser)
-            
-            print("\n")
-            
-            
             if emergencySendTrue.count == 1 {
                 emergencySendTrue.removeAll()
                 emergencySendTrue.append("no-pending")
@@ -200,13 +171,6 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                     allEmergency[index] = "pending"
                 }
             }
-            
-            print(emergencySendTrue)
-            print(emergencySendTrueName)
-            print(emergencySendTrueDescription)
-            print(emergencySendTrueUser)
-            
-            print(allEmergency)
             
             GlobalFunc().removeLoadingChat(s: self)
             collectionView?.reloadData()
@@ -444,7 +408,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                 customCell.descriptionEmergency.text = emergencySendTrueDescription[indexPath.row - (emergencyReceive.count + emergencySendFalse.count)]
                 customCell.descriptionEmergency.delegate = self
                 if emergencySendTrueDescription[indexPath.row - (emergencyReceive.count + emergencySendFalse.count)] == "" {
-                    customCell.descriptionEmergency.text = emergencySendTrueUser[indexPath.row - (emergencyReceive.count + emergencySendFalse.count)] + " was too busy."
+                    customCell.descriptionEmergency.text = "Was in a hurry he couldn't even write a description."
                     customCell.descriptionEmergency.textColor = .lightGray
                 }
                 customCell.descriptionEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.3, width: GlobalSize().widthScreen*0.85, height: heightCell*0.3)
@@ -570,22 +534,6 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         emergencySendTrueUser.append("")
         emergencySendTrueUserImage.append("")
         
-        self.view.willRemoveSubview(collectionView!)
-        
-        let layout = UICollectionViewFlowLayout.init()
-        layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 3
-        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
-        layout.itemSize = CGSize(width: GlobalSize().widthScreen, height: heightCell)
-        
-        collectionView?.collectionViewLayout = layout
-        collectionView?.delegate = self
-        collectionView?.dataSource = self
-        collectionView?.backgroundColor = .white
-        collectionView?.contentInset.top = -60
-        collectionView?.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.29, width: GlobalSize().widthScreen, height:  GlobalSize().heightScreen*0.71)
-        collectionView?.register(CustomCellEmergency.self, forCellWithReuseIdentifier: customCellIdentifier)
-        
         getEmergencyPending()
         getEmergencyAccepted()
         
@@ -636,22 +584,6 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         emergencySendTrueUser.append("")
         emergencySendTrueUserImage.append("")
         
-        self.view.willRemoveSubview(collectionView!)
-        
-        let layout = UICollectionViewFlowLayout.init()
-        layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 3
-        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
-        layout.itemSize = CGSize(width: GlobalSize().widthScreen, height: heightCell)
-        
-        collectionView?.collectionViewLayout = layout
-        collectionView?.delegate = self
-        collectionView?.dataSource = self
-        collectionView?.backgroundColor = .white
-        collectionView?.contentInset.top = -60
-        collectionView?.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.29, width: GlobalSize().widthScreen, height:  GlobalSize().heightScreen*0.71)
-        collectionView?.register(CustomCellEmergency.self, forCellWithReuseIdentifier: customCellIdentifier)
-        
         getEmergencyPending()
         getEmergencyAccepted()
         
@@ -701,22 +633,6 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         emergencySendTrueDescription.append("")
         emergencySendTrueUser.append("")
         emergencySendTrueUserImage.append("")
-        
-        self.view.willRemoveSubview(collectionView!)
-        
-        let layout = UICollectionViewFlowLayout.init()
-        layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 3
-        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
-        layout.itemSize = CGSize(width: GlobalSize().widthScreen, height: heightCell)
-        
-        collectionView?.collectionViewLayout = layout
-        collectionView?.delegate = self
-        collectionView?.dataSource = self
-        collectionView?.backgroundColor = .white
-        collectionView?.contentInset.top = -60
-        collectionView?.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.29, width: GlobalSize().widthScreen, height:  GlobalSize().heightScreen*0.71)
-        collectionView?.register(CustomCellEmergency.self, forCellWithReuseIdentifier: customCellIdentifier)
         
         getEmergencyPending()
         getEmergencyAccepted()

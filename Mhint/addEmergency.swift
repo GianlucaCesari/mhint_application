@@ -176,14 +176,72 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
                     if let value = json["value"] as? [String: Any] {
                         if let user = value["user_receiver"] as? [String: Any] {
                             name = user["name"]! as! String
+                            self.animationImage(i: user["image_profile"] as! String, n: user["name"]! as! String)
                         }
                     }
                 }
-                GlobalFunc().alertCustom(stringAlertTitle: "Emergency successfully sent", stringAlertDescription: "Sent to \(name)", button: "Yeee", s: self)
+                //GlobalFunc().alertCustom(stringAlertTitle: "Emergency successfully sent", stringAlertDescription: "Sent to \(name)", button: "Yeee", s: self)
             }
         } else {
             GlobalFunc().alertCustom(stringAlertTitle: "Emergency not sent", stringAlertDescription: "Title must be filled", button: "Ok", s: self)
         }
+    }
+    
+    func animationImage(i: String, n: String) {
+        
+        let viewOverlay = UIView()
+        viewOverlay.backgroundColor = .black
+        viewOverlay.alpha = 0
+        viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
+        self.view.addSubview(viewOverlay)
+        
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+            viewOverlay.alpha = 0.6
+        }, completion: nil)
+        
+        let imgProfile = UIImageView()
+        imgProfile.frame = CGRect(x: GlobalSize().widthScreen*0.375, y: GlobalSize().heightScreen*1.5, width: GlobalSize().widthScreen*0.25, height: GlobalSize().widthScreen*0.25)
+        imgProfile.sd_setImage(with: URL(string: i), placeholderImage: nil)
+        imgProfile.layer.cornerRadius = GlobalSize().widthScreen*0.125
+        imgProfile.layer.borderWidth = 5
+        imgProfile.layer.borderColor = GlobalColor().greenSea.cgColor
+        imgProfile.layer.masksToBounds = true
+        self.view.addSubview(imgProfile)
+        
+        let label = UILabel()
+        label.text = "Need sent to".uppercased()
+        label.alpha = 0
+        label.addTextSpacing()
+        label.textColor = .white
+        label.font = UIFont(name: "AvenirLTStd-Black", size: GlobalSize().widthScreen*0.025)
+        label.textAlignment = .center
+        label.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.5, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
+        self.view.addSubview(label)
+        
+        let labelName = UILabel()
+        labelName.text = "\(n)"
+        labelName.alpha = 0
+        labelName.textColor = .white
+        labelName.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.085)
+        labelName.textAlignment = .center
+        labelName.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.55, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
+        self.view.addSubview(labelName)
+        
+        UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
+            imgProfile.frame.origin.y = GlobalSize().heightScreen*0.38
+        }, completion: nil)
+        
+        UIView.animate(withDuration: 0.5, delay: 1, options: .curveLinear, animations: {
+            label.alpha = 1
+            labelName.alpha = 1
+        }, completion: { (finished: Bool) -> Void in
+            UIView.animate(withDuration: 0.2, delay: 1, options: .curveLinear, animations: {
+                labelName.alpha = 0
+                label.alpha = 0
+                imgProfile.alpha = 0
+                viewOverlay.alpha = 0
+            })
+        })
     }
     
     func textFieldShouldReturnClose(_ textField: UITextField) -> Bool {

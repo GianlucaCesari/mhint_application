@@ -28,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
     var window: UIWindow?
     var chatController = ChatController()
     var chatbotController = ChatBotController()
+    var emergencyController = EmergencyController()
     var locationManager: CLLocationManager!
     let apiai = ApiAI.shared()!
     
@@ -149,7 +150,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         print("Push notification received: \(data)")
         
         let announcement = Announcement(title: String(describing:data["user"]!), subtitle: String(describing:data["text"]!),image: UIImage(named: "iconChat"), duration: 4)
+        
         Whisper.show(shout: announcement, to: (self.window?.rootViewController)!, completion: {
+            
+            let layout = UICollectionViewFlowLayout.init()
+            layout.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
+            layout.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
+            self.emergencyController = EmergencyController(collectionViewLayout: layout)
+            var navigationController = UINavigationController()
+            navigationController = UINavigationController(rootViewController: self.emergencyController)
+            self.window?.rootViewController?.present(navigationController, animated: true, completion: nil)
+//            self.window!.rootViewController = navigationController
+//            self.window?.makeKeyAndVisible()
+            
 //            print("Entra qui dentro quando schiacci") //QUESTO ANDRA A NEEDSVIEWCONTROLLER
 //            let viewController = EmergencyController(collectionViewLayout: layout)
 //            self.window?.rootViewController?.present(viewController, animated: true, completion: nil)

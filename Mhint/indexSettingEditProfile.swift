@@ -27,30 +27,30 @@ class editProfileController: UICollectionViewController, UICollectionViewDelegat
         if let name = saveData.string(forKey: "nameProfile") {
             editProfileData.append(name)
         } else {
-            editProfileData.append("Not set")
+            editProfileData.append("Name not set")
         }
         editProfileData.append("Personal Info")
         if let address = saveData.string(forKey: "address") {
             editProfileData.append(address)
         } else {
-            editProfileData.append("Not set")
+            editProfileData.append("Place not set")
         }
         if let birthday = saveData.string(forKey: "birthday") {
             let b = birthday.replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "")
             editProfileData.append(b)
         } else {
-            editProfileData.append("Not set")
+            editProfileData.append("Birthday not set")
         }
         editProfileData.append("Physical Info")
         if let height = saveData.string(forKey: "height") {
             editProfileData.append("H. " + height + " cm")
         } else {
-            editProfileData.append("Not set")
+            editProfileData.append("Height not set")
         }
         if let weight = saveData.string(forKey: "weight") {
             editProfileData.append("W. " + weight + " kg")
         } else {
-            editProfileData.append("Not set")
+            editProfileData.append("Weight not set")
         }
         
         GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "Edit Profile")
