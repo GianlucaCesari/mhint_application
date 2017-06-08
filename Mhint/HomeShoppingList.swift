@@ -360,19 +360,20 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
     }
     
     func clearShoppingList() {
-        GlobalVariable.listItem.removeAll()
-        GlobalVariable.listItemQuantity.removeAll()
-        shoppingList.removeAll()
-        shoppingListQuantity.removeAll()
-        self.collectionView?.reloadData()
-        self.insertClearData()
-        let parameter = [
-            "list_id": self.idList
-            ] as [String : Any]
-        Alamofire.request("https://api.mhint.eu/listcomplete", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in
-            self.idList = ""
-            
-            self.animationImage(i: "ok-popup", n: "Grocery shopping completed!")
+        if GlobalVariable.listItem.count > 1 {
+            GlobalVariable.listItem.removeAll()
+            GlobalVariable.listItemQuantity.removeAll()
+            shoppingList.removeAll()
+            shoppingListQuantity.removeAll()
+            self.collectionView?.reloadData()
+            self.insertClearData()
+            let parameter = [
+                "list_id": self.idList
+                ] as [String : Any]
+            Alamofire.request("https://api.mhint.eu/listcomplete", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in
+                self.idList = ""
+                self.animationImage(i: "ok-popup", n: "Grocery shopping completed!")
+            }
         }
     }
     
@@ -434,6 +435,9 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         v.layer.cornerRadius = GlobalSize().widthScreen*0.1
         v.layer.masksToBounds = true
         v.alpha = 1
+        v.layer.shadowColor = UIColor.black.cgColor
+        v.layer.shadowOpacity = 0.6
+        v.layer.shadowRadius = GlobalSize().widthScreen*0.1
         self.view.addSubview(v)
         
         let imgProfile = UIImageView()

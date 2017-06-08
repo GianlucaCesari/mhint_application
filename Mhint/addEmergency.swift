@@ -222,6 +222,9 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
         imgProfile.layer.borderWidth = 5
         imgProfile.layer.borderColor = GlobalColor().greenSea.cgColor
         imgProfile.layer.masksToBounds = true
+        imgProfile.layer.shadowColor = UIColor.black.cgColor
+        imgProfile.layer.shadowOpacity = 0.6
+        imgProfile.layer.shadowRadius = GlobalSize().widthScreen*0.1
         self.view.addSubview(imgProfile)
         
         let label = UILabel()

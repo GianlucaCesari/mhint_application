@@ -305,6 +305,9 @@ class editProfileController: UICollectionViewController, UICollectionViewDelegat
         v.layer.cornerRadius = GlobalSize().widthScreen*0.1
         v.layer.masksToBounds = true
         v.alpha = 1
+        v.layer.shadowColor = UIColor.black.cgColor
+        v.layer.shadowOpacity = 0.6
+        v.layer.shadowRadius = GlobalSize().widthScreen*0.1
         self.view.addSubview(v)
         
         let imgProfile = UIImageView()
