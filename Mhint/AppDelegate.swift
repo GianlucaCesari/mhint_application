@@ -151,6 +151,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         let announcement = Announcement(title: String(describing:data["user"]!), subtitle: String(describing:data["text"]!),image: UIImage(named: "iconChat"), duration: 30)
         Whisper.show(shout: announcement, to: (self.window?.rootViewController)!, completion: {
             print("Entra qui dentro quando schiacci") //QUESTO ANDRA A NEEDSVIEWCONTROLLER
+            let viewController = EmergencyController(collectionViewLayout: layout)
+            self.window?.rootViewController?.present(viewController, animated: true, completion: nil)
         })
         
         
