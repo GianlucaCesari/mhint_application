@@ -54,6 +54,17 @@ class CustomCellEmergency: BaseCellEmergency {
         return titleView
     }()
     
+    
+    var userImg: UIImageView = {
+        var imageIngredient: UIImageView!
+        let img = UIImage(named: "default")
+        imageIngredient = UIImageView(image: img)
+        imageIngredient.layer.cornerRadius = 5
+        imageIngredient.layer.masksToBounds = true
+        return imageIngredient
+    }()
+    
+    
     //BUTTON
     var btnOk: UIButton = {
         var btn = UIButton()
@@ -102,6 +113,8 @@ class CustomCellEmergency: BaseCellEmergency {
         self.addSubview(btnMaps)
         
         self.addSubview(titleTextViewDivide)
+        
+        self.addSubview(userImg)
     }
     
 }

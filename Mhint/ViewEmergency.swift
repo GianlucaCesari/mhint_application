@@ -27,7 +27,6 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     var emergencySendFalseDescription = [""]
     var emergencySendFalseUser = [""]
     
-    
     var emergencySendTrue = ["pending"]
     var emergencySendTrueName = [""]
     var emergencySendTrueDescription = [""]
@@ -42,8 +41,6 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        GlobalUser.email = "merliandrea.com@gmail.com"
         
         self.view.backgroundColor = .white
         GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "NEEDS & EMERGENCY")
@@ -80,6 +77,13 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.showCollectionView), userInfo: nil, repeats: true)
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print(213)
+        if saveData.bool(forKey: "earlyAddEmergency") {
+            print(098)
+        }
     }
     
     func showCollectionView() {
@@ -156,34 +160,39 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     func getEmergencyPending() {
         Alamofire.request("https://api.mhint.eu/needs?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { response in
             if let items = response.result.value as? [[String: Any]] {
-                for item in items {
-                    self.emergencySendTrueName.append(item["name"]! as! String)
-                    self.emergencySendTrue.append(item["_id"] as! String)
-                    
-                    if let description = item["description"] {
-                        self.emergencySendTrueDescription.append(description as! String)
-                    } else {
-                        self.emergencySendTrueDescription.append("")
-                    }
-                    
-                    if let user = item["user_receiver"] as? [String: Any] {
-                        if String(describing: item["status"]!) == "pending" {
-                            self.emergencySendTrueUser.append("Waiting \(user["name"]!)")
-                        } else if String(describing: item["status"]!) == "accepted" {
-                            self.emergencySendTrueUser.append("Accepted by \(user["name"]!)")
-                        } else if String(describing: item["status"]!) == "refused" {
-                            self.emergencySendTrueUser.append("Refused by \(user["name"]!)")
+                print(items)
+                if items.count == 0 {
+                    self.boolCall1 = true
+                } else {
+                    for item in items {
+                        self.emergencySendTrueName.append(item["name"]! as! String)
+                        self.emergencySendTrue.append(item["_id"] as! String)
+                        
+                        if let description = item["description"] {
+                            self.emergencySendTrueDescription.append(description as! String)
                         } else {
-                            self.emergencySendTrueUser.append("Ops by \(user["name"]!)")
+                            self.emergencySendTrueDescription.append("")
                         }
-                    }
-                    
-                    if self.emergencySendTrue.count == items.count+1 {
-                        self.allEmergency.removeAll()
-                        self.allEmergency.append(contentsOf: self.emergencyReceive)
-                        self.allEmergency.append(contentsOf: self.emergencySendFalse)
-                        self.allEmergency.append(contentsOf: self.emergencySendTrue)
-                        self.boolCall1 = true
+                        
+                        if let user = item["user_receiver"] as? [String: Any] {
+                            if String(describing: item["status"]!) == "pending" {
+                                self.emergencySendTrueUser.append("Waiting \(user["name"]!)")
+                            } else if String(describing: item["status"]!) == "accepted" {
+                                self.emergencySendTrueUser.append("Accepted by \(user["name"]!)")
+                            } else if String(describing: item["status"]!) == "refused" {
+                                self.emergencySendTrueUser.append("Refused by \(user["name"]!)")
+                            } else {
+                                self.emergencySendTrueUser.append("Ops by \(user["name"]!)")
+                            }
+                        }
+                        
+                        if self.emergencySendTrue.count == items.count+1 {
+                            self.allEmergency.removeAll()
+                            self.allEmergency.append(contentsOf: self.emergencyReceive)
+                            self.allEmergency.append(contentsOf: self.emergencySendFalse)
+                            self.allEmergency.append(contentsOf: self.emergencySendTrue)
+                            self.boolCall1 = true
+                        }
                     }
                 }
             }
@@ -195,56 +204,60 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
             
             if let items = response.result.value as? [[String: Any]] {
                 self.emergencyReceive.removeAll()
-                for item in items {
+                if items.count == 0 {
+                    self.boolCall2 = true
+                } else {
+                    for item in items {
                     
-                    if String(describing: item["status"]!) == "pending" {
-                        self.emergencyReceive.append(item["_id"] as! String)
-                        self.emergencyReceiveName.append(item["name"] as! String)
-                        
-                        print(item)
-                        
-//                        let description = item["description"] as! String
-//
-//                        print(description)
-                        
-//                        if description != "" {
-//                            print(description)
-                            self.emergencyReceiveDescription.append("")
-                            //self.emergencyReceiveDescription.append(item["description"]! as! String)
-//                        } else {
-//                            self.emergencyReceiveDescription.append("")
-//                        }
+                        if String(describing: item["status"]!) == "pending" {
+                            self.emergencyReceive.append(item["_id"] as! String)
+                            self.emergencyReceiveName.append(item["name"] as! String)
                             
-                        if let user = item["user_sender"] as? [String: Any] {
-                            self.emergencyReceiveUser.append(user["name"] as! String)
+                            print(item)
+                            
+    //                        let description = item["description"] as! String
+    //
+    //                        print(description)
+                            
+    //                        if description != "" {
+    //                            print(description)
+                                self.emergencyReceiveDescription.append("")
+                                //self.emergencyReceiveDescription.append(item["description"]! as! String)
+    //                        } else {
+    //                            self.emergencyReceiveDescription.append("")
+    //                        }
+                            
+                            if let user = item["user_sender"] as? [String: Any] {
+                                self.emergencyReceiveUser.append(user["name"] as! String)
+                            }
+                            if let position = item["display_position"] as? [String: Double] {
+                                self.emergencyReceiveLat.append(position["lat"]!)
+                                self.emergencyReceiveLon.append(position["long"]!)
+                            }
+                        } else if String(describing: item["status"]!) == "accepted" {
+                            
+                            self.emergencySendFalse.append(item["_id"] as! String)
+                            self.emergencySendFalseName.append(item["name"] as! String)
+                            
+                            if String(describing: item["description"]!) != "" {
+                                self.emergencySendFalseDescription.append(item["description"]! as! String)
+                            } else {
+                                self.emergencySendFalseDescription.append("")
+                            }
+                            
+                            if let user = item["user_sender"] as? [String: Any] {
+                                self.emergencySendFalseUser.append(user["name"] as! String)
+                            }
                         }
-                        if let position = item["display_position"] as? [String: Double] {
-                            self.emergencyReceiveLat.append(position["lat"]!)
-                            self.emergencyReceiveLon.append(position["long"]!)
+                        
+                        if (self.emergencyReceive.count + self.emergencySendFalse.count) == items.count+1 {
+                            self.allEmergency.removeAll()
+                            self.allEmergency.append(contentsOf: self.emergencyReceive)
+                            self.allEmergency.append(contentsOf: self.emergencySendFalse)
+                            self.allEmergency.append(contentsOf: self.emergencySendTrue)
+                            
+                            self.boolCall2 = true
                         }
-                    } else if String(describing: item["status"]!) == "accepted" {
-                        
-                        self.emergencySendFalse.append(item["_id"] as! String)
-                        self.emergencySendFalseName.append(item["name"] as! String)
-                        
-                        if String(describing: item["description"]!) != "" {
-                            self.emergencySendFalseDescription.append(item["description"]! as! String)
-                        } else {
-                            self.emergencySendFalseDescription.append("")
-                        }
-                        
-                        if let user = item["user_sender"] as? [String: Any] {
-                            self.emergencySendFalseUser.append(user["name"] as! String)
-                        }
-                    }
-                    
-                    if (self.emergencyReceive.count + self.emergencySendFalse.count) == items.count+1 {
-                        self.allEmergency.removeAll()
-                        self.allEmergency.append(contentsOf: self.emergencyReceive)
-                        self.allEmergency.append(contentsOf: self.emergencySendFalse)
-                        self.allEmergency.append(contentsOf: self.emergencySendTrue)
-                        
-                        self.boolCall2 = true
                     }
                 }
             }
@@ -333,6 +346,8 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                 
                 customCell.peopleRequestEmergency.text = "Accepted by \(emergencySendFalseUser[indexPath.row-emergencyReceive.count])"
                 customCell.peopleRequestEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.7, width: GlobalSize().widthScreen*0.95, height: heightCell*0.3)
+                
+                customCell.userImg.frame = CGRect(x: GlobalSize().widthScreen*0.6, y: heightCell*0.65, width: heightCell*0.1, height: heightCell*0.1)
             }
         } else if indexPath.row < (emergencyReceive.count + emergencySendFalse.count + emergencySendTrue.count) {
             if allEmergency[indexPath.row] == "no-pending" {
@@ -359,6 +374,8 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                 
                 customCell.peopleRequestEmergency.text = emergencySendTrueUser[indexPath.row - (emergencyReceive.count + emergencySendFalse.count)]
                 customCell.peopleRequestEmergency.frame = CGRect(x: marginLeft, y: heightCell*0.7, width: GlobalSize().widthScreen*0.95, height: heightCell*0.3)
+                
+                customCell.userImg.frame = CGRect(x: GlobalSize().widthScreen*0.6, y: heightCell*0.65, width: heightCell*0.1, height: heightCell*0.1)
             }
         }
         
