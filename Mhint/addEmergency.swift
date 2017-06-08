@@ -11,13 +11,13 @@ import UIKit
 import MapKit
 import Alamofire
 
-class addEmergency: UIViewController, UIGestureRecognizerDelegate{
+class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate, UITextViewDelegate{
     
     let map = MKMapView()
     var keyboardOpen = false
     
     let titleEmergency = UITextField()
-    let descriptionEmergency = UITextField()
+    let descriptionEmergency = UITextView()
     var tap = UITapGestureRecognizer()
     
     override func viewDidLoad() {
@@ -43,11 +43,13 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate{
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         
-        map.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.1, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.3)
+        map.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: GlobalSize().heightScreen*0.12, width: GlobalSize().widthScreen*0.84, height: GlobalSize().heightScreen*0.3)
+        map.layer.cornerRadius = 7
+        map.layer.masksToBounds = true
         self.view.addSubview(map)
         
         let center = CLLocationCoordinate2D(latitude: saveData.double(forKey: "latitudeHistory"), longitude: saveData.double(forKey: "longitudeHistory"))
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.25, longitudeDelta: 0.25))
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
         self.map.setRegion(region, animated: true)
         let annotation = MKPointAnnotation()
         annotation.coordinate = center
@@ -63,43 +65,54 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate{
     }
     
     func titleEmergencyFunc() {
-        titleEmergency.frame = CGRect(x: GlobalSize().widthScreen*0.05, y: GlobalSize().heightScreen*0.5, width: GlobalSize().widthScreen*0.7, height: GlobalSize().heightScreen*0.1)
+        titleEmergency.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: GlobalSize().heightScreen*0.4375, width: GlobalSize().widthScreen*0.84, height: GlobalSize().heightScreen*0.1)
         
-        let attributesDictionary = [NSForegroundColorAttributeName: UIColor.darkGray]
+        let attributesDictionary = [NSForegroundColorAttributeName: UIColor.lightGray]
         titleEmergency.attributedPlaceholder = NSAttributedString(string: "What do you need ?", attributes: attributesDictionary)
         
         titleEmergency.textColor = .black
-        titleEmergency.layer.cornerRadius = 10
+        titleEmergency.layer.cornerRadius = 7
         titleEmergency.layer.masksToBounds = true
         titleEmergency.layer.sublayerTransform = CATransform3DMakeTranslation(20,0,0)
-        
+        titleEmergency.delegate = self
         titleEmergency.backgroundColor = GlobalColor().backgroundCollectionView
-        titleEmergency.font = UIFont(name: "AvenirLTStd-Heavy", size: GlobalSize().widthScreen*0.06)
+        titleEmergency.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.04)
         self.view.addSubview(titleEmergency)
     }
     
     func descriptionEmergencyFunc() {
         
-        descriptionEmergency.frame = CGRect(x: GlobalSize().widthScreen*0.05, y: GlobalSize().heightScreen*0.5, width: GlobalSize().widthScreen*0.9, height: GlobalSize().heightScreen*0.2)
+        descriptionEmergency.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: GlobalSize().heightScreen*0.555, width: GlobalSize().widthScreen*0.84, height: GlobalSize().heightScreen*0.3)
         
-        let attributesDictionary = [NSForegroundColorAttributeName: UIColor.darkGray]
-        descriptionEmergency.attributedPlaceholder = NSAttributedString(string: "Be more precise", attributes: attributesDictionary)
-        
-        descriptionEmergency.textColor = .black
-        descriptionEmergency.layer.cornerRadius = 10
+        descriptionEmergency.text = "Be more precise"
+        descriptionEmergency.textColor = .lightGray
+        descriptionEmergency.layer.cornerRadius = 7
         descriptionEmergency.layer.masksToBounds = true
-        descriptionEmergency.layer.sublayerTransform = CATransform3DMakeTranslation(20,0,0)
-        
+        descriptionEmergency.layer.sublayerTransform = CATransform3DMakeTranslation(20,20,20)
+        descriptionEmergency.delegate = self
         descriptionEmergency.backgroundColor = GlobalColor().backgroundCollectionView
-        descriptionEmergency.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.06)
+        descriptionEmergency.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.04)
         self.view.addSubview(descriptionEmergency)
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == .lightGray {
+            textView.text = nil
+            textView.textColor = .black
+        }
+    }
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "Be more precise"
+            textView.textColor = .lightGray
+        }
     }
     
     func btnSendEmergency() {
         let btn = UIButton()
         btn.setTitle("SEND", for: .normal)
         btn.setTitleColor(.white, for: .normal)
-        btn.titleLabel?.font = UIFont(name: "AvenirLTStd-Heavy", size: GlobalSize().widthScreen*0.08)
+        btn.titleLabel?.font = UIFont(name: "AvenirLTStd-Black", size: GlobalSize().widthScreen*0.04)
         btn.backgroundColor = GlobalColor().greenSea
         btn.addTarget(self, action: #selector(sendEmergency), for: .touchUpInside)
         btn.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.9, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
@@ -145,7 +158,8 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate{
         if textTrimmed != "" {
             
             titleEmergency.text = ""
-            descriptionEmergency.text = ""
+            descriptionEmergency.text = "Be more precise"
+            descriptionEmergency.textColor = .lightGray
             
             let parameter = [
                 "mail": GlobalUser.email

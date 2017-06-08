@@ -61,6 +61,7 @@ class CustomCellEmergency: BaseCellEmergency {
         imageIngredient = UIImageView(image: img)
         imageIngredient.layer.cornerRadius = 5
         imageIngredient.layer.masksToBounds = true
+        imageIngredient.alpha = 0
         return imageIngredient
     }()
     
