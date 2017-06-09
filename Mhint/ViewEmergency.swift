@@ -9,10 +9,17 @@
 import UIKit
 import Alamofire
 import Whisper
+import MapKit
 
 class EmergencyController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextViewDelegate, UITextFieldDelegate {
     
     let customCellIdentifier = "cellId"
+    
+    let viewOverlay = UIButton()
+    let map = MKMapView()
+    let img = UIImageView()
+    let lbl = UILabel()
+    let btn = UIButton()
     
     let heightCell = GlobalSize().heightScreen*0.2
     
@@ -20,6 +27,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     var emergencyReceiveName = [String]()
     var emergencyReceiveDescription = [String]()
     var emergencyReceiveUser = [String]()
+    var emergencyReceiveUserImage = [String]()
     var emergencyReceiveLat = [Double]()
     var emergencyReceiveLon = [Double]()
     
@@ -101,6 +109,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
             emergencyReceiveName.removeAll()
             emergencyReceiveDescription.removeAll()
             emergencyReceiveUser.removeAll()
+            emergencyReceiveUserImage.removeAll()
             emergencyReceiveLat.removeAll()
             emergencyReceiveLon.removeAll()
             
@@ -246,6 +255,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                         
                             if let user = item["user_sender"] as? [String: Any] {
                                 self.emergencyReceiveUser.append(user["name"] as! String + " at " + timeHour[0] + ":" + timeHour[1])
+                                self.emergencyReceiveUserImage.append(user["image_profile"] as! String)
                             }
                             if let position = item["display_position"] as? [String: Double] {
                                 self.emergencyReceiveLat.append(position["lat"]!)
@@ -346,7 +356,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                 
                 customCell.btnNo.addTarget(self, action: #selector(emergencyNo), for: .touchUpInside)
                 customCell.btnOk.addTarget(self, action: #selector(emergencyOk), for: .touchUpInside)
-                customCell.btnMaps.addTarget(self, action: #selector(openMaps), for: .touchUpInside)
+                customCell.btnMaps.addTarget(self, action: #selector(openPopUpMap), for: .touchUpInside)
             }
         } else if indexPath.row < (emergencyReceive.count + emergencySendFalse.count) {
             if allEmergency[indexPath.row] == "no-accepted" {
@@ -384,7 +394,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                 
                 customCell.btnPosition.frame = CGRect(x: GlobalSize().widthScreen*0.87, y: heightCell*0.7, width: heightCell*0.2, height: heightCell*0.2)
                 customCell.btnPosition.tag = indexPath.row-emergencyReceive.count
-                customCell.btnPosition.addTarget(self, action: #selector(openMapsToAccept), for: .touchUpInside)
+                customCell.btnPosition.addTarget(self, action: #selector(openPopUpMapAccepted), for: .touchUpInside)
             }
         } else if indexPath.row < (emergencyReceive.count + emergencySendFalse.count + emergencySendTrue.count) {
             if allEmergency[indexPath.row] == "no-pending" {
@@ -492,6 +502,14 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     //OK/NO
     func emergencyOk(_ sender: UIButton) {
         
+        viewOverlay.backgroundColor = .black
+        viewOverlay.alpha = 0
+        viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
+        self.view.addSubview(viewOverlay)
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+            self.viewOverlay.alpha = 0.6
+        }, completion: nil)
+        
         let parameter = [
             "request_id": emergencyReceive[sender.tag]
             , "status": "accepted"
@@ -502,6 +520,15 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     }
     
     func emergencyNo(_ sender: UIButton) {
+        
+        viewOverlay.backgroundColor = .black
+        viewOverlay.alpha = 0
+        viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
+        self.view.addSubview(viewOverlay)
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+            self.viewOverlay.alpha = 0.6
+        }, completion: nil)
+        
         let parameter = [
             "request_id": emergencyReceive[sender.tag]
             , "status": "refused"
@@ -512,6 +539,15 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     }
     
     func removeEmergency(_ sender: UIButton) {
+        
+        viewOverlay.backgroundColor = .black
+        viewOverlay.alpha = 0
+        viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
+        self.view.addSubview(viewOverlay)
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+            self.viewOverlay.alpha = 0.6
+        }, completion: nil)
+        
         let parameter = [
             "request_id": allEmergency[sender.tag]
             ] as [String : Any]
@@ -529,6 +565,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         self.emergencyReceiveName.removeAll()
         self.emergencyReceiveDescription.removeAll()
         self.emergencyReceiveUser.removeAll()
+        self.emergencyReceiveUserImage.removeAll()
         self.emergencyReceiveLat.removeAll()
         self.emergencyReceiveLon.removeAll()
         
@@ -559,16 +596,6 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         self.getEmergencyPending()
         self.getEmergencyAccepted()
         self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.showCollectionView), userInfo: nil, repeats: true)
-        
-        let viewOverlay = UIView()
-        viewOverlay.backgroundColor = .black
-        viewOverlay.alpha = 0
-        viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
-        self.view.addSubview(viewOverlay)
-        
-        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
-            viewOverlay.alpha = 0.6
-        }, completion: nil)
         
         let v = UIView()
         v.frame = CGRect(x: GlobalSize().widthScreen*0.4, y: GlobalSize().heightScreen*1.5, width: GlobalSize().widthScreen*0.2, height: GlobalSize().widthScreen*0.2)
@@ -608,9 +635,173 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
             UIView.animate(withDuration: 0.2, delay: 1, options: .curveLinear, animations: {
                 label.alpha = 0
                 imgProfile.alpha = 0
-                viewOverlay.alpha = 0
+                self.viewOverlay.alpha = 0
                 v.alpha = 0
             }, completion: nil)
+        })
+    }
+    
+    func closeView() {
+        UIView.animate(withDuration: 0.5, delay: 0.4, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
+            self.btn.alpha = 0
+            self.lbl.alpha = 0
+            self.img.alpha = 0
+            self.map.alpha = 0
+            self.viewOverlay.alpha = 0
+        })
+    }
+    
+    func openPopUpMap(_ sender: UIButton) {
+        
+        viewOverlay.backgroundColor = .black
+        viewOverlay.alpha = 0
+        viewOverlay.addTarget(self, action: #selector(closeView), for: .touchUpInside)
+        viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
+        self.view.addSubview(viewOverlay)
+        
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+            self.viewOverlay.alpha = 0.6
+        }, completion: nil)
+        
+        map.showsBuildings = true
+        let coordinates = CLLocationCoordinate2DMake(emergencyReceiveLat[sender.tag],emergencyReceiveLon[sender.tag])
+        map.region = MKCoordinateRegionMakeWithDistance(coordinates, 0,0)
+        map.mapType = MKMapType.standard
+        
+        let mapCamera = MKMapCamera()
+        mapCamera.centerCoordinate = coordinates
+        mapCamera.pitch = 45
+        mapCamera.altitude = 100
+        mapCamera.heading = 0
+        
+        map.camera = mapCamera
+        map.frame = CGRect(x: GlobalSize().widthScreen*0.4, y: GlobalSize().heightScreen*1.5, width: GlobalSize().widthScreen*0.2, height: GlobalSize().widthScreen*0.2)
+        map.layer.cornerRadius = GlobalSize().widthScreen*0.1
+        map.alpha = 1
+        map.layer.masksToBounds = true
+        map.layer.borderWidth = 3
+        map.layer.borderColor = UIColor.white.cgColor
+        map.mapType = MKMapType.standard
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinates
+        map.addAnnotation(annotation)
+        self.view.addSubview(map)
+        
+        img.sd_setImage(with: URL(string: emergencyReceiveUserImage[sender.tag]), placeholderImage: nil)
+        img.alpha = 0
+        img.frame = CGRect(x: GlobalSize().widthScreen*0.5, y: GlobalSize().heightScreen*0.58, width: GlobalSize().widthScreen*0, height: GlobalSize().widthScreen*0)
+        img.layer.cornerRadius = GlobalSize().widthScreen*0.1
+        img.layer.masksToBounds = true
+        img.layer.borderWidth = 3
+        img.layer.borderColor = UIColor.white.cgColor
+        self.view.addSubview(img)
+        
+        let user = emergencyReceiveUser[sender.tag].components(separatedBy: " at ")[0]
+        lbl.text = "\(user) was here."
+        lbl.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.07)
+        lbl.textColor = .white
+        lbl.textAlignment = .center
+        lbl.alpha = 0
+        lbl.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.65, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
+        self.view.addSubview(lbl)
+        
+        btn.setTitle("Open in Maps".uppercased(), for: .normal)
+        btn.setTitleColor(.white, for: .normal)
+        btn.titleLabel?.font = UIFont(name: "AvenirLTStd-Black", size: GlobalSize().widthScreen*0.03)
+        btn.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.7, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
+        btn.alpha = 0
+        btn.tag = sender.tag
+        btn.addTarget(self, action: #selector(openMaps), for: .touchUpInside)
+        self.view.addSubview(btn)
+        
+        UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
+            self.map.frame.origin.y = GlobalSize().heightScreen*0.38
+        }, completion: { (finished: Bool) -> Void in
+            UIView.animate(withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
+                self.map.frame = CGRect(x: GlobalSize().widthScreen*0.15, y: GlobalSize().heightScreen*0.2, width: GlobalSize().widthScreen*0.7, height: GlobalSize().widthScreen*0.7)
+                self.img.frame = CGRect(x: GlobalSize().widthScreen*0.4, y: GlobalSize().heightScreen*0.54, width: GlobalSize().widthScreen*0.2, height: GlobalSize().widthScreen*0.2)
+                self.map.layer.cornerRadius = 4
+                self.btn.alpha = 1
+                self.lbl.alpha = 1
+                self.img.alpha = 1
+            })
+        })
+    }
+    
+    func openPopUpMapAccepted(_ sender: UIButton) {
+        
+        viewOverlay.backgroundColor = .black
+        viewOverlay.alpha = 0
+        viewOverlay.addTarget(self, action: #selector(closeView), for: .touchUpInside)
+        viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
+        self.view.addSubview(viewOverlay)
+        
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+            self.viewOverlay.alpha = 0.6
+        }, completion: nil)
+        
+        map.showsBuildings = true
+        let coordinates = CLLocationCoordinate2DMake(emergencySendFalseLat[sender.tag],emergencySendFalseLon[sender.tag])
+        map.region = MKCoordinateRegionMakeWithDistance(coordinates, 0,0)
+        map.mapType = MKMapType.standard
+        
+        let mapCamera = MKMapCamera()
+        mapCamera.centerCoordinate = coordinates
+        mapCamera.pitch = 45
+        mapCamera.altitude = 100
+        mapCamera.heading = 0
+        
+        map.camera = mapCamera
+        map.frame = CGRect(x: GlobalSize().widthScreen*0.4, y: GlobalSize().heightScreen*1.5, width: GlobalSize().widthScreen*0.2, height: GlobalSize().widthScreen*0.2)
+        map.layer.cornerRadius = GlobalSize().widthScreen*0.1
+        map.alpha = 1
+        map.layer.masksToBounds = true
+        map.layer.borderWidth = 3
+        map.layer.borderColor = UIColor.white.cgColor
+        map.mapType = MKMapType.standard
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinates
+        map.addAnnotation(annotation)
+        self.view.addSubview(map)
+        
+        img.sd_setImage(with: URL(string: emergencySendFalseUserImage[sender.tag]), placeholderImage: nil)
+        img.alpha = 0
+        img.frame = CGRect(x: GlobalSize().widthScreen*0.5, y: GlobalSize().heightScreen*0.58, width: GlobalSize().widthScreen*0, height: GlobalSize().widthScreen*0)
+        img.layer.cornerRadius = GlobalSize().widthScreen*0.1
+        img.layer.masksToBounds = true
+        img.layer.borderWidth = 3
+        img.layer.borderColor = UIColor.white.cgColor
+        self.view.addSubview(img)
+        
+        let user = emergencySendFalseUser[sender.tag].components(separatedBy: " at ")[0]
+        lbl.text = "\(user) was here."
+        lbl.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.07)
+        lbl.textColor = .white
+        lbl.textAlignment = .center
+        lbl.alpha = 0
+        lbl.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.65, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
+        self.view.addSubview(lbl)
+        
+        btn.setTitle("Open in Maps".uppercased(), for: .normal)
+        btn.setTitleColor(.white, for: .normal)
+        btn.titleLabel?.font = UIFont(name: "AvenirLTStd-Black", size: GlobalSize().widthScreen*0.03)
+        btn.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.7, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
+        btn.alpha = 0
+        btn.tag = sender.tag
+        btn.addTarget(self, action: #selector(openMapsToAccept), for: .touchUpInside)
+        self.view.addSubview(btn)
+        
+        UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
+            self.map.frame.origin.y = GlobalSize().heightScreen*0.38
+        }, completion: { (finished: Bool) -> Void in
+            UIView.animate(withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
+                self.map.frame = CGRect(x: GlobalSize().widthScreen*0.15, y: GlobalSize().heightScreen*0.2, width: GlobalSize().widthScreen*0.7, height: GlobalSize().widthScreen*0.7)
+                self.img.frame = CGRect(x: GlobalSize().widthScreen*0.4, y: GlobalSize().heightScreen*0.54, width: GlobalSize().widthScreen*0.2, height: GlobalSize().widthScreen*0.2)
+                self.map.layer.cornerRadius = 4
+                self.btn.alpha = 1
+                self.lbl.alpha = 1
+                self.img.alpha = 1
+            })
         })
     }
     

@@ -107,6 +107,8 @@
 		1609621B1EC0EC8000C5B4B0 /* indexSettingEditProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = indexSettingEditProfile.swift; path = Mhint/indexSettingEditProfile.swift; sourceTree = "<group>"; };
 		1609621E1EC1970F00C5B4B0 /* cellEditProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = cellEditProfile.swift; path = Mhint/cellEditProfile.swift; sourceTree = "<group>"; };
 		160962201EC2755D00C5B4B0 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		161AAD511EEA96C200A2AFE2 /* bamboo.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = bamboo.m4r; sourceTree = "<group>"; };
+		161AAD521EEA96C200A2AFE2 /* bamboo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bamboo.mp3; sourceTree = "<group>"; };
 		161F55701ED5C2DE004D6786 /* HomeFood.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeFood.swift; path = Mhint/HomeFood.swift; sourceTree = "<group>"; };
 		161F55721ED5DEFF004D6786 /* HomeFoodCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeFoodCell.swift; path = Mhint/HomeFoodCell.swift; sourceTree = "<group>"; };
 		1620D9131ED47B420045873A /* notificationFood.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = notificationFood.swift; path = Mhint/notificationFood.swift; sourceTree = "<group>"; };
@@ -419,6 +421,8 @@
 				1639F25E1EE058A800E3B024 /* load-chat.gif */,
 				1639F2641EE0AE8B00E3B024 /* load-voice.gif */,
 				160962191EC0A90D00C5B4B0 /* load.gif */,
+				161AAD511EEA96C200A2AFE2 /* bamboo.m4r */,
+				161AAD521EEA96C200A2AFE2 /* bamboo.mp3 */,
 				16FFCF561EA284B6005A4A59 /* Fonts */,
 			);
 			path = Mhint;
@@ -559,7 +563,7 @@
 					16FFCF1A1EA28285005A4A59 = {
 						CreatedOnToolsVersion = 8.2;
 						DevelopmentTeam = L4KF22FNCY;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -988,16 +992,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Mhint/Mhint.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = L4KF22FNCY;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Mhint/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gianlucacesari.Mhint;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "543ca168-6662-45b9-b5cf-5952cab763b3";
-				PROVISIONING_PROFILE_SPECIFIER = "XC iOS: com.gianlucacesari.Mhint";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1009,15 +1014,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Mhint/Mhint.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = L4KF22FNCY;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Mhint/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gianlucacesari.Mhint;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "543ca168-6662-45b9-b5cf-5952cab763b3";
-				PROVISIONING_PROFILE_SPECIFIER = "XC iOS: com.gianlucacesari.Mhint";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

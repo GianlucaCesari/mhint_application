@@ -16,6 +16,8 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
     let map = MKMapView()
     var keyboardOpen = false
     
+    let viewOverlay = UIView()
+    
     let titleEmergency = UITextField()
     let descriptionEmergency = UITextView()
     var tap = UITapGestureRecognizer()
@@ -42,8 +44,6 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
         self.navigationController?.navigationBar.backgroundColor = .clear
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        
-        
         
         map.showsBuildings = true
         let coordinates = CLLocationCoordinate2DMake(saveData.double(forKey: "latitudeHistory"),saveData.double(forKey: "longitudeHistory"))
@@ -179,6 +179,14 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
             descriptionEmergency.text = "Be more precise"
             descriptionEmergency.textColor = .lightGray
             
+            viewOverlay.backgroundColor = .black
+            viewOverlay.alpha = 0
+            viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
+            self.view.addSubview(viewOverlay)
+            UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+                self.viewOverlay.alpha = 0.6
+            }, completion: nil)
+            
             let parameter = [
                 "mail": GlobalUser.email
                 , "name": textTrimmed!
@@ -204,16 +212,6 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
     }
     
     func animationImage(i: String, n: String) {
-        
-        let viewOverlay = UIView()
-        viewOverlay.backgroundColor = .black
-        viewOverlay.alpha = 0
-        viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
-        self.view.addSubview(viewOverlay)
-        
-        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
-            viewOverlay.alpha = 0.6
-        }, completion: nil)
         
         let imgProfile = UIImageView()
         imgProfile.frame = CGRect(x: GlobalSize().widthScreen*0.375, y: GlobalSize().heightScreen*1.5, width: GlobalSize().widthScreen*0.25, height: GlobalSize().widthScreen*0.25)
@@ -258,7 +256,7 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
                 labelName.alpha = 0
                 label.alpha = 0
                 imgProfile.alpha = 0
-                viewOverlay.alpha = 0
+                self.viewOverlay.alpha = 0
             })
         })
     }

@@ -20,7 +20,6 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
     
     let cellId = "cellShoppingList"
     
-    
     let heightCell = GlobalSize().widthScreen*0.15
     let widthCollectionView = GlobalSize().widthScreen
     
