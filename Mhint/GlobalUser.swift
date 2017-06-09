@@ -97,10 +97,8 @@ class GlobalUser{
     func createUser(name: String, imageProfile: String, birthday: String, address: String, height: Int, weight: Int, sex: Int, lifestyle: Int, sectionEnabled: Array<Any>, logins: Array<Any>, mail: String, number: String) {
         
         let password = randomStringPassword(length: 10)
-        var token = ""
-        if saveData.string(forKey: "deviceTokenString") != nil {
-            token = saveData.string(forKey: "deviceTokenString")!
-        }
+        var token = saveData.string(forKey: "deviceTokenString")!
+
         let b = birthday.replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "")
         
         print("name: ", GlobalUser.firstName)
