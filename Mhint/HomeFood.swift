@@ -8,6 +8,10 @@
 
 import Foundation
 import UIKit
+import Alamofire
+
+var idList:String = ""
+let idDetailsRecipes = 1
 
 class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate{
     
@@ -17,12 +21,16 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
     
     var idRecipesClick:Int!
     
+    var numSection = 0
+    
     let cellId = "cellHomeFood"
     
     var weeklyDay = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
     let dailyMeal = ["Breakfast", "Lunch", "Dinner"]
-    let dailyMealRecipes = ["", "Pasta alla scoglio", "Riso patate e cozze", "Pesto alla genovese", "Riso cantonese", "Briosche", "Frullato al miele", "Gold milk", "Barbecue di Fabrizio", "Pasta al ragu", "Mango stiky rice", "Riso patate e cozze", "fettuccine", "riso", "ad", "adfadfda", "afadfafaf", "gsgsgf", "adfafd","Mango stiky rice", "Riso patate e cozze", "fettuccine", "riso", "ad", "adfadfda", "afadfafaf", "gsgsgf", "adfafd","Mango stiky rice", "Riso patate e cozze", "fettuccine", "riso", "ad", "adfadfda"]
-    let dailyMealRecipesImage = ["", "https://spoonacular.com/recipeImages/pear-walnut-burger-801738.jpg", "https://spoonacular.com/recipeImages/healthy-deep-dish-pizza-574315.jpg","https://spoonacular.com/recipeImages/homemade-breakfast-sausage-536620.jpg", "https://8bnztmont6-flywheel.netdna-ssl.com/wp-content/uploads/2016/03/foodiesfeed.com_vegetable-party-snacks-e1459624020156.jpg","https://webknox.com/recipeImages/9879-556x370.jpg", "https://8bnztmont6-flywheel.netdna-ssl.com/wp-content/uploads/2016/03/foodiesfeed.com_vegetable-party-snacks-e1459624020156.jpg","https://webknox.com/recipeImages/9879-556x370.jpg", "https://8bnztmont6-flywheel.netdna-ssl.com/wp-content/uploads/2016/03/foodiesfeed.com_vegetable-party-snacks-e1459624020156.jpg","https://webknox.com/recipeImages/9879-556x370.jpg", "https://8bnztmont6-flywheel.netdna-ssl.com/wp-content/uploads/2016/03/foodiesfeed.com_vegetable-party-snacks-e1459624020156.jpg","https://webknox.com/recipeImages/9879-556x370.jpg", "https://8bnztmont6-flywheel.netdna-ssl.com/wp-content/uploads/2016/03/foodiesfeed.com_vegetable-party-snacks-e1459624020156.jpg","https://webknox.com/recipeImages/9879-556x370.jpg", "https://8bnztmont6-flywheel.netdna-ssl.com/wp-content/uploads/2016/03/foodiesfeed.com_vegetable-party-snacks-e1459624020156.jpg","https://webknox.com/recipeImages/9879-556x370.jpg", "https://8bnztmont6-flywheel.netdna-ssl.com/wp-content/uploads/2016/03/foodiesfeed.com_vegetable-party-snacks-e1459624020156.jpg","https://webknox.com/recipeImages/9879-556x370.jpg", "https://8bnztmont6-flywheel.netdna-ssl.com/wp-content/uploads/2016/03/foodiesfeed.com_vegetable-party-snacks-e1459624020156.jpg","https://webknox.com/recipeImages/9879-556x370.jpg", "https://8bnztmont6-flywheel.netdna-ssl.com/wp-content/uploads/2016/03/foodiesfeed.com_vegetable-party-snacks-e1459624020156.jpg","https://webknox.com/recipeImages/9879-556x370.jpg", "https://8bnztmont6-flywheel.netdna-ssl.com/wp-content/uploads/2016/03/foodiesfeed.com_vegetable-party-snacks-e1459624020156.jpg","https://webknox.com/recipeImages/9879-556x370.jpg", "https://8bnztmont6-flywheel.netdna-ssl.com/wp-content/uploads/2016/03/foodiesfeed.com_vegetable-party-snacks-e1459624020156.jpg","https://webknox.com/recipeImages/9879-556x370.jpg", "https://8bnztmont6-flywheel.netdna-ssl.com/wp-content/uploads/2016/03/foodiesfeed.com_vegetable-party-snacks-e1459624020156.jpg"]
+    
+    var dailyMealRecipes = [""]
+    var dailyMealRecipesId = [""]
+    var dailyMealRecipesImage = [""]
     
     let heightCell = GlobalSize().widthScreen*0.25
     let heightDayCell = GlobalSize().widthScreen*0.15
@@ -40,6 +48,7 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         super.viewDidLoad()
         
         self.view.backgroundColor = .white
+        UIApplication.shared.statusBarView?.backgroundColor = .white
         
         GlobalFunc().loadingChat(s: self, frame: CGRect(x: GlobalSize().widthScreen*0.25, y: GlobalSize().heightScreen*0.4, width: GlobalSize().widthScreen*0.5, height: GlobalSize().widthScreen*0.5), nameGif: "load-long")
         setWeek()
@@ -52,6 +61,7 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         btnMenu.addTarget(self, action: #selector(self.goToShoppingList), for: .touchUpInside)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: btnMenu)
         
+        getRecipes()
         
         let backCollectionView = UIView()
         backCollectionView.backgroundColor = GlobalColor().backgroundCollectionView
@@ -72,7 +82,8 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         collectionView?.register(CustomCellChooseHomeFood.self, forCellWithReuseIdentifier: cellId)
         collectionView?.showsHorizontalScrollIndicator = false
         collectionView?.showsVerticalScrollIndicator = false
-        self.view.addSubview(collectionView!)
+        self.collectionView?.alpha = 0
+        self.view.addSubview(self.collectionView!)
         
         let backCollectionViewBack = UIView()
         backCollectionViewBack.backgroundColor = .white
@@ -87,7 +98,40 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         self.view.addSubview(loadingShoppingBar)
     }
     
+    func getRecipes() {
+        Alamofire.request("https://api.mhint.eu/weeklyplan?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { JSON in
+            if let response = JSON.result.value as? [String: Any] {
+                idList = response["shopping_list"] as! String
+                if let items = response["items"] as? [[String: Any]] {
+                    var x = 0
+                    var y = 0
+                    for item in items {
+                        if x == 3 {
+                            self.dailyMealRecipes.append("")
+                            self.dailyMealRecipesId.append("")
+                            self.dailyMealRecipesImage.append("")
+                            x = 0
+                            y += 1
+                        }
+                        self.dailyMealRecipes.append(item["title"] as! String)
+                        self.dailyMealRecipesId.append(item["recipe_id"] as! String)
+                        self.dailyMealRecipesImage.append(item["img_url"] as! String)
+                        x += 1
+                        if (items.count+y) == self.dailyMealRecipesId.count-1 {
+                            self.collectionView?.alpha = 1
+                            self.collectionView?.reloadData()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     func setWeek() {
+        
+        let endDay = saveData.integer(forKey: "notificationDay")
+        print("END: ", endDay)
+        
         let date = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -101,12 +145,16 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         for x in 0...(index-3) {
             correctWeek.append(weeklyDay[x])
         }
+        for x in endDay...correctWeek.count-1 {
+            correctWeek.remove(at: x)
+        }
         weeklyDay.removeAll()
         weeklyDay.append(contentsOf: correctWeek)
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 7
+        let section = (dailyMealRecipes.count/4)
+        return section
     }
     
     //COLLECTIONVIEW
@@ -117,6 +165,7 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CustomCellChooseHomeFood
         let sizeImage = CGRect(x: 10, y: heightCell*0.1, width: heightCell*1.2, height: heightCell*0.8)
+        
         let indexImage = indexPath.row+(indexPath.section*4)
         
         cell.titleDay.text = ""
@@ -126,7 +175,8 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         cell.descriptionRecipes.text = ""
         
         if indexPath.row == 0 {
-            cell.titleDay.frame = CGRect(x: 0, y: 0, width: widthCollectionView, height: heightDayCell)
+            numSection += 1
+            cell.titleDay.frame = CGRect(x: 0, y: heightDayCell*0.5, width: widthCollectionView, height: heightDayCell*0.5)
             cell.titleDay.text = (weeklyDay[indexPath.section] + " Recipes").uppercased()
         } else if indexPath.row == 1 {
             cell.imageRecipes.alpha = 1
@@ -139,7 +189,7 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
             cell.descriptionRecipes.frame = CGRect(x: heightCell*0.7*2+10, y: 55, width: widthCollectionView/2, height: heightCell*0.12)
             
             cell.typeMeal.text = "breakfast".uppercased()
-            cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: UIImage(named: "twitter.png"))
+            cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: UIImage(gifName: "load"))
             cell.descriptionRecipes.text = dailyMealRecipes[indexImage].capitalized
         } else if indexPath.row == 2 {
             cell.imageRecipes.alpha = 1
@@ -152,7 +202,7 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
             cell.descriptionRecipes.frame = CGRect(x: heightCell*0.7*2+10, y: 55, width: widthCollectionView/2, height: heightCell*0.12)
             
             cell.typeMeal.text = "lunch".uppercased()
-            cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: UIImage(named: "twitter.png"))
+            cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: UIImage(gifName: "load"))
             cell.descriptionRecipes.text = dailyMealRecipes[indexImage].capitalized
         } else if indexPath.row == 3 {
             cell.imageRecipes.alpha = 1
@@ -165,7 +215,7 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
             cell.descriptionRecipes.frame = CGRect(x: heightCell*0.7*2+10, y: 55, width: widthCollectionView/2, height: heightCell*0.12)
             
             cell.typeMeal.text = "dinner".uppercased()
-            cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: UIImage(named: "twitter.png"))
+            cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: UIImage(gifName: "load"))
             cell.descriptionRecipes.text = dailyMealRecipes[indexImage].capitalized
         }
         return cell

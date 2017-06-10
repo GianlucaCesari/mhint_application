@@ -272,7 +272,7 @@ class SettingsController: UICollectionViewController, UICollectionViewDelegateFl
         
         self.buttonImgProfile.sd_setImage(with: URL(string: GlobalUser.imageProfile!), placeholderImage: nil)
         
-        self.buttonImgProfile.frame = CGRect(x: self.globalSize.widthScreen*0.07, y: self.globalSize.heightScreen*0.22, width: self.globalSize.widthScreen*0.2, height: self.globalSize.widthScreen*0.2)
+        self.buttonImgProfile.frame = CGRect(x: self.globalSize.widthScreen*0.08, y: self.globalSize.heightScreen*0.22, width: self.globalSize.widthScreen*0.2, height: self.globalSize.widthScreen*0.2)
         
         self.buttonImgProfile.backgroundColor = .clear
         self.buttonImgProfile.layer.cornerRadius = self.globalSize.widthScreen*0.02

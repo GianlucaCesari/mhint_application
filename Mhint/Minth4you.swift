@@ -25,6 +25,7 @@ class MhintController: UIViewController, UIWebViewDelegate{
         super.viewDidLoad()
         
         view.backgroundColor = .white
+        UIApplication.shared.statusBarView?.backgroundColor = .white
         
         imageLoadingView = UIImageView(gifImage: UIImage(gifName: "load"), manager: SwiftyGifManager(memoryLimit:20))
         imageLoadingView.frame = CGRect(x: GlobalSize().widthScreen*0.25, y: GlobalSize().heightScreen*0.4, width: GlobalSize().widthScreen*0.5, height: GlobalSize().widthScreen*0.5)

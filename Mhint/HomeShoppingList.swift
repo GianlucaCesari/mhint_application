@@ -30,8 +30,6 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
     var progressBarTimer:Timer!
     var progressBarStop:Float! = 0.0
     
-    var idList:String = ""
-    
     let btnAlert = UITextField()
     let btnAlertQuantity = UITextField()
     let btnAlertUnity = UITextField()
@@ -103,8 +101,8 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         
         Alamofire.request("https://api.mhint.eu/shoppinglist?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { JSON in
             if let json = JSON.result.value as? [String: Any]{
-                if self.idList == "" {
-                    self.idList = json["_id"] as! String
+                if idList == "" {
+                    idList = json["_id"] as! String
                 }
                 if let items = json["items"] as? [[String: Any]] {
                     for item in items {
@@ -332,8 +330,10 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
             
             Alamofire.request("https://api.mhint.eu/additem", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in
                 if let json = JSON.result.value as? [String: Any]{
-                    self.idList = json["_id"] as! String
-                    print(json)
+                    idList = json["_id"] as! String
+                    let items = json["items"]!
+                    shoppingListId.removeAll()
+                    shoppingListId = (items as! [String])
                 }
             }
             
@@ -375,10 +375,10 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
             self.collectionView?.reloadData()
             self.insertClearData()
             let parameter = [
-                "list_id": self.idList
+                "list_id": idList
                 ] as [String : Any]
             Alamofire.request("https://api.mhint.eu/listcomplete", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in
-                self.idList = ""
+                idList = ""
                 self.animationImage(i: "ok-popup", n: "Grocery shopping completed!")
             }
         }

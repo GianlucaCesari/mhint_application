@@ -66,7 +66,7 @@ class CustomCellChooseHomeFood: BaseCellChooseHomeFood {
         label.addTextSpacing()
         label.textAlignment = .left
         label.textColor = .black
-        label.font = UIFont(name: "AvenirLTStd-Black", size: 13)
+        label.font = UIFont(name: "AvenirLTStd-Black", size: 15)
         return label
     }()
     

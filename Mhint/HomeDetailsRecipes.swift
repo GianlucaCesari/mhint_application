@@ -11,6 +11,7 @@ import UIKit
 
 //GIF
 import SwiftyGif
+import Alamofire
 
 class DetailsRecipesController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate{
     
@@ -35,6 +36,8 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
         
         self.view.backgroundColor = GlobalColor().backgroundCollectionView
         
+        getDetails()
+        
         let layout:UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
@@ -53,6 +56,16 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
         
         swipeDown()
         
+    }
+    
+    func getDetails() {
+        Alamofire.request("https://api.mhint.eu/recipe?id=\(idDetailsRecipes)", encoding: JSONEncoding.default).responseJSON { JSON in
+            print(JSON)
+            //OGGETTO ID USER, ID SHOPPING LIST, ITEMS: ARRAY 21 OGGETTI:
+            //RECIPE_ID
+            //TITLE
+            //IMAGE_URL
+        }
     }
     
     //COLLECTIONVIEW
