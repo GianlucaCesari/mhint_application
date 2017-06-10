@@ -11,7 +11,7 @@ import UIKit
 import Alamofire
 
 var idList:String = ""
-let idDetailsRecipes = 1
+var idDetailsRecipes:String = "1"
 
 class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate{
     
@@ -82,7 +82,6 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         collectionView?.register(CustomCellChooseHomeFood.self, forCellWithReuseIdentifier: cellId)
         collectionView?.showsHorizontalScrollIndicator = false
         collectionView?.showsVerticalScrollIndicator = false
-        self.collectionView?.alpha = 0
         self.view.addSubview(self.collectionView!)
         
         let backCollectionViewBack = UIView()
@@ -99,31 +98,46 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     func getRecipes() {
-        Alamofire.request("https://api.mhint.eu/weeklyplan?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { JSON in
-            if let response = JSON.result.value as? [String: Any] {
-                idList = response["shopping_list"] as! String
-                if let items = response["items"] as? [[String: Any]] {
-                    var x = 0
-                    var y = 0
-                    for item in items {
-                        if x == 3 {
-                            self.dailyMealRecipes.append("")
-                            self.dailyMealRecipesId.append("")
-                            self.dailyMealRecipesImage.append("")
-                            x = 0
-                            y += 1
-                        }
-                        self.dailyMealRecipes.append(item["title"] as! String)
-                        self.dailyMealRecipesId.append(item["recipe_id"] as! String)
-                        self.dailyMealRecipesImage.append(item["img_url"] as! String)
-                        x += 1
-                        if (items.count+y) == self.dailyMealRecipesId.count-1 {
-                            self.collectionView?.alpha = 1
-                            self.collectionView?.reloadData()
+        if saveData.array(forKey: "recipesTitle") == nil {
+            self.collectionView?.alpha = 0
+            Alamofire.request("https://api.mhint.eu/weeklyplan?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { JSON in
+                if let response = JSON.result.value as? [String: Any] {
+                    idList = response["shopping_list"] as! String
+                    if let items = response["items"] as? [[String: Any]] {
+                        var x = 0
+                        var y = 0
+                        for item in items {
+                            if x == 3 {
+                                self.dailyMealRecipes.append("")
+                                self.dailyMealRecipesId.append("")
+                                self.dailyMealRecipesImage.append("")
+                                x = 0
+                                y += 1
+                            }
+                            self.dailyMealRecipes.append(item["title"] as! String)
+                            self.dailyMealRecipesId.append(item["recipe_id"] as! String)
+                            self.dailyMealRecipesImage.append(item["img_url"] as! String)
+                            x += 1
+                            if (items.count+y) == self.dailyMealRecipesId.count-1 {
+                                self.collectionView?.alpha = 1
+                                self.collectionView?.reloadData()
+                                saveData.set(idList, forKey: "shopping_list")
+                                saveData.set(self.dailyMealRecipes, forKey: "recipesTitle")
+                                saveData.set(self.dailyMealRecipesId, forKey: "recipesId")
+                                saveData.set(self.dailyMealRecipesImage, forKey: "recipesImage")
+                            }
                         }
                     }
                 }
             }
+        } else {
+            print(234)
+            dailyMealRecipes = saveData.array(forKey: "recipesTitle") as! [String]
+            idList = saveData.string(forKey: "shopping_list")!
+            dailyMealRecipesId = saveData.array(forKey: "recipesId") as! [String]
+            dailyMealRecipesImage = saveData.array(forKey: "recipesImage") as! [String]
+            self.collectionView?.alpha = 1
+            self.collectionView?.reloadData()
         }
     }
     
@@ -233,7 +247,7 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
     
     //COLLECTIONVIEW CLICK
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        idRecipesClick = indexPath.row
+        idDetailsRecipes = dailyMealRecipesId[indexPath.row]
         
         let transition = CATransition()
         transition.duration = 0.3

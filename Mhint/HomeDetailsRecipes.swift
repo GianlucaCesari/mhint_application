@@ -17,9 +17,10 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
     
     let cellId = "cellDetailsRecipes"
     
+    var titleRecipesAPI = ""
+    var descriptionRecipes = ""
+    var imageRecipes = ""
     let sectionTitlearray = ["Nutritional value", "ingredients", "Description"]
-    let nutritionalArray = ["Calorie", "Grassi", "Proteine", "Fibre"]
-    let descriptionRecipes = "Summer is often synonymous with beaches, ballparks and barbecues, all offering tempting snacks and treats. To many women who are watching their weight, the back-to-school season is an ideal time to enroll in their own Summer is often synonymous with beaches. Summer is often synonymous with beaches, ballparks and barbecues, all offering tempting snacks and treats. To many women who are watching their weight, the back-to-school season is an ideal time to enroll in their own Summer is often synonymous with beaches. Summer is often synonymous with beaches, ballparks and barbecues, all offering tempting snacks and treats. To many women who are watching their weight, the back-to-school season is an ideal time to enroll in their own Summer is often synonymous with beaches. Summer is often synonymous with beaches, ballparks and barbecues, all offering tempting snacks and treats. To many women who are watching their weight, the back-to-school season is an ideal time to enroll in their own Summer is often synonymous with beaches."
     
     let descriptionNutritionalValue = ["Calorie", "Proteine", "Zuccheri", "Grassi", "Sali", "Carboidrati", "mamma"]
     let quantityNutritionalValue = ["28 g", "123kcal", "23 g", "123 ml", "2143 ", "asda", "325"]
@@ -52,19 +53,39 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
         collectionView?.showsHorizontalScrollIndicator = false
         collectionView?.showsVerticalScrollIndicator = false
         
-        videoRecipes()
-        
         swipeDown()
         
     }
     
     func getDetails() {
         Alamofire.request("https://api.mhint.eu/recipe?id=\(idDetailsRecipes)", encoding: JSONEncoding.default).responseJSON { JSON in
-            print(JSON)
-            //OGGETTO ID USER, ID SHOPPING LIST, ITEMS: ARRAY 21 OGGETTI:
-            //RECIPE_ID
-            //TITLE
-            //IMAGE_URL
+            if let result = JSON.result.value as? [String: Any] {
+                
+                print("Result: ", result)
+                
+                print("TITLE: ", result["title"] as! String)
+                print("IMAGE: ", result["img_url"] as! String)
+                print("DESCRIPTION: ", result["instructions"] as! String)
+                
+                self.imageRecipes = result["img_url"] as! String
+                self.titleRecipesAPI = result["title"] as! String
+                self.descriptionRecipes = result["instructions"] as! String
+                
+                
+//                if let items = result["ingredients"] as? [[String: Any]] {
+//                    for item in items {
+//                        print(item)
+//                    }
+//                }
+                
+                if let items = result["nutrients"] as? [[String: Any]] {
+                    for item in items {
+                        print(item)
+                    }
+                }
+                self.videoRecipes()
+                self.collectionView?.reloadData()
+            }
         }
     }
     
@@ -209,7 +230,7 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
         self.view.addSubview(imageLoadingView)
         
         let previewVideo = UIImageView()
-        previewVideo.sd_setImage(with: URL(string: "https://i.ytimg.com/vi/B7JUzPTib9A/mqdefault.jpg"), placeholderImage: nil)
+        previewVideo.sd_setImage(with: URL(string: imageRecipes), placeholderImage: nil)
         previewVideo.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.561)
         self.view.addSubview(previewVideo)
         
@@ -227,7 +248,7 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
         self.view.addSubview(btnPlayVideo)
         
         let titleRecipes = UILabel()
-        titleRecipes.text = "Pasta con tonno"
+        titleRecipes.text = titleRecipesAPI
         titleRecipes.textAlignment = .center
         titleRecipes.font = UIFont(name: "AvenirLTStd-Heavy", size: GlobalSize().widthScreen*0.05)
         titleRecipes.textColor = .white
