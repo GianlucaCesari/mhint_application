@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import MapKit
 import Alamofire
+import AVFoundation
 
 class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate, UITextViewDelegate{
     
@@ -18,12 +19,15 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
     
     let viewOverlay = UIView()
     
+    var player: AVAudioPlayer?
+    
     let titleEmergency = UITextField()
     let descriptionEmergency = UITextView()
     var tap = UITapGestureRecognizer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        UIApplication.shared.statusBarView?.backgroundColor = .white
         
         saveData.set(true, forKey: "earlyAddEmergency")
         
@@ -97,9 +101,7 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
     }
     
     func descriptionEmergencyFunc() {
-        
         descriptionEmergency.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: GlobalSize().heightScreen*0.555, width: GlobalSize().widthScreen*0.84, height: GlobalSize().heightScreen*0.3)
-        
         descriptionEmergency.text = "Be more precise"
         descriptionEmergency.textColor = .lightGray
         descriptionEmergency.layer.cornerRadius = 7
@@ -178,7 +180,7 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
             titleEmergency.text = ""
             descriptionEmergency.text = "Be more precise"
             descriptionEmergency.textColor = .lightGray
-            
+            UIApplication.shared.statusBarView?.backgroundColor = .clear
             viewOverlay.backgroundColor = .black
             viewOverlay.alpha = 0
             viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
@@ -186,7 +188,6 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
             UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
                 self.viewOverlay.alpha = 0.6
             }, completion: nil)
-            
             let parameter = [
                 "mail": GlobalUser.email
                 , "name": textTrimmed!
@@ -212,7 +213,17 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
     }
     
     func animationImage(i: String, n: String) {
-        
+        UIApplication.shared.statusBarView?.backgroundColor = .clear
+        guard let url = Bundle.main.url(forResource: "bamboo", withExtension: "mp3") else {
+            print("error")
+            return
+        }
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            player = try AVAudioPlayer(contentsOf: url)
+            guard let player = player else { return }
+        } catch let error { }
         let imgProfile = UIImageView()
         imgProfile.frame = CGRect(x: GlobalSize().widthScreen*0.375, y: GlobalSize().heightScreen*1.5, width: GlobalSize().widthScreen*0.25, height: GlobalSize().widthScreen*0.25)
         imgProfile.sd_setImage(with: URL(string: i), placeholderImage: nil)
@@ -246,8 +257,11 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
         
         UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
             imgProfile.frame.origin.y = GlobalSize().heightScreen*0.38
-        }, completion: nil)
-        
+        })
+        let when = DispatchTime.now() + 0.6
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.player?.play()
+        }
         UIView.animate(withDuration: 0.5, delay: 1, options: .curveLinear, animations: {
             label.alpha = 1
             labelName.alpha = 1

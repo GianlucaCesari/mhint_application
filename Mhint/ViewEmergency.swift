@@ -10,12 +10,16 @@ import UIKit
 import Alamofire
 import Whisper
 import MapKit
+import AVFoundation
 
 class EmergencyController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextViewDelegate, UITextFieldDelegate {
     
     let customCellIdentifier = "cellId"
     
+    var player: AVAudioPlayer?
+    
     let viewOverlay = UIButton()
+    var blurEffectView = UIVisualEffectView()
     let map = MKMapView()
     let img = UIImageView()
     let lbl = UILabel()
@@ -55,11 +59,12 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        UIApplication.shared.statusBarView?.backgroundColor = .white
         saveData.set(false, forKey: "earlyAddEmergency")
         
         self.view.backgroundColor = .white
         GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "NEEDS & EMERGENCY")
-        GlobalFunc().loadingChat(s: self, frame: CGRect(x: GlobalSize().widthScreen*0.25, y: GlobalSize().heightScreen*0.4, width: GlobalSize().widthScreen*0.5, height:  GlobalSize().widthScreen*0.5), nameGif: "load")
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: GlobalSize().widthScreen*0.25, y: GlobalSize().heightScreen*0.4, width: GlobalSize().widthScreen*0.5, height:  GlobalSize().widthScreen*0.5), nameGif: "load-long")
         
         //RICHIEDE DAL SERVER
         getEmergencyPending()
@@ -147,8 +152,18 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     }
     
     func showCollectionView() {
-        
-        if boolCall1 && boolCall2 {
+        if boolCall1 && boolCall2 && emergencyReceive.count == 0 && emergencySendFalse.count == 1 && emergencySendTrue.count == 1 {
+            emergencySendFalse.removeAll()
+            emergencySendTrue.removeAll()
+            emergencyReceive.append("no-request")
+            emergencySendFalse.insert("no-accepted", at: 0)
+            emergencySendTrue.insert("no-pending", at: 0)
+            
+            allEmergency.removeAll()
+            allEmergency.append(contentsOf: emergencyReceive)
+            allEmergency.append(contentsOf: emergencySendFalse)
+            allEmergency.append(contentsOf: emergencySendTrue)
+        } else if boolCall1 && boolCall2 {
             timer.invalidate()
             
             if emergencyReceive.count == 0 {
@@ -184,7 +199,6 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
             
             GlobalFunc().removeLoadingChat(s: self)
             collectionView?.reloadData()
-//            self.view.addSubview(collectionView!)
         }
     }
     
@@ -501,11 +515,11 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     
     //OK/NO
     func emergencyOk(_ sender: UIButton) {
-        
+        UIApplication.shared.statusBarView?.backgroundColor = .clear
         viewOverlay.backgroundColor = .black
         viewOverlay.alpha = 0
         viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
-        self.view.addSubview(viewOverlay)
+        self.navigationController?.view.addSubview(viewOverlay)
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
             self.viewOverlay.alpha = 0.6
         }, completion: nil)
@@ -520,11 +534,11 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     }
     
     func emergencyNo(_ sender: UIButton) {
-        
+        UIApplication.shared.statusBarView?.backgroundColor = .clear
         viewOverlay.backgroundColor = .black
         viewOverlay.alpha = 0
         viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
-        self.view.addSubview(viewOverlay)
+        self.navigationController?.view.addSubview(viewOverlay)
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
             self.viewOverlay.alpha = 0.6
         }, completion: nil)
@@ -539,13 +553,18 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     }
     
     func removeEmergency(_ sender: UIButton) {
+        UIApplication.shared.statusBarView?.backgroundColor = .clear
         
-        viewOverlay.backgroundColor = .black
-        viewOverlay.alpha = 0
-        viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
-        self.view.addSubview(viewOverlay)
-        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
-            self.viewOverlay.alpha = 0.6
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = view.bounds
+        blurEffectView.backgroundColor = .black
+        blurEffectView.alpha = 0.4
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.navigationController?.view.addSubview(blurEffectView)
+        
+        UIView.animate(withDuration: 2, delay: 0, options: [.repeat, .autoreverse], animations: {
+            self.blurEffectView.alpha = 0.7
         }, completion: nil)
         
         let parameter = [
@@ -597,6 +616,17 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         self.getEmergencyAccepted()
         self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.showCollectionView), userInfo: nil, repeats: true)
         
+        UIApplication.shared.statusBarView?.backgroundColor = .clear
+        guard let url = Bundle.main.url(forResource: "bamboo", withExtension: "mp3") else {
+            print("error")
+            return
+        }
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            player = try AVAudioPlayer(contentsOf: url)
+            guard let player = player else { return }
+        } catch let error { }
         let v = UIView()
         v.frame = CGRect(x: GlobalSize().widthScreen*0.4, y: GlobalSize().heightScreen*1.5, width: GlobalSize().widthScreen*0.2, height: GlobalSize().widthScreen*0.2)
         v.backgroundColor = .white
@@ -606,13 +636,13 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         v.layer.shadowColor = UIColor.black.cgColor
         v.layer.shadowOpacity = 0.6
         v.layer.shadowRadius = GlobalSize().widthScreen*0.1
-        self.view.addSubview(v)
+        self.navigationController?.view.addSubview(v)
         
         let imgProfile = UIImageView()
         imgProfile.frame = CGRect(x: GlobalSize().widthScreen*0.42, y: GlobalSize().heightScreen*1.5, width: GlobalSize().widthScreen*0.16, height: GlobalSize().widthScreen*0.16)
         let img = UIImage(named: i)
         imgProfile.image = img
-        self.view.addSubview(imgProfile)
+        self.navigationController?.view.addSubview(imgProfile)
         
         let label = UILabel()
         label.text = n.uppercased()
@@ -622,13 +652,17 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         label.font = UIFont(name: "AvenirLTStd-Black", size: GlobalSize().widthScreen*0.03)
         label.textAlignment = .center
         label.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.475, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
-        self.view.addSubview(label)
+        self.navigationController?.view.addSubview(label)
         
         UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
             imgProfile.frame.origin.y = GlobalSize().heightScreen*0.38
             v.frame.origin.y = GlobalSize().heightScreen*0.37
         }, completion: nil)
-        
+        let when = DispatchTime.now() + 0.6
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.player?.play()
+            self.blurEffectView.layer.removeAllAnimations()
+        }
         UIView.animate(withDuration: 0.5, delay: 1, options: .curveLinear, animations: {
             label.alpha = 1
         }, completion: { (finished: Bool) -> Void in
@@ -636,6 +670,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
                 label.alpha = 0
                 imgProfile.alpha = 0
                 self.viewOverlay.alpha = 0
+                self.blurEffectView.alpha = 0
                 v.alpha = 0
             }, completion: nil)
         })
@@ -652,15 +687,15 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     }
     
     func openPopUpMap(_ sender: UIButton) {
-        
+        UIApplication.shared.statusBarView?.backgroundColor = .clear
         viewOverlay.backgroundColor = .black
         viewOverlay.alpha = 0
         viewOverlay.addTarget(self, action: #selector(closeView), for: .touchUpInside)
         viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
-        self.view.addSubview(viewOverlay)
+        self.navigationController?.view.addSubview(viewOverlay)
         
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
-            self.viewOverlay.alpha = 0.6
+            self.viewOverlay.alpha = 0.8
         }, completion: nil)
         
         map.showsBuildings = true
@@ -676,16 +711,14 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         
         map.camera = mapCamera
         map.frame = CGRect(x: GlobalSize().widthScreen*0.4, y: GlobalSize().heightScreen*1.5, width: GlobalSize().widthScreen*0.2, height: GlobalSize().widthScreen*0.2)
-        map.layer.cornerRadius = GlobalSize().widthScreen*0.1
+        map.layer.cornerRadius = 8
         map.alpha = 1
         map.layer.masksToBounds = true
-        map.layer.borderWidth = 3
-        map.layer.borderColor = UIColor.white.cgColor
         map.mapType = MKMapType.standard
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinates
         map.addAnnotation(annotation)
-        self.view.addSubview(map)
+        self.navigationController?.view.addSubview(map)
         
         img.sd_setImage(with: URL(string: emergencyReceiveUserImage[sender.tag]), placeholderImage: nil)
         img.alpha = 0
@@ -694,7 +727,10 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         img.layer.masksToBounds = true
         img.layer.borderWidth = 3
         img.layer.borderColor = UIColor.white.cgColor
-        self.view.addSubview(img)
+        img.layer.shadowColor = UIColor.black.cgColor
+        img.layer.shadowOpacity = 0.6
+        img.layer.shadowRadius = GlobalSize().widthScreen*0.1
+        self.navigationController?.view.addSubview(img)
         
         let user = emergencyReceiveUser[sender.tag].components(separatedBy: " at ")[0]
         lbl.text = "\(user) was here."
@@ -703,7 +739,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         lbl.textAlignment = .center
         lbl.alpha = 0
         lbl.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.65, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
-        self.view.addSubview(lbl)
+        self.navigationController?.view.addSubview(lbl)
         
         btn.setTitle("Open in Maps".uppercased(), for: .normal)
         btn.setTitleColor(.white, for: .normal)
@@ -712,7 +748,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         btn.alpha = 0
         btn.tag = sender.tag
         btn.addTarget(self, action: #selector(openMaps), for: .touchUpInside)
-        self.view.addSubview(btn)
+        self.navigationController?.view.addSubview(btn)
         
         UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
             self.map.frame.origin.y = GlobalSize().heightScreen*0.38
@@ -720,7 +756,6 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
             UIView.animate(withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
                 self.map.frame = CGRect(x: GlobalSize().widthScreen*0.15, y: GlobalSize().heightScreen*0.2, width: GlobalSize().widthScreen*0.7, height: GlobalSize().widthScreen*0.7)
                 self.img.frame = CGRect(x: GlobalSize().widthScreen*0.4, y: GlobalSize().heightScreen*0.54, width: GlobalSize().widthScreen*0.2, height: GlobalSize().widthScreen*0.2)
-                self.map.layer.cornerRadius = 4
                 self.btn.alpha = 1
                 self.lbl.alpha = 1
                 self.img.alpha = 1
@@ -729,15 +764,15 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     }
     
     func openPopUpMapAccepted(_ sender: UIButton) {
-        
+        UIApplication.shared.statusBarView?.backgroundColor = .clear
         viewOverlay.backgroundColor = .black
         viewOverlay.alpha = 0
         viewOverlay.addTarget(self, action: #selector(closeView), for: .touchUpInside)
         viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
-        self.view.addSubview(viewOverlay)
+        self.navigationController?.view.addSubview(viewOverlay)
         
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
-            self.viewOverlay.alpha = 0.6
+            self.viewOverlay.alpha = 0.8
         }, completion: nil)
         
         map.showsBuildings = true
@@ -753,16 +788,14 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         
         map.camera = mapCamera
         map.frame = CGRect(x: GlobalSize().widthScreen*0.4, y: GlobalSize().heightScreen*1.5, width: GlobalSize().widthScreen*0.2, height: GlobalSize().widthScreen*0.2)
-        map.layer.cornerRadius = GlobalSize().widthScreen*0.1
+        map.layer.cornerRadius = 8
         map.alpha = 1
         map.layer.masksToBounds = true
-        map.layer.borderWidth = 3
-        map.layer.borderColor = UIColor.white.cgColor
         map.mapType = MKMapType.standard
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinates
         map.addAnnotation(annotation)
-        self.view.addSubview(map)
+        self.navigationController?.view.addSubview(map)
         
         img.sd_setImage(with: URL(string: emergencySendFalseUserImage[sender.tag]), placeholderImage: nil)
         img.alpha = 0
@@ -771,7 +804,10 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         img.layer.masksToBounds = true
         img.layer.borderWidth = 3
         img.layer.borderColor = UIColor.white.cgColor
-        self.view.addSubview(img)
+        img.layer.shadowColor = UIColor.black.cgColor
+        img.layer.shadowOpacity = 0.6
+        img.layer.shadowRadius = GlobalSize().widthScreen*0.1
+        self.navigationController?.view.addSubview(img)
         
         let user = emergencySendFalseUser[sender.tag].components(separatedBy: " at ")[0]
         lbl.text = "\(user) was here."
@@ -780,7 +816,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         lbl.textAlignment = .center
         lbl.alpha = 0
         lbl.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.65, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
-        self.view.addSubview(lbl)
+        self.navigationController?.view.addSubview(lbl)
         
         btn.setTitle("Open in Maps".uppercased(), for: .normal)
         btn.setTitleColor(.white, for: .normal)
@@ -789,7 +825,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         btn.alpha = 0
         btn.tag = sender.tag
         btn.addTarget(self, action: #selector(openMapsToAccept), for: .touchUpInside)
-        self.view.addSubview(btn)
+        self.navigationController?.view.addSubview(btn)
         
         UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
             self.map.frame.origin.y = GlobalSize().heightScreen*0.38
@@ -797,7 +833,6 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
             UIView.animate(withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
                 self.map.frame = CGRect(x: GlobalSize().widthScreen*0.15, y: GlobalSize().heightScreen*0.2, width: GlobalSize().widthScreen*0.7, height: GlobalSize().widthScreen*0.7)
                 self.img.frame = CGRect(x: GlobalSize().widthScreen*0.4, y: GlobalSize().heightScreen*0.54, width: GlobalSize().widthScreen*0.2, height: GlobalSize().widthScreen*0.2)
-                self.map.layer.cornerRadius = 4
                 self.btn.alpha = 1
                 self.lbl.alpha = 1
                 self.img.alpha = 1

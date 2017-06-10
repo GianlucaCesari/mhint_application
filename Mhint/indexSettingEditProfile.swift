@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import AVFoundation
 
 import Alamofire //INTERNET
 
@@ -17,13 +18,15 @@ class editProfileController: UICollectionViewController, UICollectionViewDelegat
     
     var editProfileData = [String]()
     
+    var player: AVAudioPlayer?
+    
     var saveDataProfile:Bool? = nil
     
     var tap = UITapGestureRecognizer()
     let datePickerView:UIDatePicker = UIDatePicker()
     
     override func viewDidLoad() {
-        
+        UIApplication.shared.statusBarView?.backgroundColor = .white
         if let name = saveData.string(forKey: "nameProfile") {
             editProfileData.append(name)
         } else {
@@ -272,7 +275,7 @@ class editProfileController: UICollectionViewController, UICollectionViewDelegat
     }
     
     func saveProfile() {
-        
+        UIApplication.shared.statusBarView?.backgroundColor = .clear
         animationImage(i: "ok-popup", n: "Perfect you are updated!")
         
         let parameter = [
@@ -288,12 +291,21 @@ class editProfileController: UICollectionViewController, UICollectionViewDelegat
         saveDataProfile = true
     }
     func animationImage(i: String, n: String) {
-        
+        guard let url = Bundle.main.url(forResource: "bamboo", withExtension: "mp3") else {
+            print("error")
+            return
+        }
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            player = try AVAudioPlayer(contentsOf: url)
+            guard let player = player else { return }
+        } catch let error { }
         let viewOverlay = UIView()
         viewOverlay.backgroundColor = .black
         viewOverlay.alpha = 0
         viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
-        self.view.addSubview(viewOverlay)
+        self.navigationController?.view.addSubview(viewOverlay)
         
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
             viewOverlay.alpha = 0.6
@@ -308,13 +320,13 @@ class editProfileController: UICollectionViewController, UICollectionViewDelegat
         v.layer.shadowColor = UIColor.black.cgColor
         v.layer.shadowOpacity = 0.6
         v.layer.shadowRadius = GlobalSize().widthScreen*0.1
-        self.view.addSubview(v)
+        self.navigationController?.view.addSubview(v)
         
         let imgProfile = UIImageView()
         imgProfile.frame = CGRect(x: GlobalSize().widthScreen*0.43, y: GlobalSize().heightScreen*1.5, width: GlobalSize().widthScreen*0.14, height: GlobalSize().widthScreen*0.14)
         let img = UIImage(named: i)
         imgProfile.image = img
-        self.view.addSubview(imgProfile)
+        self.navigationController?.view.addSubview(imgProfile)
         
         let label = UILabel()
         label.text = n.uppercased()
@@ -324,12 +336,14 @@ class editProfileController: UICollectionViewController, UICollectionViewDelegat
         label.font = UIFont(name: "AvenirLTStd-Black", size: GlobalSize().widthScreen*0.03)
         label.textAlignment = .center
         label.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.475, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
-        self.view.addSubview(label)
+        self.navigationController?.view.addSubview(label)
         
         UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
             imgProfile.frame.origin.y = GlobalSize().heightScreen*0.39
             v.frame.origin.y = GlobalSize().heightScreen*0.37
-        }, completion: nil)
+        }, completion: { (finished: Bool) -> Void in
+            self.player?.play()
+        })
         UIView.animate(withDuration: 0.5, delay: 1, options: .curveLinear, animations: {
             label.alpha = 1
         }, completion: { (finished: Bool) -> Void in

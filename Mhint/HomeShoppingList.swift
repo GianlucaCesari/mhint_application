@@ -10,6 +10,7 @@ import Foundation
 import UserNotifications
 import UIKit
 import Alamofire
+import AVFoundation
 
 var shoppingList = [String]()
 var shoppingListQuantity = [String]()
@@ -19,6 +20,8 @@ var arrayImageHidden = [Bool]()
 class HomeShoppingListController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UNUserNotificationCenterDelegate, UITextFieldDelegate {
     
     let cellId = "cellShoppingList"
+    
+    var player: AVAudioPlayer?
     
     let heightCell = GlobalSize().widthScreen*0.15
     let widthCollectionView = GlobalSize().widthScreen
@@ -38,10 +41,11 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
     var tap = UITapGestureRecognizer()
     
     override func viewDidLoad() {
+        UIApplication.shared.statusBarView?.backgroundColor = .white
         
         self.view.backgroundColor = .white
         
-        GlobalFunc().loadingChat(s: self, frame: CGRect(x: 0, y: GlobalSize().heightScreen*0.37, width: widthCollectionView, height: GlobalSize().heightScreen*0.536), nameGif: "load")
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: 0, y: GlobalSize().heightScreen*0.37, width: widthCollectionView, height: GlobalSize().heightScreen*0.536), nameGif: "load-long")
         
         GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "Shopping list")
         
@@ -209,6 +213,9 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
             cell.lineGetItem.alpha = 0.1
         }
         
+        print(shoppingList[indexPath.row])
+        print(shoppingListId[indexPath.row])
+        
         let parameter = [
             "item_id": shoppingListId[indexPath.row]
             , "checked": boolImage
@@ -326,6 +333,7 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
             Alamofire.request("https://api.mhint.eu/additem", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in
                 if let json = JSON.result.value as? [String: Any]{
                     self.idList = json["_id"] as! String
+                    print(json)
                 }
             }
             
@@ -359,7 +367,7 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
     }
     
     func clearShoppingList() {
-        if GlobalVariable.listItem.count > 1 {
+        if shoppingList.count > 1 {
             GlobalVariable.listItem.removeAll()
             GlobalVariable.listItemQuantity.removeAll()
             shoppingList.removeAll()
@@ -417,12 +425,24 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
     }
     
     func animationImage(i: String, n: String) {
+        UIApplication.shared.statusBarView?.backgroundColor = .clear
+        
+        guard let url = Bundle.main.url(forResource: "bamboo", withExtension: "mp3") else {
+            print("error")
+            return
+        }
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            player = try AVAudioPlayer(contentsOf: url)
+            guard let player = player else { return }
+        } catch let error { }
         
         let viewOverlay = UIView()
         viewOverlay.backgroundColor = .black
         viewOverlay.alpha = 0
         viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
-        self.view.addSubview(viewOverlay)
+        self.navigationController?.view.addSubview(viewOverlay)
         
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
             viewOverlay.alpha = 0.6
@@ -437,13 +457,13 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         v.layer.shadowColor = UIColor.black.cgColor
         v.layer.shadowOpacity = 0.6
         v.layer.shadowRadius = GlobalSize().widthScreen*0.1
-        self.view.addSubview(v)
+        self.navigationController?.view.addSubview(v)
         
         let imgProfile = UIImageView()
         imgProfile.frame = CGRect(x: GlobalSize().widthScreen*0.43, y: GlobalSize().heightScreen*1.5, width: GlobalSize().widthScreen*0.14, height: GlobalSize().widthScreen*0.14)
         let img = UIImage(named: i)
         imgProfile.image = img
-        self.view.addSubview(imgProfile)
+        self.navigationController?.view.addSubview(imgProfile)
         
         let label = UILabel()
         label.text = n.uppercased()
@@ -453,12 +473,14 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         label.font = UIFont(name: "AvenirLTStd-Black", size: GlobalSize().widthScreen*0.03)
         label.textAlignment = .center
         label.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.475, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
-        self.view.addSubview(label)
+        self.navigationController?.view.addSubview(label)
         
         UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
             imgProfile.frame.origin.y = GlobalSize().heightScreen*0.39
             v.frame.origin.y = GlobalSize().heightScreen*0.37
-        }, completion: nil)
+        }, completion: { (finished: Bool) -> Void in
+            self.player?.play()
+        })
         UIView.animate(withDuration: 0.5, delay: 1, options: .curveLinear, animations: {
             label.alpha = 1
         }, completion: { (finished: Bool) -> Void in

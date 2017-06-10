@@ -31,6 +31,7 @@ class FoodController: UICollectionViewController, UICollectionViewDelegateFlowLa
         header()
         collectionViewFunc()
         
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: GlobalSize().widthScreen*0.25, y: GlobalSize().heightScreen*0.4, width: GlobalSize().widthScreen*0.5, height: GlobalSize().widthScreen*0.5), nameGif: "load")
     }
     
     //GET IMAGE
@@ -41,6 +42,7 @@ class FoodController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     self.arrayImageUrl.append(item["img_url"]! as! String)
                     self.arrayId.append(item["_id"]! as! String)
                     if items.count == self.arrayImageUrl.count {
+                        GlobalFunc().removeLoadingChat(s: self)
                         self.collectionView?.reloadData()
                     }
                 }

@@ -52,8 +52,9 @@ class DietController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView?.register(CustomCellChooseDiet.self, forCellWithReuseIdentifier: cellId)
         collectionView?.showsHorizontalScrollIndicator = false
         collectionView?.showsVerticalScrollIndicator = false
+        
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: GlobalSize().widthScreen*0.25, y: GlobalSize().heightScreen*0.4, width: GlobalSize().widthScreen*0.5, height: GlobalSize().widthScreen*0.5), nameGif: "load")
     }
-    
     
     func getImage() {
         Alamofire.request("https://api.mhint.eu/getdiets", encoding: JSONEncoding.default).responseJSON { response in
@@ -65,6 +66,7 @@ class DietController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     self.arrayDescription.append(item["description"]! as! String)
                     self.arrayKcal.append(item["kcal"]! as! String)
                     if items.count == self.arrayImageUrl.count {
+                        GlobalFunc().removeLoadingChat(s: self)
                         self.collectionView?.reloadData()
                     }
                 }

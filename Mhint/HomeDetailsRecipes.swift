@@ -224,8 +224,9 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
         let btnMenu = UIButton()
         let imgMenuClose = UIImage(named: "close-details-recipes")
         btnMenu.setImage(imgMenuClose, for: .normal)
+        btnMenu.alpha = 0.7
         btnMenu.addTarget(self, action: #selector(back), for: .touchUpInside)
-        btnMenu.frame = CGRect(x: GlobalSize().widthScreen*0.93, y: 7, width: GlobalSize().widthScreen*0.05, height: GlobalSize().widthScreen*0.05)
+        btnMenu.frame = CGRect(x: GlobalSize().widthScreen*0.92, y: 8, width: GlobalSize().widthScreen*0.07, height: GlobalSize().widthScreen*0.07)
         self.view.addSubview(btnMenu)
     }
     

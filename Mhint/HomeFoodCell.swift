@@ -36,8 +36,10 @@ class CustomCellChooseHomeFood: BaseCellChooseHomeFood {
         var imageIngredient: UIImageView!
         let img = UIImage(named: "overlayIngredientImage0")
         imageIngredient = UIImageView(image: img)
+        imageIngredient.autoresizesSubviews = true
         imageIngredient.layer.cornerRadius = 5
         imageIngredient.layer.masksToBounds = true
+        imageIngredient.backgroundColor = .clear
         return imageIngredient
     }()
     

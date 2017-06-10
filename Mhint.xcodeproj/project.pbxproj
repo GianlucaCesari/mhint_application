@@ -45,6 +45,8 @@
 		168B94431ED08DF800372475 /* dietCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168B94421ED08DF800372475 /* dietCell.swift */; };
 		169381E81ED3353F002B0784 /* listRecipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169381E71ED3353F002B0784 /* listRecipes.swift */; };
 		169D5DB71EBCA8D90020436F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 169D5DB61EBCA8D90020436F /* Assets.xcassets */; };
+		16A1C8CB1EEA9B5200C1A11E /* bamboo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 16A1C8CA1EEA9B5200C1A11E /* bamboo.mp3 */; };
+		16B6B24E1EEAE31900932656 /* load-long.gif in Resources */ = {isa = PBXBuildFile; fileRef = 16B6B24D1EEAE31900932656 /* load-long.gif */; };
 		16D917BB1EA7C1940049394A /* GlobalFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D917BA1EA7C1940049394A /* GlobalFunction.swift */; };
 		16D917BD1EA7C1A80049394A /* GlobalColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D917BC1EA7C1A80049394A /* GlobalColor.swift */; };
 		16E91A261EA898E900C4EEFE /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E91A251EA898E900C4EEFE /* Settings.swift */; };
@@ -107,8 +109,6 @@
 		1609621B1EC0EC8000C5B4B0 /* indexSettingEditProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = indexSettingEditProfile.swift; path = Mhint/indexSettingEditProfile.swift; sourceTree = "<group>"; };
 		1609621E1EC1970F00C5B4B0 /* cellEditProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = cellEditProfile.swift; path = Mhint/cellEditProfile.swift; sourceTree = "<group>"; };
 		160962201EC2755D00C5B4B0 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
-		161AAD511EEA96C200A2AFE2 /* bamboo.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = bamboo.m4r; sourceTree = "<group>"; };
-		161AAD521EEA96C200A2AFE2 /* bamboo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bamboo.mp3; sourceTree = "<group>"; };
 		161F55701ED5C2DE004D6786 /* HomeFood.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeFood.swift; path = Mhint/HomeFood.swift; sourceTree = "<group>"; };
 		161F55721ED5DEFF004D6786 /* HomeFoodCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeFoodCell.swift; path = Mhint/HomeFoodCell.swift; sourceTree = "<group>"; };
 		1620D9131ED47B420045873A /* notificationFood.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = notificationFood.swift; path = Mhint/notificationFood.swift; sourceTree = "<group>"; };
@@ -139,6 +139,8 @@
 		169381E71ED3353F002B0784 /* listRecipes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = listRecipes.swift; path = Mhint/listRecipes.swift; sourceTree = "<group>"; };
 		1695A4731EA291CB005667F4 /* Mhint.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mhint.entitlements; sourceTree = "<group>"; };
 		169D5DB61EBCA8D90020436F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		16A1C8CA1EEA9B5200C1A11E /* bamboo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bamboo.mp3; sourceTree = "<group>"; };
+		16B6B24D1EEAE31900932656 /* load-long.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "load-long.gif"; sourceTree = "<group>"; };
 		16D917BA1EA7C1940049394A /* GlobalFunction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalFunction.swift; sourceTree = "<group>"; };
 		16D917BC1EA7C1A80049394A /* GlobalColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalColor.swift; sourceTree = "<group>"; };
 		16E91A251EA898E900C4EEFE /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Settings.swift; path = Mhint/Settings.swift; sourceTree = "<group>"; };
@@ -419,10 +421,10 @@
 				16FFCF2A1EA28285005A4A59 /* Info.plist */,
 				1601E1E81ECC7123004B9122 /* GoogleService-Info.plist */,
 				1639F25E1EE058A800E3B024 /* load-chat.gif */,
+				16B6B24D1EEAE31900932656 /* load-long.gif */,
 				1639F2641EE0AE8B00E3B024 /* load-voice.gif */,
 				160962191EC0A90D00C5B4B0 /* load.gif */,
-				161AAD511EEA96C200A2AFE2 /* bamboo.m4r */,
-				161AAD521EEA96C200A2AFE2 /* bamboo.mp3 */,
+				16A1C8CA1EEA9B5200C1A11E /* bamboo.mp3 */,
 				16FFCF561EA284B6005A4A59 /* Fonts */,
 			);
 			path = Mhint;
@@ -625,6 +627,8 @@
 				16FFCF541EA284AD005A4A59 /* AvenirLTStd-Light.otf in Resources */,
 				1601E1E91ECC7123004B9122 /* GoogleService-Info.plist in Resources */,
 				16FFCF291EA28285005A4A59 /* LaunchScreen.storyboard in Resources */,
+				16A1C8CB1EEA9B5200C1A11E /* bamboo.mp3 in Resources */,
+				16B6B24E1EEAE31900932656 /* load-long.gif in Resources */,
 				1639F2651EE0AE8B00E3B024 /* load-voice.gif in Resources */,
 				1639F25F1EE058A800E3B024 /* load-chat.gif in Resources */,
 				16FFCF511EA284AD005A4A59 /* AvenirLTStd-Black.otf in Resources */,

@@ -27,6 +27,8 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
     var keyboardOpen = false
     var button : UIButton!
     
+    let ball = UIView()
+    
     var timerListening = Timer()
     
     var messagesChatBot: [String]?
@@ -209,13 +211,12 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         generator.impactOccurred()
         if sender.state == .began {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-//            timerListening = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(self.listeningTime), userInfo: nil, repeats: false)
             startRecording()
             startTime = Date().timeIntervalSinceReferenceDate
-//            timerListening = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.listeningTime), userInfo: nil, repeats: true)
             button?.isEnabled = false
             self.inputText.placeholder = "I'm listening..."
             imageView.alpha = 1
+            animateBall()
         } else if sender.state == .ended {
             audioEngine.stop()
             timerListening.invalidate()
@@ -224,6 +225,12 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             lblTimer.text = ""
             self.inputText.placeholder = "Say something..."
             imageView.alpha = 0
+            ball.layer.removeAllAnimations()
+            UIView.animate(withDuration: 0.15, delay: 0, options: .curveLinear, animations: {
+                self.ball.alpha = 0
+                self.ball.frame = CGRect(x: GlobalSize().widthScreen*0.78, y: (GlobalSize().heightScreen-GlobalSize().widthScreen*0.18), width: GlobalSize().widthScreen*0.36, height: GlobalSize().widthScreen*0.36)
+                self.ball.layer.cornerRadius = GlobalSize().widthScreen*0.18
+            })
         }
     }
     
@@ -288,6 +295,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
                 cell.messageTextView.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: 10, width: GlobalSize().widthScreen*0.84, height: estimatedFrame.height + 25)
             }
         }
+        
         return cell
     }
     
@@ -337,8 +345,8 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             
             request?.setMappedCompletionBlockSuccess({ (request, response) in
                 let response = response as! AIResponse
-                                print(response.result! as AnyObject)
-                print(response.result.fulfillment.messages[0]["speech"]!)
+//                print(response.result! as AnyObject)
+//                print(response.result.fulfillment.messages[0]["speech"]!)
                 self.printOnCollectionView(text: response.result.fulfillment.messages[0]["speech"]! as! String, who: true)
 //                if response.result.action == "money" {
 //                    if let parameters = response.result.parameters as? [String: AIResponseParameter]{
@@ -426,6 +434,19 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         }
         
         inputText.text = ""
+    }
+    
+    func animateBall() {
+        ball.frame = CGRect(x: GlobalSize().widthScreen*0.76, y: (GlobalSize().heightScreen-GlobalSize().widthScreen*0.24), width: GlobalSize().widthScreen*0.36, height: GlobalSize().widthScreen*0.36)
+        ball.layer.cornerRadius = GlobalSize().widthScreen*0.18
+        ball.layer.masksToBounds = true
+        ball.backgroundColor = GlobalColor().greenSea
+        ball.alpha = 0.7
+        self.view.addSubview(ball)
+        UIView.animate(withDuration: 0.3, delay: 0, options: [.repeat, .autoreverse], animations: {
+            self.ball.frame = CGRect(x: GlobalSize().widthScreen*0.78, y: (GlobalSize().heightScreen-GlobalSize().widthScreen*0.22), width: GlobalSize().widthScreen*0.38, height: GlobalSize().widthScreen*0.38)
+            self.ball.layer.cornerRadius = GlobalSize().widthScreen*0.19
+        }, completion: nil)
     }
     
     func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {

@@ -90,36 +90,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         }
     }
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-//        API AI
-        
+        //API.AI
         let configuration: AIConfiguration = AIDefaultConfiguration()
-        
         configuration.clientAccessToken = "fb6d48f1ebf04969b8791576731e4f5b"
-        
         apiai.configuration = configuration
         
-        
-        
-//        NOTIFICATIONS REMOTES
+        //REMOTE NOTIFICATION
         if #available(iOS 10, *) {
             UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
             application.registerForRemoteNotifications()
         }
-//            // iOS 9 support
-//        else if #available(iOS 9, *) {
-//            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
-//            UIApplication.shared.registerForRemoteNotifications()
-//        }
-//            // iOS 8 support
-//        else if #available(iOS 8, *) {
-//            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
-//            UIApplication.shared.registerForRemoteNotifications()
-//        }
-//            // iOS 7 support
         else {  
             application.registerForRemoteNotifications(matching: [.badge, .sound, .alert])
         }
-        
         
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in }
@@ -135,7 +118,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         GlobalUser().start()//ISTANZIA
         
         //MENU
-        
         var navigationController = UINavigationController()
         if saveData.bool(forKey: "welcomeFinish0") {
             navigationController = UINavigationController(rootViewController: chatbotController)
@@ -186,8 +168,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
                 print(response)
             }
         }
-        
-        // Persist it in your backend in case it's new
     }
     
     // Called when APNs failed to register the device for push notifications
@@ -251,10 +231,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
             })
             Whisper.show(shout: announcement, to: (self.window?.rootViewController)!, completion: {})
         }
-        
     }
-    
-    
 
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if error != nil {

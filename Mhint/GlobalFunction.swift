@@ -285,7 +285,7 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
     //POSIZIONE
     func getLocation(latitude: Double, longitude: Double) {
         
-        let accuracy:Double = 10000
+        let accuracy:Double = 100
         //let accuracy:Double = 10
         
         let lat = Double(round(latitude*accuracy)/accuracy)
