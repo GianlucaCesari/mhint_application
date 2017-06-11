@@ -58,6 +58,61 @@
 	</dict>
 	<key>FacebookAppID</key>
 	<string>104807986697616</string>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypeMessage</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Mhint</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>Mhint</string>
+			<key>UIApplicationShortcutItemUserInfo</key>
+			<dict>
+				<key>name</key>
+				<string>Andrea</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>location</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Helps &amp; Emergency</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>Helps</string>
+			<key>UIApplicationShortcutItemUserInfo</key>
+			<dict>
+				<key>name</key>
+				<string>Andrea</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>cart</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Food &amp; Diet</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>Food</string>
+			<key>UIApplicationShortcutItemUserInfo</key>
+			<dict>
+				<key>name</key>
+				<string>Andrea</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypeBookmark</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Teaching</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>Teaching</string>
+			<key>UIApplicationShortcutItemUserInfo</key>
+			<dict>
+				<key>name</key>
+				<string>Andrea</string>
+			</dict>
+		</dict>
+	</array>
 	<key>FacebookDisplayName</key>
 	<string>Mhint</string>
 	<key>LSApplicationQueriesSchemes</key>

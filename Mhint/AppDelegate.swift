@@ -24,7 +24,8 @@ import AKSideMenu
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSideMenuDelegate, CLLocationManagerDelegate {
-
+    
+    var shortcutItem: UIApplicationShortcutItem?
     var window: UIWindow?
     var chatController = ChatController()
     var chatbotController = ChatBotController()
@@ -147,6 +148,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID //GOOGLE
         GIDSignIn.sharedInstance().delegate = self //GOOGLE
         Fabric.with([Twitter.self]) //TWITTER
+        
+        var performShortcutDelegate = true
+        if let shortcutItem = launchOptions?[UIApplicationLaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem {
+            self.shortcutItem = shortcutItem
+            performShortcutDelegate = false
+        }
         
         return true
     }
@@ -290,7 +297,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         }
     }
     func applicationWillEnterForeground(_ application: UIApplication) {}
-    func applicationDidBecomeActive(_ application: UIApplication) {}
     func applicationWillTerminate(_ application: UIApplication) {
         locationManager.startMonitoringSignificantLocationChanges()
     }
@@ -314,5 +320,138 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         let lat = userLocation.coordinate.latitude;
         GlobalFunc().getLocation(latitude: lat, longitude: long)
     }
+    
+    //3DTOUCH
+    
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        completionHandler( handleShortcut(shortcutItem) )
+    }
+    
+    func handleShortcut( _ shortcutItem:UIApplicationShortcutItem ) -> Bool {
+        var succeeded = false
+        if saveData.bool(forKey: "welcomeFinish0") {
+            if(shortcutItem.type == "Mhint") {
+                
+                var navigationController = UINavigationController()
+                
+                let layoutChat = UICollectionViewFlowLayout.init()
+                layoutChat.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
+                layoutChat.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
+                let emergency = ChatBotController(collectionViewLayout: layoutChat)
+                navigationController = UINavigationController(rootViewController: emergency)
+                
+                let leftMenuViewController = LeftMenuViewController()
+                let rightMenuViewController = LeftMenuViewController()
+                let sideMenuViewController: AKSideMenu = AKSideMenu(contentViewController: navigationController, leftMenuViewController: leftMenuViewController, rightMenuViewController: rightMenuViewController)
+                sideMenuViewController.setContentViewController(UINavigationController.init(rootViewController: emergency), animated: true)
+                
+                sideMenuViewController.panGestureRightEnabled = false
+                sideMenuViewController.menuPreferredStatusBarStyle = .lightContent
+                sideMenuViewController.delegate = self
+                sideMenuViewController.contentViewShadowColor = .darkGray
+                sideMenuViewController.contentViewShadowOffset = CGSize(width: 0, height: 0)
+                sideMenuViewController.contentViewShadowOpacity = 0.4
+                sideMenuViewController.contentViewShadowRadius = 12
+                sideMenuViewController.contentViewShadowEnabled = true
+                self.window!.rootViewController = sideMenuViewController
+                self.window!.backgroundColor = .white
+                self.window?.makeKeyAndVisible()
+                
+                succeeded = true
+            }
+            else if( shortcutItem.type == "Food" ) {
+                
+                var navigationController = UINavigationController()
+                
+                let layoutChat = UICollectionViewFlowLayout.init()
+                layoutChat.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
+                layoutChat.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
+                let emergency = HomeFoodController(collectionViewLayout: layoutChat)
+                navigationController = UINavigationController(rootViewController: emergency)
+                
+                let leftMenuViewController = LeftMenuViewController()
+                let rightMenuViewController = LeftMenuViewController()
+                let sideMenuViewController: AKSideMenu = AKSideMenu(contentViewController: navigationController, leftMenuViewController: leftMenuViewController, rightMenuViewController: rightMenuViewController)
+                sideMenuViewController.setContentViewController(UINavigationController.init(rootViewController: emergency), animated: true)
+                
+                sideMenuViewController.panGestureRightEnabled = false
+                sideMenuViewController.menuPreferredStatusBarStyle = .lightContent
+                sideMenuViewController.delegate = self
+                sideMenuViewController.contentViewShadowColor = .darkGray
+                sideMenuViewController.contentViewShadowOffset = CGSize(width: 0, height: 0)
+                sideMenuViewController.contentViewShadowOpacity = 0.4
+                sideMenuViewController.contentViewShadowRadius = 12
+                sideMenuViewController.contentViewShadowEnabled = true
+                self.window!.rootViewController = sideMenuViewController
+                self.window!.backgroundColor = .white
+                self.window?.makeKeyAndVisible()
+                succeeded = true
+            }
+            else if( shortcutItem.type == "Helps" ) {
+                
+                var navigationController = UINavigationController()
+                
+                let layoutChat = UICollectionViewFlowLayout.init()
+                layoutChat.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
+                layoutChat.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
+                let emergency = EmergencyController(collectionViewLayout: layoutChat)
+                navigationController = UINavigationController(rootViewController: emergency)
+                
+                let leftMenuViewController = LeftMenuViewController()
+                let rightMenuViewController = LeftMenuViewController()
+                let sideMenuViewController: AKSideMenu = AKSideMenu(contentViewController: navigationController, leftMenuViewController: leftMenuViewController, rightMenuViewController: rightMenuViewController)
+                sideMenuViewController.setContentViewController(UINavigationController.init(rootViewController: emergency), animated: true)
+                
+                sideMenuViewController.panGestureRightEnabled = false
+                sideMenuViewController.menuPreferredStatusBarStyle = .lightContent
+                sideMenuViewController.delegate = self
+                sideMenuViewController.contentViewShadowColor = .darkGray
+                sideMenuViewController.contentViewShadowOffset = CGSize(width: 0, height: 0)
+                sideMenuViewController.contentViewShadowOpacity = 0.4
+                sideMenuViewController.contentViewShadowRadius = 12
+                sideMenuViewController.contentViewShadowEnabled = true
+                self.window!.rootViewController = sideMenuViewController
+                self.window!.backgroundColor = .white
+                self.window?.makeKeyAndVisible()
+                succeeded = true
+            }
+            else if( shortcutItem.type == "Teaching" ) {
+                
+                var navigationController = UINavigationController()
+                
+                let layoutChat = UICollectionViewFlowLayout.init()
+                layoutChat.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
+                layoutChat.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
+                let emergency = TeachingController()
+                navigationController = UINavigationController(rootViewController: emergency)
+                
+                let leftMenuViewController = LeftMenuViewController()
+                let rightMenuViewController = LeftMenuViewController()
+                let sideMenuViewController: AKSideMenu = AKSideMenu(contentViewController: navigationController, leftMenuViewController: leftMenuViewController, rightMenuViewController: rightMenuViewController)
+                sideMenuViewController.setContentViewController(UINavigationController.init(rootViewController: emergency), animated: true)
+                
+                sideMenuViewController.panGestureRightEnabled = false
+                sideMenuViewController.menuPreferredStatusBarStyle = .lightContent
+                sideMenuViewController.delegate = self
+                sideMenuViewController.contentViewShadowColor = .darkGray
+                sideMenuViewController.contentViewShadowOffset = CGSize(width: 0, height: 0)
+                sideMenuViewController.contentViewShadowOpacity = 0.4
+                sideMenuViewController.contentViewShadowRadius = 12
+                sideMenuViewController.contentViewShadowEnabled = true
+                self.window!.rootViewController = sideMenuViewController
+                self.window!.backgroundColor = .white
+                self.window?.makeKeyAndVisible()
+                succeeded = true
+            }
+        }
+        return succeeded
+    }
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        guard shortcutItem != nil else { return }
+        handleShortcut(shortcutItem!)
+        self.shortcutItem = nil
+    }
+    
 }
 
