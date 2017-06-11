@@ -43,7 +43,7 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         
         self.view.backgroundColor = .white
         
-        GlobalFunc().loadingChat(s: self, frame: CGRect(x: 0, y: GlobalSize().heightScreen*0.37, width: widthCollectionView, height: GlobalSize().heightScreen*0.536), nameGif: "load-long")
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: (GlobalSize().widthScreen-(GlobalSize().heightScreen*0.3))/2, y: GlobalSize().heightScreen*0.4, width: GlobalSize().heightScreen*0.3, height: GlobalSize().heightScreen*0.3), nameGif: "load")
         
         GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "Shopping list")
         
@@ -83,9 +83,6 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
         if UIApplication.shared.applicationIconBadgeNumber > 0 {
             UIApplication.shared.applicationIconBadgeNumber = 0
         }
-        if shoppingList.count < 1 {
-            insertClearData()
-        }
     }
     
     
@@ -110,6 +107,10 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
                         var value = ""
                         if let v = item["value"] {
                             value = v as! String
+                            if value.characters.count > 5 {
+                                let index = value.index(value.startIndex, offsetBy: 5)
+                                value = value.substring(to: index)
+                            }
                         }
                         
                         var unit = ""
@@ -124,6 +125,7 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
                         arrayImageHidden.append(item["checked"]! as! Bool)
                         
                         if items.count == x {
+                            GlobalFunc().removeLoadingChat(s: self)
                             shoppingList.reverse()
                             shoppingListQuantity.reverse()
                             shoppingListId.reverse()
@@ -132,6 +134,9 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
                             GlobalFunc().removeLoadingChat(s: self)
                             self.lbl.removeFromSuperview()
                             self.collectionView?.reloadData()
+                            if shoppingList.count < 1 {
+                                self.insertClearData()
+                            }
                         }
                     }
                 }
@@ -368,6 +373,7 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
     
     func clearShoppingList() {
         if shoppingList.count > 1 {
+            self.animationImage(i: "ok-popup", n: "Grocery shopping completed!")
             GlobalVariable.listItem.removeAll()
             GlobalVariable.listItemQuantity.removeAll()
             shoppingList.removeAll()
@@ -379,7 +385,6 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
                 ] as [String : Any]
             Alamofire.request("https://api.mhint.eu/listcomplete", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { JSON in
                 idList = ""
-                self.animationImage(i: "ok-popup", n: "Grocery shopping completed!")
             }
         }
     }

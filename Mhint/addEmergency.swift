@@ -11,14 +11,15 @@ import UIKit
 import MapKit
 import Alamofire
 import AVFoundation
+import CoreLocation //POSIZIONE
 
-class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate, UITextViewDelegate{
+class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDelegate, UITextViewDelegate, CLLocationManagerDelegate {
     
     let map = MKMapView()
     var keyboardOpen = false
     
     let viewOverlay = UIView()
-    
+    var locationManager: CLLocationManager!
     var player: AVAudioPlayer?
     
     let titleEmergency = UITextField()
@@ -27,6 +28,12 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.startUpdatingLocation()
+        
         UIApplication.shared.statusBarView?.backgroundColor = .white
         
         saveData.set(true, forKey: "earlyAddEmergency")
@@ -288,4 +295,13 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
     func back(sender: UIBarButtonItem) {
         _ = navigationController?.popViewController(animated: true)
     }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let userLocation:CLLocation = locations[0]
+        let long = userLocation.coordinate.longitude
+        let lat = userLocation.coordinate.latitude
+        saveData.set(lat, forKey: "latitudeHistory")
+        saveData.set(long, forKey: "longitudeHistory")
+    }
+    
 }

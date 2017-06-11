@@ -30,10 +30,10 @@ class ShoppingListController: UICollectionViewController, UICollectionViewDelega
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: GlobalSize().widthScreen*0.25, y: GlobalSize().heightScreen*0.4, width: GlobalSize().widthScreen*0.5, height: GlobalSize().widthScreen*0.5), nameGif: "load")
         getShoppingList()
         GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "Shopping List")
         header()
-        nextPage()
         
         let btnMenu = UIButton.init(type: .custom)
         let imgMenu = UIImage(named: "arrowLeft")
@@ -60,6 +60,13 @@ class ShoppingListController: UICollectionViewController, UICollectionViewDelega
     //SHOPPINGLIST
     func getShoppingList() {
         
+        btnNextPage.setTitle("I'm creating your shopping list for this week.", for: .normal)
+        btnNextPage.setTitleColor(.black, for: .normal)
+        btnNextPage.titleLabel?.font = UIFont(name: "AvenirLTStd-Heavy", size: GlobalSize().widthScreen*0.03)
+        btnNextPage.titleLabel?.textAlignment = .center
+        btnNextPage.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.92, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.05)
+        self.view.addSubview(btnNextPage)
+        
         shoppingList.removeAll()
         shoppingListId.removeAll()
         shoppingListQuantity.removeAll()
@@ -67,7 +74,10 @@ class ShoppingListController: UICollectionViewController, UICollectionViewDelega
         
         var x = 0
         
+        print(GlobalUser.email)
+        
         Alamofire.request("https://api.mhint.eu/shoppinglist?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { JSON in
+            print(JSON)
             if let json = JSON.result.value as? [String: Any]{
                 self.idList = json["_id"] as! String
                 if let items = json["items"] as? [[String: Any]] {
@@ -75,6 +85,10 @@ class ShoppingListController: UICollectionViewController, UICollectionViewDelega
                         var value = ""
                         if let v = item["value"] {
                             value = v as! String
+                            if value.characters.count > 5 {
+                                let index = value.index(value.startIndex, offsetBy: 5)
+                                value = value.substring(to: index)
+                            }
                         }
                         
                         var unit = ""
@@ -89,6 +103,8 @@ class ShoppingListController: UICollectionViewController, UICollectionViewDelega
                         self.arrayImageHidden.append(item["checked"]! as! Bool)
                         
                         if items.count == x {
+                            self.nextPage()
+                            GlobalFunc().removeLoadingChat(s: self)
                             self.shoppingList.reverse()
                             self.shoppingListQuantity.reverse()
                             self.shoppingListId.reverse()
@@ -110,7 +126,7 @@ class ShoppingListController: UICollectionViewController, UICollectionViewDelega
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CustomCellChooseListShopping
         
         cell.titleDiet.text = shoppingList[indexPath.row].capitalized
-        cell.titleDiet.frame = CGRect(x: heightCell+(heightCell/2)-20, y: 0, width: widthCollectionView, height: heightCell)
+        cell.titleDiet.frame = CGRect(x: heightCell+(heightCell/2)-20, y: 0, width: widthCollectionView*0.7, height: heightCell)
         
         cell.quantityDiet.frame = CGRect(x: widthCollectionView-(heightCell*2)-30, y: 0, width: heightCell*2, height: heightCell)
         cell.quantityDiet.text = shoppingListQuantity[indexPath.row].capitalized

@@ -21,8 +21,6 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
     
     var idRecipesClick:Int!
     
-    var numSection = 0
-    
     let cellId = "cellHomeFood"
     
     var weeklyDay = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
@@ -47,13 +45,11 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setWeek()
         self.view.backgroundColor = .white
         UIApplication.shared.statusBarView?.backgroundColor = .white
         
-        GlobalFunc().loadingChat(s: self, frame: CGRect(x: GlobalSize().widthScreen*0.25, y: GlobalSize().heightScreen*0.4, width: GlobalSize().widthScreen*0.5, height: GlobalSize().widthScreen*0.5), nameGif: "load-long")
-        setWeek()
-        globalFunction.navBar(nav: navigationItem, s: self, show: true) //navigation bar
-        
+        GlobalFunc().navBar(nav: navigationItem, s: self, show: true) //navigation bar
         let btnMenu = UIButton.init(type: .custom)
         let imgMenu = UIImage(named: "cart")
         btnMenu.frame = CGRect(x: 0, y: 0, width: GlobalSize().sizeIconMenuBar, height: GlobalSize().sizeIconMenuBar)
@@ -61,14 +57,13 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         btnMenu.addTarget(self, action: #selector(self.goToShoppingList), for: .touchUpInside)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: btnMenu)
         
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: GlobalSize().widthScreen*0.25, y: GlobalSize().heightScreen*0.4, width: GlobalSize().widthScreen*0.5, height: GlobalSize().widthScreen*0.5), nameGif: "load")
         getRecipes()
         
         let backCollectionView = UIView()
         backCollectionView.backgroundColor = GlobalColor().backgroundCollectionView
         backCollectionView.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.28, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.72)
         self.view.addSubview(backCollectionView)
-        
-        getDayAtShopping()
         let layout:UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 2
@@ -98,6 +93,9 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     func getRecipes() {
+        
+        getDayAtShopping()
+        
         if saveData.array(forKey: "recipesTitle") == nil {
             self.collectionView?.alpha = 0
             Alamofire.request("https://api.mhint.eu/weeklyplan?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { JSON in
@@ -119,51 +117,114 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
                             self.dailyMealRecipesImage.append(item["img_url"] as! String)
                             x += 1
                             if (items.count+y) == self.dailyMealRecipesId.count-1 {
+                                GlobalFunc().removeLoadingChat(s: self)
                                 self.collectionView?.alpha = 1
                                 self.collectionView?.reloadData()
+                                
                                 saveData.set(idList, forKey: "shopping_list")
                                 saveData.set(self.dailyMealRecipes, forKey: "recipesTitle")
                                 saveData.set(self.dailyMealRecipesId, forKey: "recipesId")
                                 saveData.set(self.dailyMealRecipesImage, forKey: "recipesImage")
+                                saveData.set(7, forKey: "dayToShoppingList")
                             }
                         }
                     }
                 }
             }
         } else {
-            print(234)
-            dailyMealRecipes = saveData.array(forKey: "recipesTitle") as! [String]
-            idList = saveData.string(forKey: "shopping_list")!
-            dailyMealRecipesId = saveData.array(forKey: "recipesId") as! [String]
-            dailyMealRecipesImage = saveData.array(forKey: "recipesImage") as! [String]
-            self.collectionView?.alpha = 1
-            self.collectionView?.reloadData()
+            
+            print("Mancano ", Int(HomeFoodController.dayToGo), " giorni alla lista della spesa.")
+            print("Mancavano ", saveData.integer(forKey: "dayToShoppingList"), " giorni alla lista della spesa.")
+            
+            if Int(HomeFoodController.dayToGo) == 0 {
+                
+                GlobalFunc().removeLoadingChat(s: self)
+                dailyMealRecipes = saveData.array(forKey: "recipesTitle") as! [String]
+                dailyMealRecipesId = saveData.array(forKey: "recipesId") as! [String]
+                dailyMealRecipesImage = saveData.array(forKey: "recipesImage") as! [String]
+                idList = saveData.string(forKey: "shopping_list")!
+                saveData.set(Int(HomeFoodController.dayToGo), forKey: "dayToShoppingList")
+                
+                self.collectionView?.alpha = 1
+                self.collectionView?.reloadData()
+                
+            } else if saveData.integer(forKey: "dayToShoppingList") == Int(HomeFoodController.dayToGo) {
+                print("STESSO GIORNO NON FARE NIENTE")
+                
+                GlobalFunc().removeLoadingChat(s: self)
+                dailyMealRecipes = saveData.array(forKey: "recipesTitle") as! [String]
+                dailyMealRecipesId = saveData.array(forKey: "recipesId") as! [String]
+                dailyMealRecipesImage = saveData.array(forKey: "recipesImage") as! [String]
+                idList = saveData.string(forKey: "shopping_list")!
+                saveData.set(Int(HomeFoodController.dayToGo), forKey: "dayToShoppingList")
+                
+                self.collectionView?.alpha = 1
+                self.collectionView?.reloadData()
+                
+            } else if saveData.integer(forKey: "dayToShoppingList") < Int(HomeFoodController.dayToGo) {
+                saveData.set(nil, forKey: "recipesTitle")
+                saveData.set(nil, forKey: "recipesId")
+                saveData.set(nil, forKey: "recipesImage")
+                saveData.set(nil, forKey: "shopping_list")
+                getRecipes()
+            } else if saveData.integer(forKey: "dayToShoppingList") > Int(HomeFoodController.dayToGo) {
+                
+                GlobalFunc().removeLoadingChat(s: self)
+                print("Elimina le prime ", ((dailyMealRecipes.count/4)-Int(HomeFoodController.dayToGo)), " ricette.")
+                
+                dailyMealRecipes = saveData.array(forKey: "recipesTitle") as! [String]
+                dailyMealRecipesId = saveData.array(forKey: "recipesId") as! [String]
+                dailyMealRecipesImage = saveData.array(forKey: "recipesImage") as! [String]
+                
+                for x in 0..<(((dailyMealRecipes.count/4)-Int(HomeFoodController.dayToGo))*4) {
+                    print(x)
+                    print(dailyMealRecipes[0])
+                    dailyMealRecipes.remove(at: 0)
+                    dailyMealRecipesId.remove(at: 0)
+                    dailyMealRecipesImage.remove(at: 0)
+                }
+                idList = saveData.string(forKey: "shopping_list")!
+                saveData.set(Int(HomeFoodController.dayToGo), forKey: "dayToShoppingList")
+                
+                self.collectionView?.alpha = 1
+                self.collectionView?.reloadData()
+            }
         }
     }
     
     func setWeek() {
-        
-        let endDay = saveData.integer(forKey: "notificationDay")
-        print("END: ", endDay)
-        
         let date = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         let result = formatter.string(from: date)
         let today:Int = getDayOfWeek(result)!
-        let index = today
-        var correctWeek = [String]()
-        for x in (index-2)...(weeklyDay.count-1) {
-            correctWeek.append(weeklyDay[x])
-        }
-        for x in 0...(index-3) {
-            correctWeek.append(weeklyDay[x])
-        }
-        for x in endDay...correctWeek.count-1 {
-            correctWeek.remove(at: x)
-        }
         weeklyDay.removeAll()
-        weeklyDay.append(contentsOf: correctWeek)
+        switch (today) {
+        case 1:
+            weeklyDay = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+            break
+        case 2:
+            weeklyDay = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+            break
+        case 3:
+            weeklyDay = ["Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday","Monday"]
+            break
+        case 4:
+            weeklyDay = ["Wednesday","Thursday","Friday","Saturday","Sunday","Monday","Tuesday"]
+            break
+        case 5:
+            weeklyDay = ["Thursday","Friday","Saturday","Sunday","Monday","Tuesday","Wednesday"]
+            break
+        case 6:
+            weeklyDay = ["Friday","Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday"]
+            break
+        case 7:
+            weeklyDay = ["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday"]
+            break
+        default:
+            weeklyDay = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+            break
+        }
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -189,7 +250,6 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         cell.descriptionRecipes.text = ""
         
         if indexPath.row == 0 {
-            numSection += 1
             cell.titleDay.frame = CGRect(x: 0, y: heightDayCell*0.5, width: widthCollectionView, height: heightDayCell*0.5)
             cell.titleDay.text = (weeklyDay[indexPath.section] + " Recipes").uppercased()
         } else if indexPath.row == 1 {
