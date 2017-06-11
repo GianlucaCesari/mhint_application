@@ -37,6 +37,21 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
         
         self.view.backgroundColor = GlobalColor().backgroundCollectionView
         
+        let btnMenu = UIButton.init(type: .custom)
+        let imgMenu = UIImage(named: "arrowLeft")
+        btnMenu.frame = CGRect(x: 0, y: 20, width: GlobalSize().sizeIconMenuBar, height: GlobalSize().sizeIconMenuBar)
+        btnMenu.setImage(imgMenu, for: .normal)
+        btnMenu.addTarget(self, action: #selector(self.back(sender:)), for: .touchUpInside)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: btnMenu)
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        
+        self.navigationController?.navigationBar.barTintColor = .clear
+        self.navigationController?.navigationBar.backgroundColor = .clear
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        
         getDetails()
         
         let layout:UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
@@ -52,8 +67,6 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
         collectionView?.register(CustomCellChooseHomeDetailsRecipes.self, forCellWithReuseIdentifier: cellId)
         collectionView?.showsHorizontalScrollIndicator = false
         collectionView?.showsVerticalScrollIndicator = false
-        
-        swipeDown()
         
     }
     
@@ -279,18 +292,8 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
         }
     }
     
-    func swipeDown() {
-        let swipeDownGesture = UISwipeGestureRecognizer(target:self, action: #selector(back))
-        swipeDownGesture.direction = .down
-        self.view.addGestureRecognizer(swipeDownGesture)
-    }
     
-    func back() {
-        let transition = CATransition()
-        transition.duration = 0.3
-        transition.type = kCATransitionPush
-        transition.subtype = kCATransitionFromBottom
-        view.window?.layer.add(transition, forKey: kCATransition)
-        self.dismiss(animated: false, completion: nil)
+    func back(sender: UIBarButtonItem) {
+        _ = navigationController?.popViewController(animated: true)
     }
 }

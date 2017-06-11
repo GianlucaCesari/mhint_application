@@ -61,8 +61,8 @@
 	<key>UIApplicationShortcutItems</key>
 	<array>
 		<dict>
-			<key>UIApplicationShortcutItemIconType</key>
-			<string>UIApplicationShortcutIconTypeMessage</string>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>chat</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>Mhint</string>
 			<key>UIApplicationShortcutItemType</key>
@@ -75,7 +75,7 @@
 		</dict>
 		<dict>
 			<key>UIApplicationShortcutItemIconFile</key>
-			<string>location</string>
+			<string>needs</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>Helps &amp; Emergency</string>
 			<key>UIApplicationShortcutItemType</key>
@@ -88,7 +88,7 @@
 		</dict>
 		<dict>
 			<key>UIApplicationShortcutItemIconFile</key>
-			<string>cart</string>
+			<string>food</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>Food &amp; Diet</string>
 			<key>UIApplicationShortcutItemType</key>
@@ -100,8 +100,8 @@
 			</dict>
 		</dict>
 		<dict>
-			<key>UIApplicationShortcutItemIconType</key>
-			<string>UIApplicationShortcutIconTypeBookmark</string>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>teaching</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>Teaching</string>
 			<key>UIApplicationShortcutItemType</key>
