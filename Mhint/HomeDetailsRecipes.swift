@@ -20,13 +20,13 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
     var titleRecipesAPI = ""
     var descriptionRecipes = ""
     var imageRecipes = ""
-    let sectionTitlearray = ["Nutritional value", "ingredients", "Description"]
+    var sectionTitlearray = ["Nutritional value", "ingredients", "Description"]
     
-    let descriptionNutritionalValue = ["Calorie", "Proteine", "Zuccheri", "Grassi", "Sali", "Carboidrati", "mamma"]
-    let quantityNutritionalValue = ["28 g", "123kcal", "23 g", "123 ml", "2143 ", "asda", "325"]
+    var descriptionNutritionalValue = [String]()
+    var quantityNutritionalValue = [String]()
     
-    let descriptionIngredients = ["Uova", "Petto di pollo", "zafferano", "riso", "sale", "pepe"]
-    let quantityIngredients = ["28 g", "123kcal", "23 g", "123 ml", "2143 ", "asda"]
+    var descriptionIngredients = [String]()
+    var quantityIngredients = [String]()
     
     let heightCellSection = GlobalSize().widthScreen*0.1
     var heightCellDescription = GlobalSize().widthScreen*0.98
@@ -35,10 +35,8 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
     
     override func viewDidLoad() {
         
-        self.view.backgroundColor = GlobalColor().backgroundCollectionView
-        
         let btnMenu = UIButton.init(type: .custom)
-        let imgMenu = UIImage(named: "arrowLeft")
+        let imgMenu = UIImage(named: "arrowLeftWhite")
         btnMenu.frame = CGRect(x: 0, y: 20, width: GlobalSize().sizeIconMenuBar, height: GlobalSize().sizeIconMenuBar)
         btnMenu.setImage(imgMenu, for: .normal)
         btnMenu.addTarget(self, action: #selector(self.back(sender:)), for: .touchUpInside)
@@ -51,6 +49,13 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
         self.navigationController?.navigationBar.backgroundColor = .clear
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
+        
+        
+        self.view.backgroundColor = GlobalColor().backgroundCollectionView
+        UIApplication.shared.statusBarView?.backgroundColor = .clear
+        UIApplication.shared.statusBarView?.tintColor = .white
+        self.modalPresentationCapturesStatusBarAppearance = true
+        UIApplication.shared.statusBarStyle = .lightContent
         
         getDetails()
         
@@ -76,26 +81,30 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
                 
                 print("Result: ", result)
                 
-                print("TITLE: ", result["title"] as! String)
-                print("IMAGE: ", result["img_url"] as! String)
-                print("DESCRIPTION: ", result["instructions"] as! String)
-                
                 self.imageRecipes = result["img_url"] as! String
                 self.titleRecipesAPI = result["title"] as! String
                 self.descriptionRecipes = result["instructions"] as! String
                 
                 
-//                if let items = result["ingredients"] as? [[String: Any]] {
-//                    for item in items {
-//                        print(item)
-//                    }
-//                }
+                if let items = result["ingredients"] as? [[String: Any]] {
+                    for item in items {
+                        print(item)
+                        self.quantityIngredients.append("\(String(describing: item["amount"]!)) \(String(describing: item["unit"]!))")
+                        if let name = item["food"] as? [String: Any] {
+                            self.descriptionIngredients.append(name["name"] as! String)
+                        }
+                    }
+                }
                 
                 if let items = result["nutrients"] as? [[String: Any]] {
                     for item in items {
-                        print(item)
+                        self.descriptionNutritionalValue.append(item["title"] as! String)
+                        self.quantityNutritionalValue.append("\(String(describing: item["amount"]!)) \(String(describing: item["unit"]!))")
                     }
                 }
+                
+                self.sectionTitlearray = ["Nutritional value", "ingredients", "Description"]
+                
                 self.videoRecipes()
                 self.collectionView?.reloadData()
             }
@@ -267,18 +276,13 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
         titleRecipes.textColor = .white
         titleRecipes.frame = CGRect(x: 0, y: GlobalSize().widthScreen*0.15, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
         self.view.addSubview(titleRecipes)
-        
-        let btnMenu = UIButton()
-        let imgMenuClose = UIImage(named: "close-details-recipes")
-        btnMenu.setImage(imgMenuClose, for: .normal)
-        btnMenu.alpha = 0.7
-        btnMenu.addTarget(self, action: #selector(back), for: .touchUpInside)
-        btnMenu.frame = CGRect(x: GlobalSize().widthScreen*0.92, y: 8, width: GlobalSize().widthScreen*0.07, height: GlobalSize().widthScreen*0.07)
-        self.view.addSubview(btnMenu)
     }
     
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     func playVideo() {
@@ -294,6 +298,12 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
     
     
     func back(sender: UIBarButtonItem) {
+        
+        UIApplication.shared.statusBarView?.backgroundColor = .white
+        UIApplication.shared.statusBarView?.tintColor = .black
+        self.modalPresentationCapturesStatusBarAppearance = false
+        UIApplication.shared.statusBarStyle = .default
+        
         _ = navigationController?.popViewController(animated: true)
     }
 }

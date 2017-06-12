@@ -32,7 +32,7 @@ class CustomCellChooseHomeDetailsRecipes: BaseCellChooseHomeDetailsRecipes {
         label.addTextSpacing()
         label.textAlignment = .center
         label.font = UIFont(name: "AvenirLTStd-Black", size: 11)
-        label.backgroundColor = GlobalColor().backgroundCollectionView
+//        label.backgroundColor = GlobalColor().backgroundCollectionView
         return label
     }()
     
@@ -61,7 +61,7 @@ class CustomCellChooseHomeDetailsRecipes: BaseCellChooseHomeDetailsRecipes {
         label.textColor = .black
         label.isEditable = false
         label.textAlignment = .left
-        label.backgroundColor = GlobalColor().backgroundCollectionView
+//        label.backgroundColor = GlobalColor().backgroundCollectionView
         label.font = UIFont(name: "AvenirLTStd-Medium", size: 12)
         return label
     }()
@@ -71,7 +71,7 @@ class CustomCellChooseHomeDetailsRecipes: BaseCellChooseHomeDetailsRecipes {
         label.textColor = .black
         label.isEditable = false
         label.textAlignment = .left
-        label.backgroundColor = GlobalColor().backgroundCollectionView
+//        label.backgroundColor = GlobalColor().backgroundCollectionView
         label.font = UIFont(name: "AvenirLTStd-Black", size: 12)
         return label
     }()
@@ -81,7 +81,7 @@ class CustomCellChooseHomeDetailsRecipes: BaseCellChooseHomeDetailsRecipes {
         label.textColor = .black
         label.isEditable = false
         label.textAlignment = .left
-        label.backgroundColor = GlobalColor().backgroundCollectionView
+//        label.backgroundColor = GlobalColor().backgroundCollectionView
         label.font = UIFont(name: "AvenirLTStd-Medium", size: 12)
         return label
     }()
@@ -91,7 +91,7 @@ class CustomCellChooseHomeDetailsRecipes: BaseCellChooseHomeDetailsRecipes {
         label.textColor = .black
         label.isEditable = false
         label.textAlignment = .left
-        label.backgroundColor = GlobalColor().backgroundCollectionView
+//        label.backgroundColor = GlobalColor().backgroundCollectionView
         label.font = UIFont(name: "AvenirLTStd-Black", size: 12)
         return label
     }()
@@ -108,7 +108,6 @@ class CustomCellChooseHomeDetailsRecipes: BaseCellChooseHomeDetailsRecipes {
         self.addSubview(labelRow2)
         self.addSubview(labelRow3)
         self.addSubview(labelRow4)
-        
     }
     
 }

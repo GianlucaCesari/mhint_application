@@ -47,7 +47,6 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         
         setWeek()
         self.view.backgroundColor = .white
-        UIApplication.shared.statusBarView?.backgroundColor = .white
         
         GlobalFunc().navBar(nav: navigationItem, s: self, show: true) //navigation bar
         let btnMenu = UIButton.init(type: .custom)
