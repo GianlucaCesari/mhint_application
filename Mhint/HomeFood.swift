@@ -12,6 +12,8 @@ import Alamofire
 
 var idList:String = ""
 var idDetailsRecipes:String = "1"
+var imgDetailsRecipes:String = "https://spoonacular.com/recipeImages/default.jpg"
+var titleDetailsRecipes:String = ""
 
 class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate{
     
@@ -262,7 +264,7 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
             cell.descriptionRecipes.frame = CGRect(x: heightCell*0.7*2+10, y: 55, width: widthCollectionView/2, height: heightCell*0.12)
             
             cell.typeMeal.text = "breakfast".uppercased()
-            cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: UIImage(gifName: "load"))
+            cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: UIImage(named: "default-recipes"))
             cell.descriptionRecipes.text = dailyMealRecipes[indexImage].capitalized
         } else if indexPath.row == 2 {
             cell.imageRecipes.alpha = 1
@@ -275,7 +277,7 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
             cell.descriptionRecipes.frame = CGRect(x: heightCell*0.7*2+10, y: 55, width: widthCollectionView/2, height: heightCell*0.12)
             
             cell.typeMeal.text = "lunch".uppercased()
-            cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: UIImage(gifName: "load"))
+            cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: UIImage(named: "default-recipes"))
             cell.descriptionRecipes.text = dailyMealRecipes[indexImage].capitalized
         } else if indexPath.row == 3 {
             cell.imageRecipes.alpha = 1
@@ -288,7 +290,7 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
             cell.descriptionRecipes.frame = CGRect(x: heightCell*0.7*2+10, y: 55, width: widthCollectionView/2, height: heightCell*0.12)
             
             cell.typeMeal.text = "dinner".uppercased()
-            cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: UIImage(gifName: "load"))
+            cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: UIImage(named: "default-recipes"))
             cell.descriptionRecipes.text = dailyMealRecipes[indexImage].capitalized
         }
         return cell
@@ -303,11 +305,18 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
     }
     //COLLECTIONVIEW
     
+    override func viewWillAppear(_ animated: Bool) {
+        UIApplication.shared.statusBarView?.backgroundColor = .white
+        UIApplication.shared.statusBarView?.tintColor = .black
+        self.modalPresentationCapturesStatusBarAppearance = false
+        UIApplication.shared.statusBarStyle = .default
+    }
     
     //COLLECTIONVIEW CLICK
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        idDetailsRecipes = dailyMealRecipesId[indexPath.row]
-        
+        idDetailsRecipes = dailyMealRecipesId[(indexPath.row+(indexPath.section*4))]
+        imgDetailsRecipes = dailyMealRecipesImage[(indexPath.row+(indexPath.section*4))]
+        titleDetailsRecipes = dailyMealRecipes[(indexPath.row+(indexPath.section*4))]
         let newViewController = DetailsRecipesController(collectionViewLayout: layout)
         self.navigationController?.pushViewController(newViewController, animated: true)
     }

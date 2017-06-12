@@ -16,6 +16,7 @@
 		1609621C1EC0EC8000C5B4B0 /* indexSettingEditProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1609621B1EC0EC8000C5B4B0 /* indexSettingEditProfile.swift */; };
 		1609621F1EC1970F00C5B4B0 /* cellEditProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1609621E1EC1970F00C5B4B0 /* cellEditProfile.swift */; };
 		160962211EC2755D00C5B4B0 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 160962201EC2755D00C5B4B0 /* HealthKit.framework */; };
+		160F4E0B1EEED3DF0005102C /* launchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160F4E0A1EEED3DF0005102C /* launchViewController.swift */; };
 		161F55711ED5C2DE004D6786 /* HomeFood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161F55701ED5C2DE004D6786 /* HomeFood.swift */; };
 		161F55731ED5DEFF004D6786 /* HomeFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161F55721ED5DEFF004D6786 /* HomeFoodCell.swift */; };
 		1620D9141ED47B420045873A /* notificationFood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1620D9131ED47B420045873A /* notificationFood.swift */; };
@@ -109,6 +110,7 @@
 		1609621B1EC0EC8000C5B4B0 /* indexSettingEditProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = indexSettingEditProfile.swift; path = Mhint/indexSettingEditProfile.swift; sourceTree = "<group>"; };
 		1609621E1EC1970F00C5B4B0 /* cellEditProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = cellEditProfile.swift; path = Mhint/cellEditProfile.swift; sourceTree = "<group>"; };
 		160962201EC2755D00C5B4B0 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		160F4E0A1EEED3DF0005102C /* launchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = launchViewController.swift; sourceTree = "<group>"; };
 		161F55701ED5C2DE004D6786 /* HomeFood.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeFood.swift; path = Mhint/HomeFood.swift; sourceTree = "<group>"; };
 		161F55721ED5DEFF004D6786 /* HomeFoodCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeFoodCell.swift; path = Mhint/HomeFoodCell.swift; sourceTree = "<group>"; };
 		1620D9131ED47B420045873A /* notificationFood.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = notificationFood.swift; path = Mhint/notificationFood.swift; sourceTree = "<group>"; };
@@ -411,6 +413,7 @@
 				16E91A271EA89B0500C4EEFE /* Global Class */,
 				1695A4731EA291CB005667F4 /* Mhint.entitlements */,
 				16FFCF1E1EA28285005A4A59 /* AppDelegate.swift */,
+				160F4E0A1EEED3DF0005102C /* launchViewController.swift */,
 				16E91A2A1EA8E2F300C4EEFE /* Sections */,
 				16F95DB81EA7FD5B007C64F0 /* Menu.swift */,
 				16FFCF201EA28285005A4A59 /* Chat.swift */,
@@ -826,6 +829,7 @@
 				166AFC961ED42128008FF8F4 /* listRecipesCell.swift in Sources */,
 				168B943D1ED0643C00372475 /* Minth4you.swift in Sources */,
 				168B94431ED08DF800372475 /* dietCell.swift in Sources */,
+				160F4E0B1EEED3DF0005102C /* launchViewController.swift in Sources */,
 				165458BF1ED2E34200088A22 /* EatOut.swift in Sources */,
 				165C45B81EE83E8100411CCD /* ViewEmergency.swift in Sources */,
 				16D917BB1EA7C1940049394A /* GlobalFunction.swift in Sources */,

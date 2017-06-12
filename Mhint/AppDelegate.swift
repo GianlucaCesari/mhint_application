@@ -33,7 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
     var locationManager: CLLocationManager!
     let apiai = ApiAI.shared()!
     
-    
     func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
         if application.applicationState == UIApplicationState.inactive || application.applicationState == UIApplicationState.background {
             var navigationController = UINavigationController()
@@ -91,6 +90,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         }
     }
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        let controller = launchViewController() as launchViewController
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window!.rootViewController = controller
+        self.window!.backgroundColor = .white
+        self.window?.makeKeyAndVisible()
+        
         //API.AI
         let configuration: AIConfiguration = AIDefaultConfiguration()
         configuration.clientAccessToken = "fb6d48f1ebf04969b8791576731e4f5b"
@@ -120,27 +126,61 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         
         //MENU
         var navigationController = UINavigationController()
-        if saveData.bool(forKey: "welcomeFinish0") {
-            navigationController = UINavigationController(rootViewController: chatbotController)
-        } else {
-            navigationController = UINavigationController(rootViewController: chatController)
-        }
-        
         let leftMenuViewController = LeftMenuViewController()
         let rightMenuViewController = LeftMenuViewController()
-        let sideMenuViewController: AKSideMenu = AKSideMenu(contentViewController: navigationController, leftMenuViewController: leftMenuViewController, rightMenuViewController: rightMenuViewController)
-        sideMenuViewController.panGestureRightEnabled = false
-        sideMenuViewController.menuPreferredStatusBarStyle = .lightContent
-        sideMenuViewController.delegate = self
-        sideMenuViewController.contentViewShadowColor = .darkGray
-        sideMenuViewController.contentViewShadowOffset = CGSize(width: 0, height: 0)
-        sideMenuViewController.contentViewShadowOpacity = 0.4
-        sideMenuViewController.contentViewShadowRadius = 12
-        sideMenuViewController.contentViewShadowEnabled = true
-        window = UIWindow(frame: UIScreen.main.bounds)
-        self.window!.rootViewController = sideMenuViewController
-        self.window!.backgroundColor = .white
-        self.window?.makeKeyAndVisible()
+        if saveData.string(forKey: "email") != nil {
+            let email = saveData.string(forKey: "email")!
+            let parameter = [
+                "mail": email
+                ] as [String : Any]
+            Alamofire.request("https://api.mhint.eu/user/find", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
+                if let httpStatusCode = response.response?.statusCode {
+                    if httpStatusCode == 404 {
+                        UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
+                        UserDefaults.standard.synchronize()
+                        navigationController = UINavigationController(rootViewController: self.chatController)
+                        let sideMenuViewController: AKSideMenu = AKSideMenu(contentViewController: navigationController, leftMenuViewController: leftMenuViewController, rightMenuViewController: rightMenuViewController)
+                        sideMenuViewController.panGestureRightEnabled = false
+                        sideMenuViewController.menuPreferredStatusBarStyle = .lightContent
+                        sideMenuViewController.delegate = self
+                        sideMenuViewController.contentViewShadowColor = .darkGray
+                        sideMenuViewController.contentViewShadowOffset = CGSize(width: 0, height: 0)
+                        sideMenuViewController.contentViewShadowOpacity = 0.4
+                        sideMenuViewController.contentViewShadowRadius = 12
+                        sideMenuViewController.contentViewShadowEnabled = true
+                        self.window!.rootViewController = sideMenuViewController
+                    } else {
+                        if saveData.bool(forKey: "welcomeFinish0") {
+                            navigationController = UINavigationController(rootViewController: self.chatbotController)
+                        } else {
+                            navigationController = UINavigationController(rootViewController: self.chatController)
+                        }
+                        let sideMenuViewController: AKSideMenu = AKSideMenu(contentViewController: navigationController, leftMenuViewController: leftMenuViewController, rightMenuViewController: rightMenuViewController)
+                        sideMenuViewController.panGestureRightEnabled = false
+                        sideMenuViewController.menuPreferredStatusBarStyle = .lightContent
+                        sideMenuViewController.delegate = self
+                        sideMenuViewController.contentViewShadowColor = .darkGray
+                        sideMenuViewController.contentViewShadowOffset = CGSize(width: 0, height: 0)
+                        sideMenuViewController.contentViewShadowOpacity = 0.4
+                        sideMenuViewController.contentViewShadowRadius = 12
+                        sideMenuViewController.contentViewShadowEnabled = true
+                        self.window!.rootViewController = sideMenuViewController
+                    }
+                }
+            }
+        } else {
+            navigationController = UINavigationController(rootViewController: self.chatController)
+            let sideMenuViewController: AKSideMenu = AKSideMenu(contentViewController: navigationController, leftMenuViewController: leftMenuViewController, rightMenuViewController: rightMenuViewController)
+            sideMenuViewController.panGestureRightEnabled = false
+            sideMenuViewController.menuPreferredStatusBarStyle = .lightContent
+            sideMenuViewController.delegate = self
+            sideMenuViewController.contentViewShadowColor = .darkGray
+            sideMenuViewController.contentViewShadowOffset = CGSize(width: 0, height: 0)
+            sideMenuViewController.contentViewShadowOpacity = 0.4
+            sideMenuViewController.contentViewShadowRadius = 12
+            sideMenuViewController.contentViewShadowEnabled = true
+            self.window!.rootViewController = sideMenuViewController
+        }
         
         //SOCIAL
         FirebaseApp.configure() //FIREBASE
@@ -149,37 +189,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         GIDSignIn.sharedInstance().delegate = self //GOOGLE
         Fabric.with([Twitter.self]) //TWITTER
         
-        var performShortcutDelegate = true
         if let shortcutItem = launchOptions?[UIApplicationLaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem {
             self.shortcutItem = shortcutItem
-            performShortcutDelegate = false
         }
         
         return true
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        // Convert token to string
         let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
-        
-        // Print it to console
-        print("APNs device token: \(deviceTokenString)")
         saveData.set(deviceTokenString, forKey: "deviceTokenString")
-        // /deviceverify
         if saveData.string(forKey: "email") != nil {
+            let email = saveData.string(forKey: "email")!
             let parameter = [
-                "mail": saveData.string(forKey: "email")!,//STRING
-                "device_token": deviceTokenString
+                "mail": email
                 ] as [String : Any]
-            Alamofire.request("https://api.mhint.eu/deviceverify", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
-                print(response)
+            Alamofire.request("https://api.mhint.eu/user/find", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
+                if let httpStatusCode = response.response?.statusCode {
+                    if httpStatusCode == 200 {
+                        let parameter = [
+                            "mail": email,
+                            "device_token": deviceTokenString
+                            ] as [String : Any]
+                        Alamofire.request("https://api.mhint.eu/deviceverify", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
+                            print("Device Token Send")
+                        }
+                    }
+                }
             }
         }
     }
     
-    // Called when APNs failed to register the device for push notifications
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        // Print the error to console (you should alert the user that registration failed)
         print("APNs registration failed: \(error)")
     }
     

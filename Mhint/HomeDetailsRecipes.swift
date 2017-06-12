@@ -35,27 +35,30 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
     
     override func viewDidLoad() {
         
+        self.imageRecipes = imgDetailsRecipes
+        self.titleRecipesAPI = titleDetailsRecipes
+        self.videoRecipes()
+        
         let btnMenu = UIButton.init(type: .custom)
         let imgMenu = UIImage(named: "arrowLeftWhite")
         btnMenu.frame = CGRect(x: 0, y: 20, width: GlobalSize().sizeIconMenuBar, height: GlobalSize().sizeIconMenuBar)
         btnMenu.setImage(imgMenu, for: .normal)
         btnMenu.addTarget(self, action: #selector(self.back(sender:)), for: .touchUpInside)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: btnMenu)
-        
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        
         self.navigationController?.navigationBar.barTintColor = .clear
         self.navigationController?.navigationBar.backgroundColor = .clear
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         
+        GlobalFunc().loadingChat(s: self, frame: CGRect(x: GlobalSize().widthScreen*0.25, y: GlobalSize().heightScreen*0.5, width: GlobalSize().widthScreen*0.5, height: GlobalSize().widthScreen*0.5), nameGif: "load")
         
         self.view.backgroundColor = GlobalColor().backgroundCollectionView
         UIApplication.shared.statusBarView?.backgroundColor = .clear
-        UIApplication.shared.statusBarView?.tintColor = .white
-        self.modalPresentationCapturesStatusBarAppearance = true
+        UIApplication.shared.statusBarView?.tintColor = .clear
         UIApplication.shared.statusBarStyle = .lightContent
+        self.modalPresentationCapturesStatusBarAppearance = true
         
         getDetails()
         
@@ -68,44 +71,52 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
         collectionView?.backgroundColor = GlobalColor().backgroundCollectionView
         collectionView?.delegate = self
         collectionView?.dataSource = self
-        collectionView?.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.3, width: widthCollectionView, height: GlobalSize().heightScreen*0.72)
+        collectionView?.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.23, width: widthCollectionView, height: GlobalSize().heightScreen*0.8)
         collectionView?.register(CustomCellChooseHomeDetailsRecipes.self, forCellWithReuseIdentifier: cellId)
         collectionView?.showsHorizontalScrollIndicator = false
         collectionView?.showsVerticalScrollIndicator = false
-        
+        collectionView?.alpha = 0
     }
     
     func getDetails() {
         Alamofire.request("https://api.mhint.eu/recipe?id=\(idDetailsRecipes)", encoding: JSONEncoding.default).responseJSON { JSON in
             if let result = JSON.result.value as? [String: Any] {
-                
-                print("Result: ", result)
-                
-                self.imageRecipes = result["img_url"] as! String
-                self.titleRecipesAPI = result["title"] as! String
-                self.descriptionRecipes = result["instructions"] as! String
-                
+//                print("Result: ", result)
+                if result["instructions"] != nil {
+                    self.descriptionRecipes = result["instructions"] as! String
+                }
                 
                 if let items = result["ingredients"] as? [[String: Any]] {
                     for item in items {
-                        print(item)
-                        self.quantityIngredients.append("\(String(describing: item["amount"]!)) \(String(describing: item["unit"]!))")
+                        var amount = String(describing: item["amount"]!)
+                        if amount.characters.count > 3 {
+                            let index = amount.index(amount.startIndex, offsetBy: 3)
+                            amount = amount.substring(to: index)
+                        }
+                        self.quantityIngredients.append("\(amount) \(String(describing: item["unit"]!))")
                         if let name = item["food"] as? [String: Any] {
-                            self.descriptionIngredients.append(name["name"] as! String)
+                            let textTrimmed = (name["name"] as! String).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                            self.descriptionIngredients.append(textTrimmed)
                         }
                     }
                 }
                 
                 if let items = result["nutrients"] as? [[String: Any]] {
                     for item in items {
-                        self.descriptionNutritionalValue.append(item["title"] as! String)
-                        self.quantityNutritionalValue.append("\(String(describing: item["amount"]!)) \(String(describing: item["unit"]!))")
+                        let textTrimmed = (item["title"] as! String).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                        self.descriptionNutritionalValue.append(textTrimmed.capitalized)
+                        var amount = String(describing: item["amount"]!)
+                        if amount.characters.count > 3 {
+                            let index = amount.index(amount.startIndex, offsetBy: 3)
+                            amount = amount.substring(to: index)
+                        }
+                        self.quantityNutritionalValue.append("\(amount) \(String(describing: item["unit"]!))")
                     }
                 }
                 
                 self.sectionTitlearray = ["Nutritional value", "ingredients", "Description"]
-                
-                self.videoRecipes()
+                GlobalFunc().removeLoadingChat(s: self)
+                self.collectionView?.alpha = 1
                 self.collectionView?.reloadData()
             }
         }
@@ -119,15 +130,27 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CustomCellChooseHomeDetailsRecipes
         
+        cell.lineTitleSection.alpha = 0
+        cell.titleSection.alpha = 0
+        cell.labelRow1.alpha = 0
+        cell.labelRow2.alpha = 0
+        cell.labelRow3.alpha = 0
+        cell.labelRow4.alpha = 0
+        cell.descriptionRecipes.alpha = 0
+        
         if indexPath.row == 0 {
+            cell.titleSection.alpha = 1
+            cell.lineTitleSection.alpha = 0.4
             cell.titleSection.text = sectionTitlearray[0].uppercased()
             cell.lineTitleSection.frame = CGRect(x: 0, y: (heightCell-2)/2, width: GlobalSize().widthScreen, height: 2)
             cell.lineTitleSection.backgroundColor = .black
-            cell.lineTitleSection.alpha = 0.4
             cell.titleSection.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: (heightCell-GlobalSize().heightScreen*0.07)/2, width: GlobalSize().widthScreen*0.36, height: GlobalSize().heightScreen*0.07)
         } else if indexPath.row == 1 {
-            cell.lineTitleSection.alpha = 0
-            cell.titleSection.alpha = 0
+            
+            cell.labelRow1.alpha = 1
+            cell.labelRow2.alpha = 1
+            cell.labelRow3.alpha = 1
+            cell.labelRow4.alpha = 1
             
             let marginRow = GlobalSize().widthScreen*0.01
             let widthRow = widthCollectionView/4 - (marginRow)
@@ -152,66 +175,62 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
             cell.labelRow3.text = row3
             cell.labelRow4.text = row4
             
-            let heightFrameRow1 = NSString(string: row1).boundingRect(with: CGSize(width: widthRow, height: GlobalSize().heightScreen*10), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 20)], context: nil)
-            let heightFrameRow2 = NSString(string: row2).boundingRect(with: CGSize(width: widthRow, height: GlobalSize().heightScreen*10), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 20)], context: nil)
-            let heightFrameRow3 = NSString(string: row3).boundingRect(with: CGSize(width: widthRow, height: GlobalSize().heightScreen*10), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 20)], context: nil)
-            let heightFrameRow4 = NSString(string: row4).boundingRect(with: CGSize(width: widthRow, height: GlobalSize().heightScreen*10), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 20)], context: nil)
+            let heightFrameRow1 = NSString(string: row1).boundingRect(with: CGSize(width: widthRow*1.2, height: GlobalSize().heightScreen*6), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil)
+            let heightFrameRow2 = NSString(string: row2).boundingRect(with: CGSize(width: widthRow*0.8, height: GlobalSize().heightScreen*6), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil)
+            let heightFrameRow3 = NSString(string: row3).boundingRect(with: CGSize(width: widthRow*1.2, height: GlobalSize().heightScreen*6), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil)
+            let heightFrameRow4 = NSString(string: row4).boundingRect(with: CGSize(width: widthRow*0.8, height: GlobalSize().heightScreen*6), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil)
             
-            cell.labelRow1.frame = CGRect(x: marginRow*2, y: 20, width: widthRow, height: heightFrameRow1.height+marginRow*2)
-            cell.labelRow2.frame = CGRect(x: widthRow+marginRow*2, y: 20, width: widthRow, height: heightFrameRow2.height+marginRow*2)
-            cell.labelRow3.frame = CGRect(x: widthRow*2+marginRow*2, y: 20, width: widthRow, height: heightFrameRow3.height+marginRow*2)
-            cell.labelRow4.frame = CGRect(x: widthRow*3+marginRow*2, y: 20, width: widthRow, height: heightFrameRow4.height+marginRow*2)
+            cell.labelRow1.frame = CGRect(x: marginRow*2, y: 20, width: widthRow*1.2, height: heightFrameRow1.height)
+            cell.labelRow2.frame = CGRect(x: widthRow+marginRow*2+widthRow*0.2, y: 20, width: widthRow*0.8, height: heightFrameRow2.height)
+            cell.labelRow3.frame = CGRect(x: widthRow*2+marginRow*2, y: 20, width: widthRow*1.2, height: heightFrameRow3.height)
+            cell.labelRow4.frame = CGRect(x: widthRow*3+marginRow*2+widthRow*0.2, y: 20, width: widthRow*0.8, height: heightFrameRow4.height)
             
         } else if indexPath.row == 2 {
+            cell.titleSection.alpha = 1
+            cell.lineTitleSection.alpha = 0.4
             cell.titleSection.text = sectionTitlearray[1].uppercased()
             cell.lineTitleSection.frame = CGRect(x: 0, y: (heightCell-2)/2, width: GlobalSize().widthScreen, height: 2)
             cell.lineTitleSection.backgroundColor = .black
-            cell.lineTitleSection.alpha = 0.4
             cell.titleSection.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: (heightCell-GlobalSize().heightScreen*0.07)/2, width: GlobalSize().widthScreen*0.26, height: GlobalSize().heightScreen*0.07)
         } else if indexPath.row == 3 {
-            cell.lineTitleSection.alpha = 0
-            cell.titleSection.alpha = 0
+            
+            cell.labelRow3.alpha = 1
+            cell.labelRow4.alpha = 1
             
             let marginRow = GlobalSize().widthScreen*0.01
-            let widthRow = widthCollectionView/4 - (marginRow)
+            let widthRow = widthCollectionView/2 - (marginRow)
             
-            var row1 = String()
-            var row2 = String()
             var row3 = String()
             var row4 = String()
             
             for x in 0..<descriptionIngredients.count {
-                if x % 2 != 0 {
-                    row3 = "\(row3) \(descriptionIngredients[x])\n"
-                    row4 = "\(row4) \(quantityIngredients[x])\n"
-                } else {
-                    row1 = "\(row1) \(descriptionIngredients[x])\n"
-                    row2 = "\(row2) \(quantityIngredients[x])\n"
-                }
+                row3 = "\(row3) \(descriptionIngredients[x].capitalized)\n"
+                row4 = "\(row4) \(quantityIngredients[x])\n"
             }
             
-            cell.labelRow1.text = row1
-            cell.labelRow2.text = row2
             cell.labelRow3.text = row3
             cell.labelRow4.text = row4
             
-            let heightFrameRow1 = NSString(string: row1).boundingRect(with: CGSize(width: widthRow, height: GlobalSize().heightScreen*10), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 20)], context: nil)
-            let heightFrameRow2 = NSString(string: row2).boundingRect(with: CGSize(width: widthRow, height: GlobalSize().heightScreen*10), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 20)], context: nil)
-            let heightFrameRow3 = NSString(string: row3).boundingRect(with: CGSize(width: widthRow, height: GlobalSize().heightScreen*10), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 20)], context: nil)
-            let heightFrameRow4 = NSString(string: row4).boundingRect(with: CGSize(width: widthRow, height: GlobalSize().heightScreen*10), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 20)], context: nil)
+            cell.labelRow3.font = UIFont(name: "AvenirLTStd-Light", size: 17)
+            cell.labelRow4.font = UIFont(name: "AvenirLTStd-Heavy", size: 17)
             
-            cell.labelRow1.frame = CGRect(x: marginRow*2, y: 20, width: widthRow, height: heightFrameRow1.height+marginRow*2)
-            cell.labelRow2.frame = CGRect(x: widthRow+marginRow*2, y: 20, width: widthRow, height: heightFrameRow2.height+marginRow*2)
-            cell.labelRow3.frame = CGRect(x: widthRow*2+marginRow*2, y: 20, width: widthRow, height: heightFrameRow3.height+marginRow*2)
-            cell.labelRow4.frame = CGRect(x: widthRow*3+marginRow*2, y: 20, width: widthRow, height: heightFrameRow4.height+marginRow*2)
+            let heightFrameRow3 = NSString(string: row3).boundingRect(with: CGSize(width: widthRow, height: GlobalSize().heightScreen*15), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 17)], context: nil)
+            let heightFrameRow4 = NSString(string: row4).boundingRect(with: CGSize(width: widthRow, height: GlobalSize().heightScreen*15), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 17)], context: nil)
+            
+            print(heightFrameRow3.height)
+            
+            cell.labelRow3.frame = CGRect(x: marginRow*2, y: 20, width: widthRow, height: heightFrameRow3.height)
+            cell.labelRow4.frame = CGRect(x: widthRow+marginRow*2, y: 20, width: widthRow, height: heightFrameRow4.height)
             
         } else if indexPath.row == 4 {
+            cell.titleSection.alpha = 1
+            cell.lineTitleSection.alpha = 0.4
             cell.titleSection.text = sectionTitlearray[2].uppercased()
             cell.lineTitleSection.frame = CGRect(x: 0, y: (heightCell-2)/2, width: GlobalSize().widthScreen, height: 2)
             cell.lineTitleSection.backgroundColor = .black
-            cell.lineTitleSection.alpha = 0.4
             cell.titleSection.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: (heightCell-GlobalSize().heightScreen*0.07)/2, width: GlobalSize().widthScreen*0.26, height: GlobalSize().heightScreen*0.07)
         } else if indexPath.row == 5 {
+            cell.descriptionRecipes.alpha = 1
             cell.descriptionRecipes.text = descriptionRecipes
             let heightFrame = NSString(string: descriptionRecipes).boundingRect(with: CGSize(width: GlobalSize().widthScreen*0.88, height: GlobalSize().heightScreen*10), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 15)], context: nil)
             cell.descriptionRecipes.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: GlobalSize().heightScreen*0.02, width: GlobalSize().widthScreen*0.88, height: (heightFrame.height + GlobalSize().heightScreen*0.07))
@@ -223,9 +242,12 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.row == 0 || indexPath.row == 2 || indexPath.row == 4 {
             return CGSize(width: widthCollectionView, height: heightCellSection)
-        } else if indexPath.row == 1 || indexPath.row == 3 {
+        } else if indexPath.row == 1 {
             
             var row1 = String()
+            
+            let marginRow = GlobalSize().widthScreen*0.01
+            let widthRow = widthCollectionView/4 - (marginRow)
             
             for x in 0..<descriptionNutritionalValue.count {
                 if x % 2 == 0 {
@@ -233,9 +255,28 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
                 }
             }
             
-            let heightFrameRow1 = NSString(string: row1).boundingRect(with: CGSize(width: widthCollectionView/4, height: GlobalSize().heightScreen*10), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil)
+            let heightFrameRow1 = NSString(string: row1).boundingRect(with: CGSize(width: widthRow*1.2, height: GlobalSize().heightScreen*6), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil)
             
-            return CGSize(width: widthCollectionView, height: (heightFrameRow1.height + GlobalSize().heightScreen*0.03))
+            return CGSize(width: widthCollectionView, height: heightFrameRow1.height)
+            
+        } else if indexPath.row == 3 {
+            
+            let marginRow = GlobalSize().widthScreen*0.01
+            let widthRow = widthCollectionView/2 - (marginRow)
+            
+            var row3 = String()
+            
+            for x in 0..<descriptionIngredients.count {
+                if x % 2 != 0 {
+                    row3 = "\(row3) \(descriptionIngredients[x])\n"
+                }
+            }
+            
+            let heightFrameRow3 = NSString(string: row3).boundingRect(with: CGSize(width: widthRow, height: GlobalSize().heightScreen*15), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 17)], context: nil)
+            
+            print(heightFrameRow3.height)
+            
+            return CGSize(width: widthCollectionView, height: heightFrameRow3.height*2)
             
         } else if indexPath.row == 5 {
             let heightFrame = NSString(string: descriptionRecipes).boundingRect(with: CGSize(width: GlobalSize().widthScreen*0.88, height: GlobalSize().heightScreen*10), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 15)], context: nil)
@@ -259,22 +300,31 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
         let overlay = UIView()
         overlay.frame = previewVideo.frame
         overlay.backgroundColor = .black
-        overlay.alpha = 0.5
+        overlay.alpha = 0.65
         self.view.addSubview(overlay)
         
         let btnPlayVideo = UIButton.init(type: .custom)
         let imgMenu = UIImage(named: "play")
-        btnPlayVideo.frame = CGRect(x: GlobalSize().widthScreen*0.45, y: GlobalSize().widthScreen*0.285, width: GlobalSize().widthScreen*0.1, height: GlobalSize().widthScreen*0.1)
+        btnPlayVideo.frame = CGRect(x: GlobalSize().widthScreen*0.45, y: GlobalSize().widthScreen*0.32, width: GlobalSize().widthScreen*0.1, height: GlobalSize().widthScreen*0.1)
         btnPlayVideo.setImage(imgMenu, for: .normal)
         btnPlayVideo.addTarget(self, action: #selector(playVideo), for: .touchUpInside)
         self.view.addSubview(btnPlayVideo)
         
         let titleRecipes = UILabel()
-        titleRecipes.text = titleRecipesAPI
+        
+        if titleRecipesAPI.characters.count > 25 {
+            titleRecipesAPI.insert("\n", at: titleRecipesAPI.index(titleRecipesAPI.startIndex, offsetBy: Int(titleRecipesAPI.characters.count/2)))
+            titleRecipes.text = titleRecipesAPI
+            titleRecipes.numberOfLines = 2
+            titleRecipes.frame = CGRect(x: 0, y: GlobalSize().widthScreen*0.07, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.2)
+        } else {
+            titleRecipes.text = titleRecipesAPI
+            titleRecipes.frame = CGRect(x: 0, y: GlobalSize().widthScreen*0.15, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
+        }
+        
         titleRecipes.textAlignment = .center
         titleRecipes.font = UIFont(name: "AvenirLTStd-Heavy", size: GlobalSize().widthScreen*0.05)
         titleRecipes.textColor = .white
-        titleRecipes.frame = CGRect(x: 0, y: GlobalSize().widthScreen*0.15, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
         self.view.addSubview(titleRecipes)
     }
     
@@ -296,14 +346,11 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
         }
     }
     
-    
     func back(sender: UIBarButtonItem) {
-        
         UIApplication.shared.statusBarView?.backgroundColor = .white
         UIApplication.shared.statusBarView?.tintColor = .black
         self.modalPresentationCapturesStatusBarAppearance = false
         UIApplication.shared.statusBarStyle = .default
-        
         _ = navigationController?.popViewController(animated: true)
     }
 }

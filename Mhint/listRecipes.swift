@@ -30,10 +30,10 @@ class ListRecipesController: UICollectionViewController, UICollectionViewDelegat
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
+        setWeek()
         getRecipes()
         
         GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "WEEKLY RECIPES")
-        setWeek()
         GlobalFunc().loadingChat(s: self, frame: CGRect(x: GlobalSize().widthScreen*0.25, y: GlobalSize().heightScreen*0.4, width: GlobalSize().widthScreen*0.5, height: GlobalSize().widthScreen*0.5), nameGif: "load")
         
         let layout:UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
@@ -164,12 +164,6 @@ class ListRecipesController: UICollectionViewController, UICollectionViewDelegat
         
         let indexImage = indexPath.row+(indexPath.section*4)
         
-        cell.titleDay.text = ""
-        cell.imageRecipes.alpha = 0
-        cell.loadingBackground.alpha = 0
-        cell.typeMeal.text = ""
-        cell.descriptionRecipes.text = ""
-        
         if indexPath.row == 0 {
             cell.titleDay.frame = CGRect(x: 0, y: heightDayCell*0.5, width: widthCollectionView, height: heightDayCell*0.5)
             cell.titleDay.text = (weeklyDay[indexPath.section] + " Recipes").uppercased()
@@ -184,7 +178,7 @@ class ListRecipesController: UICollectionViewController, UICollectionViewDelegat
             cell.descriptionRecipes.frame = CGRect(x: heightCell*0.7*2+5, y: 55, width: widthCollectionView/2, height: heightCell*0.12)
             
             cell.typeMeal.text = "breakfast".uppercased()
-            cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: UIImage(gifName: "load"))
+            cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: UIImage(named: "default-recipes"))
             cell.descriptionRecipes.text = dailyMealRecipes[indexImage].capitalized
         } else if indexPath.row == 2 {
             cell.imageRecipes.alpha = 1
@@ -197,7 +191,7 @@ class ListRecipesController: UICollectionViewController, UICollectionViewDelegat
             cell.descriptionRecipes.frame = CGRect(x: heightCell*0.7*2+5, y: 55, width: widthCollectionView/2, height: heightCell*0.12)
             
             cell.typeMeal.text = "lunch".uppercased()
-            cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: UIImage(gifName: "load"))
+            cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: UIImage(named: "default-recipes"))
             cell.descriptionRecipes.text = dailyMealRecipes[indexImage].capitalized
         } else if indexPath.row == 3 {
             cell.imageRecipes.alpha = 1
@@ -210,7 +204,7 @@ class ListRecipesController: UICollectionViewController, UICollectionViewDelegat
             cell.descriptionRecipes.frame = CGRect(x: heightCell*0.7*2+5, y: 55, width: widthCollectionView/2, height: heightCell*0.12)
             
             cell.typeMeal.text = "dinner".uppercased()
-            cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: UIImage(gifName: "load"))
+            cell.imageRecipes.sd_setImage(with: URL(string: dailyMealRecipesImage[indexImage]), placeholderImage: UIImage(named: "default-recipes"))
             cell.descriptionRecipes.text = dailyMealRecipes[indexImage].capitalized
         }
         return cell

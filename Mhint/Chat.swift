@@ -80,10 +80,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             sideMenuViewController?.panGestureLeftEnabled = true //DA ATTIVARE ALLA FINE DELLA CHAT
             GlobalFunc().navBarMenu(nav: navigationItem, s: self) //MOSTRA IL MENU, DEVE ESSERE FATTO ALLA FINE DELLA CHAT
         } else {
-            
             UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
             UserDefaults.standard.synchronize()
-            
             sideMenuViewController?.panGestureLeftEnabled = false //DA DISATTIVARE ALLA PRIMA APERTURA DELL'APP
         }
         
