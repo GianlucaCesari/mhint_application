@@ -157,7 +157,7 @@ class botController: UIViewController, UITextFieldDelegate, SKStoreProductViewCo
     }
     
     func goToTelegram() {
-        let botURL = URL.init(string: "tg://resolve?domain=BotFather")
+        let botURL = URL.init(string: "tg://resolve?domain=Mhint_bot")
         
         if UIApplication.shared.canOpenURL(botURL!) {
             UIApplication.shared.open(botURL!)
