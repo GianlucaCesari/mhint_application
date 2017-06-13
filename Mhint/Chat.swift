@@ -296,6 +296,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             buttonChat[id].addTarget(self, action: #selector(alertNumber), for: .touchUpInside)
         }
         else if textButton == "Yes" {
+            print(123)
+            print(textButton)
             buttonChat[id].addTarget(self, action: #selector(finishNeed), for: .touchUpInside)
         }
         else if textButton == "Stop" {
@@ -459,6 +461,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         addressBookStore.requestAccess(for: CNEntityType.contacts) { (isGranted, error) in
             if ChatController.deniedAccessNeed == true {
+                ChatController.boolResponeWithoutButton = false
                 self.sectionFood = true
                 saveData.set(true, forKey: "need")
                 archiveMessages?.insert("No access to my number", at: 0)
@@ -468,8 +471,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 } else {
                     archiveMessages?.insert("Help & Needs;Food & Supply", at: 2)
                 }
-                GlobalFunc().removeLoadingChat(s: self)
             } else if isGranted == true {
+                ChatController.boolResponeWithoutButton = false
                 GlobalFunc().saveUserProfile(value: true, description: "need")
                 ChatController.deniedAccessNeed = false
                 GlobalFunc().getContacts()
@@ -481,8 +484,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     archiveMessages?.insert("Sorry, I couldn't find your number, would you please give it to me?", at: 1)
                     archiveMessages?.insert("Type my number;I won't give it to you", at: 2)
                 }
-                GlobalFunc().removeLoadingChat(s: self)
             } else {
+                ChatController.boolResponeWithoutButton = false
                 ChatController.deniedAccessNeed = true
                 archiveMessages?.remove(at: 0)
                 archiveMessages?.insert("I won't give you access to my contacts", at: 0)
@@ -1010,6 +1013,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     }
                 }
             }
+            GlobalFunc().removeLoadingChat(s: self)
             
             messages?.append((archiveMessages?[0])!)
             messagesType?.append((archiveMessagesType?[0])!)

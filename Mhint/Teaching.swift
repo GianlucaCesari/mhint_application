@@ -225,6 +225,7 @@ class TeachingController: UIViewController{
         case -1:
             sendVote(val: false, index: currentIndex)
         default:
+            break
         }
     }
     

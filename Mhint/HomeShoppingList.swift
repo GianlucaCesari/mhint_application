@@ -216,9 +216,6 @@ class HomeShoppingListController: UICollectionViewController, UICollectionViewDe
             cell.lineGetItem.alpha = 0.1
         }
         
-        print(shoppingList[indexPath.row])
-        print(shoppingListId[indexPath.row])
-        
         let parameter = [
             "item_id": shoppingListId[indexPath.row]
             , "checked": boolImage

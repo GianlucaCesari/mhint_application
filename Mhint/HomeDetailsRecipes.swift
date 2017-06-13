@@ -276,11 +276,11 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
             
             print(heightFrameRow3.height)
             
-            return CGSize(width: widthCollectionView, height: heightFrameRow3.height*2)
+            return CGSize(width: widthCollectionView, height: heightFrameRow3.height*2.5)
             
         } else if indexPath.row == 5 {
             let heightFrame = NSString(string: descriptionRecipes).boundingRect(with: CGSize(width: GlobalSize().widthScreen*0.88, height: GlobalSize().heightScreen*10), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 15)], context: nil)
-            return CGSize(width: widthCollectionView, height: (heightFrame.height + GlobalSize().heightScreen*0.07))
+            return CGSize(width: widthCollectionView, height: (heightFrame.height + GlobalSize().heightScreen*0.12))
         } else {
             return CGSize(width: widthCollectionView, height: heightCell)
         }
@@ -308,7 +308,7 @@ class DetailsRecipesController: UICollectionViewController, UICollectionViewDele
         btnPlayVideo.frame = CGRect(x: GlobalSize().widthScreen*0.45, y: GlobalSize().widthScreen*0.32, width: GlobalSize().widthScreen*0.1, height: GlobalSize().widthScreen*0.1)
         btnPlayVideo.setImage(imgMenu, for: .normal)
         btnPlayVideo.addTarget(self, action: #selector(playVideo), for: .touchUpInside)
-        self.view.addSubview(btnPlayVideo)
+//        self.view.addSubview(btnPlayVideo)
         
         let titleRecipes = UILabel()
         

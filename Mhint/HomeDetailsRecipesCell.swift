@@ -46,6 +46,7 @@ class CustomCellChooseHomeDetailsRecipes: BaseCellChooseHomeDetailsRecipes {
         var label = UITextView()
         label.textColor = .black
         label.isEditable = false
+        label.isScrollEnabled = false
         label.font = UIFont(name: "AvenirLTStd-Medium", size: 15)
         label.backgroundColor = GlobalColor().backgroundCollectionView
         label.textAlignment = .justified
@@ -100,12 +101,9 @@ class CustomCellChooseHomeDetailsRecipes: BaseCellChooseHomeDetailsRecipes {
     
     override func setupViews() {
         super.setupViews()
-        
         self.addSubview(lineTitleSection)
         self.addSubview(titleSection)
-        
         self.addSubview(descriptionRecipes)
-        
         self.addSubview(labelRow1)
         self.addSubview(labelRow2)
         self.addSubview(labelRow3)
