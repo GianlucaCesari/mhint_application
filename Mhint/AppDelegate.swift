@@ -17,7 +17,6 @@ import Fabric
 import Firebase
 import Alamofire
 import Whisper
-import ApiAI
 
 //MENU
 import AKSideMenu
@@ -31,7 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
     var chatbotController = ChatBotController()
     var emergencyController = EmergencyController()
     var locationManager: CLLocationManager!
-    let apiai = ApiAI.shared()!
     
     func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
         if application.applicationState == UIApplicationState.inactive || application.applicationState == UIApplicationState.background {
@@ -96,12 +94,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         self.window!.rootViewController = controller
         self.window!.backgroundColor = .white
         self.window?.makeKeyAndVisible()
-        
-        //API.AI
-        let configuration: AIConfiguration = AIDefaultConfiguration()
-        configuration.clientAccessToken = "fb6d48f1ebf04969b8791576731e4f5b"
-        apiai.configuration = configuration
-        
         //REMOTE NOTIFICATION
         if #available(iOS 10, *) {
             UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
