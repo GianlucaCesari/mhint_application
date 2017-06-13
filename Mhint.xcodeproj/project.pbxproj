@@ -21,6 +21,14 @@
 		161F55731ED5DEFF004D6786 /* HomeFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161F55721ED5DEFF004D6786 /* HomeFoodCell.swift */; };
 		1620D9141ED47B420045873A /* notificationFood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1620D9131ED47B420045873A /* notificationFood.swift */; };
 		1620D9161ED47D5E0045873A /* notificationFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1620D9151ED47D5E0045873A /* notificationFoodCell.swift */; };
+		1627BCBD1EEFE029004D68B1 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1627BCBB1EEFE029004D68B1 /* Interface.storyboard */; };
+		1627BCBF1EEFE029004D68B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1627BCBE1EEFE029004D68B1 /* Assets.xcassets */; };
+		1627BCC61EEFE029004D68B1 /* Mhint Watch Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1627BCC51EEFE029004D68B1 /* Mhint Watch Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		1627BCCB1EEFE029004D68B1 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1627BCCA1EEFE029004D68B1 /* InterfaceController.swift */; };
+		1627BCCD1EEFE029004D68B1 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1627BCCC1EEFE029004D68B1 /* ExtensionDelegate.swift */; };
+		1627BCCF1EEFE029004D68B1 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1627BCCE1EEFE029004D68B1 /* NotificationController.swift */; };
+		1627BCD11EEFE029004D68B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1627BCD01EEFE029004D68B1 /* Assets.xcassets */; };
+		1627BCD61EEFE029004D68B1 /* Mhint Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 1627BCB91EEFE029004D68B1 /* Mhint Watch.app */; };
 		1635E76A1EBF5D040079E64E /* CellSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1635E7691EBF5D040079E64E /* CellSettings.swift */; };
 		1635E7721EBF9D320079E64E /* indexSocialSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1635E7711EBF9D320079E64E /* indexSocialSetting.swift */; };
 		1635E7741EBF9D570079E64E /* indexBotSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1635E7731EBF9D570079E64E /* indexBotSetting.swift */; };
@@ -71,6 +79,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1627BCC71EEFE029004D68B1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 16FFCF131EA28285005A4A59 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1627BCC41EEFE029004D68B1;
+			remoteInfo = "Mhint Watch Extension";
+		};
+		1627BCD41EEFE029004D68B1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 16FFCF131EA28285005A4A59 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1627BCB81EEFE029004D68B1;
+			remoteInfo = "Mhint Watch";
+		};
 		16FFCF301EA28285005A4A59 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 16FFCF131EA28285005A4A59 /* Project object */;
@@ -88,12 +110,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		1627BCDC1EEFE029004D68B1 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				1627BCC61EEFE029004D68B1 /* Mhint Watch Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1683AC9C1EE8469A00B3F58C /* Embed Watch Content */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
+				1627BCD61EEFE029004D68B1 /* Mhint Watch.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -115,6 +149,17 @@
 		161F55721ED5DEFF004D6786 /* HomeFoodCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeFoodCell.swift; path = Mhint/HomeFoodCell.swift; sourceTree = "<group>"; };
 		1620D9131ED47B420045873A /* notificationFood.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = notificationFood.swift; path = Mhint/notificationFood.swift; sourceTree = "<group>"; };
 		1620D9151ED47D5E0045873A /* notificationFoodCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = notificationFoodCell.swift; path = Mhint/notificationFoodCell.swift; sourceTree = "<group>"; };
+		1627BCB91EEFE029004D68B1 /* Mhint Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mhint Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1627BCBC1EEFE029004D68B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		1627BCBE1EEFE029004D68B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1627BCC01EEFE029004D68B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1627BCC51EEFE029004D68B1 /* Mhint Watch Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Mhint Watch Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1627BCCA1EEFE029004D68B1 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
+		1627BCCC1EEFE029004D68B1 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		1627BCCE1EEFE029004D68B1 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		1627BCD01EEFE029004D68B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1627BCD21EEFE029004D68B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1627BCD31EEFE029004D68B1 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		1635E7691EBF5D040079E64E /* CellSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CellSettings.swift; path = Mhint/CellSettings.swift; sourceTree = "<group>"; };
 		1635E7711EBF9D320079E64E /* indexSocialSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = indexSocialSetting.swift; path = Mhint/indexSocialSetting.swift; sourceTree = "<group>"; };
 		1635E7731EBF9D570079E64E /* indexBotSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = indexBotSetting.swift; path = Mhint/indexBotSetting.swift; sourceTree = "<group>"; };
@@ -178,6 +223,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1627BCC21EEFE029004D68B1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		16FFCF181EA28285005A4A59 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -236,6 +288,29 @@
 				1620D9131ED47B420045873A /* notificationFood.swift */,
 			);
 			name = "6 - Notification";
+			sourceTree = "<group>";
+		};
+		1627BCBA1EEFE029004D68B1 /* Mhint Watch */ = {
+			isa = PBXGroup;
+			children = (
+				1627BCBB1EEFE029004D68B1 /* Interface.storyboard */,
+				1627BCBE1EEFE029004D68B1 /* Assets.xcassets */,
+				1627BCC01EEFE029004D68B1 /* Info.plist */,
+			);
+			path = "Mhint Watch";
+			sourceTree = "<group>";
+		};
+		1627BCC91EEFE029004D68B1 /* Mhint Watch Extension */ = {
+			isa = PBXGroup;
+			children = (
+				1627BCCA1EEFE029004D68B1 /* InterfaceController.swift */,
+				1627BCCC1EEFE029004D68B1 /* ExtensionDelegate.swift */,
+				1627BCCE1EEFE029004D68B1 /* NotificationController.swift */,
+				1627BCD01EEFE029004D68B1 /* Assets.xcassets */,
+				1627BCD21EEFE029004D68B1 /* Info.plist */,
+				1627BCD31EEFE029004D68B1 /* PushNotificationPayload.apns */,
+			);
+			path = "Mhint Watch Extension";
 			sourceTree = "<group>";
 		};
 		1635E7681EBF5CD80079E64E /* Settings */ = {
@@ -391,6 +466,8 @@
 				16FFCF1D1EA28285005A4A59 /* Mhint */,
 				16FFCF321EA28285005A4A59 /* MhintTests */,
 				16FFCF3D1EA28285005A4A59 /* MhintUITests */,
+				1627BCBA1EEFE029004D68B1 /* Mhint Watch */,
+				1627BCC91EEFE029004D68B1 /* Mhint Watch Extension */,
 				16FFCF1C1EA28285005A4A59 /* Products */,
 				E4E09DB73907C4F6BEEE8FED /* Pods */,
 				1BD997BAE28D6AFE8CEF97DA /* Frameworks */,
@@ -403,6 +480,8 @@
 				16FFCF1B1EA28285005A4A59 /* Mhint.app */,
 				16FFCF2F1EA28285005A4A59 /* MhintTests.xctest */,
 				16FFCF3A1EA28285005A4A59 /* MhintUITests.xctest */,
+				1627BCB91EEFE029004D68B1 /* Mhint Watch.app */,
+				1627BCC51EEFE029004D68B1 /* Mhint Watch Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -491,6 +570,40 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1627BCB81EEFE029004D68B1 /* Mhint Watch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1627BCDD1EEFE029004D68B1 /* Build configuration list for PBXNativeTarget "Mhint Watch" */;
+			buildPhases = (
+				1627BCB71EEFE029004D68B1 /* Resources */,
+				1627BCDC1EEFE029004D68B1 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1627BCC81EEFE029004D68B1 /* PBXTargetDependency */,
+			);
+			name = "Mhint Watch";
+			productName = "Mhint Watch";
+			productReference = 1627BCB91EEFE029004D68B1 /* Mhint Watch.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		1627BCC41EEFE029004D68B1 /* Mhint Watch Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1627BCDB1EEFE029004D68B1 /* Build configuration list for PBXNativeTarget "Mhint Watch Extension" */;
+			buildPhases = (
+				1627BCC11EEFE029004D68B1 /* Sources */,
+				1627BCC21EEFE029004D68B1 /* Frameworks */,
+				1627BCC31EEFE029004D68B1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Mhint Watch Extension";
+			productName = "Mhint Watch Extension";
+			productReference = 1627BCC51EEFE029004D68B1 /* Mhint Watch Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 		16FFCF1A1EA28285005A4A59 /* Mhint */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 16FFCF431EA28285005A4A59 /* Build configuration list for PBXNativeTarget "Mhint" */;
@@ -507,6 +620,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				1627BCD51EEFE029004D68B1 /* PBXTargetDependency */,
 			);
 			name = Mhint;
 			productName = Mhint;
@@ -565,6 +679,14 @@
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Andrea Merli";
 				TargetAttributes = {
+					1627BCB81EEFE029004D68B1 = {
+						CreatedOnToolsVersion = 9.0;
+						DevelopmentTeam = L4KF22FNCY;
+					};
+					1627BCC41EEFE029004D68B1 = {
+						CreatedOnToolsVersion = 9.0;
+						DevelopmentTeam = L4KF22FNCY;
+					};
 					16FFCF1A1EA28285005A4A59 = {
 						CreatedOnToolsVersion = 8.2;
 						DevelopmentTeam = L4KF22FNCY;
@@ -617,11 +739,30 @@
 				16FFCF1A1EA28285005A4A59 /* Mhint */,
 				16FFCF2E1EA28285005A4A59 /* MhintTests */,
 				16FFCF391EA28285005A4A59 /* MhintUITests */,
+				1627BCB81EEFE029004D68B1 /* Mhint Watch */,
+				1627BCC41EEFE029004D68B1 /* Mhint Watch Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1627BCB71EEFE029004D68B1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1627BCBF1EEFE029004D68B1 /* Assets.xcassets in Resources */,
+				1627BCBD1EEFE029004D68B1 /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1627BCC31EEFE029004D68B1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1627BCD11EEFE029004D68B1 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		16FFCF191EA28285005A4A59 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -810,6 +951,16 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1627BCC11EEFE029004D68B1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1627BCCF1EEFE029004D68B1 /* NotificationController.swift in Sources */,
+				1627BCCD1EEFE029004D68B1 /* ExtensionDelegate.swift in Sources */,
+				1627BCCB1EEFE029004D68B1 /* InterfaceController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		16FFCF171EA28285005A4A59 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -877,6 +1028,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1627BCC81EEFE029004D68B1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1627BCC41EEFE029004D68B1 /* Mhint Watch Extension */;
+			targetProxy = 1627BCC71EEFE029004D68B1 /* PBXContainerItemProxy */;
+		};
+		1627BCD51EEFE029004D68B1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1627BCB81EEFE029004D68B1 /* Mhint Watch */;
+			targetProxy = 1627BCD41EEFE029004D68B1 /* PBXContainerItemProxy */;
+		};
 		16FFCF311EA28285005A4A59 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 16FFCF1A1EA28285005A4A59 /* Mhint */;
@@ -890,6 +1051,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		1627BCBB1EEFE029004D68B1 /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1627BCBC1EEFE029004D68B1 /* Base */,
+			);
+			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
 		16FFCF271EA28285005A4A59 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -901,6 +1070,108 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		1627BCD71EEFE029004D68B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				DEVELOPMENT_TEAM = L4KF22FNCY;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				IBSC_MODULE = Mhint_Watch_Extension;
+				INFOPLIST_FILE = "Mhint Watch/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = com.gianlucacesari.Mhint.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
+			};
+			name = Debug;
+		};
+		1627BCD81EEFE029004D68B1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				DEVELOPMENT_TEAM = L4KF22FNCY;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				IBSC_MODULE = Mhint_Watch_Extension;
+				INFOPLIST_FILE = "Mhint Watch/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = com.gianlucacesari.Mhint.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
+			};
+			name = Release;
+		};
+		1627BCD91EEFE029004D68B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				DEVELOPMENT_TEAM = L4KF22FNCY;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "Mhint Watch Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.gianlucacesari.Mhint.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
+			};
+			name = Debug;
+		};
+		1627BCDA1EEFE029004D68B1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				DEVELOPMENT_TEAM = L4KF22FNCY;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "Mhint Watch Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.gianlucacesari.Mhint.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
+			};
+			name = Release;
+		};
 		16FFCF411EA28285005A4A59 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1102,6 +1373,22 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1627BCDB1EEFE029004D68B1 /* Build configuration list for PBXNativeTarget "Mhint Watch Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1627BCD91EEFE029004D68B1 /* Debug */,
+				1627BCDA1EEFE029004D68B1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		1627BCDD1EEFE029004D68B1 /* Build configuration list for PBXNativeTarget "Mhint Watch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1627BCD71EEFE029004D68B1 /* Debug */,
+				1627BCD81EEFE029004D68B1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		16FFCF161EA28285005A4A59 /* Build configuration list for PBXProject "Mhint" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

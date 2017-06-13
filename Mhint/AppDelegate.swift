@@ -106,8 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         if #available(iOS 10, *) {
             UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
             application.registerForRemoteNotifications()
-        }
-        else {  
+        } else {
             application.registerForRemoteNotifications(matching: [.badge, .sound, .alert])
         }
         
