@@ -631,7 +631,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         viewOverlay.addTarget(self, action: #selector(self.presentLeftMenuViewController(_:)), for: .touchUpInside)
         self.navigationController?.view.addSubview(viewOverlay)
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
-            self.viewOverlay.alpha = 0.6
+            self.viewOverlay.alpha = 0.8
         }, completion: nil)
         if GlobalUser.firstName != "" {
             self.animationImage(i: GlobalUser.imageProfile!, n: "\(GlobalUser.firstName),\nWelcome to Mhint", color: UIColor.darkGray.cgColor)
@@ -1223,7 +1223,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         label.textColor = .white
         label.font = UIFont(name: "AvenirLTStd-Black", size: GlobalSize().widthScreen*0.03)
         label.textAlignment = .center
-        label.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.482, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
+        label.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.5, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
         self.navigationController?.view.addSubview(label)
         UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
             imgProfile.frame.origin.y = GlobalSize().heightScreen*0.38
