@@ -44,7 +44,7 @@
                         </table>
                         <group width="1" alignment="center" verticalAlignment="center" id="Qyy-0O-GQj">
                             <items>
-                                <imageView alignment="center" verticalAlignment="center" image="loadingSquare-white" id="Fr6-Iz-IEL"/>
+                                <imageView alignment="center" verticalAlignment="center" image="loading" id="Fr6-Iz-IEL"/>
                             </items>
                         </group>
                     </items>

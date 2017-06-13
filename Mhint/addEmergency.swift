@@ -19,6 +19,7 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
     var keyboardOpen = false
     
     let viewOverlay = UIView()
+    var blurEffectView = UIVisualEffectView()
     var locationManager: CLLocationManager!
     var player: AVAudioPlayer?
     
@@ -188,13 +189,19 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
             descriptionEmergency.text = "Be more precise"
             descriptionEmergency.textColor = .lightGray
             UIApplication.shared.statusBarView?.backgroundColor = .clear
-            viewOverlay.backgroundColor = .black
-            viewOverlay.alpha = 0
-            viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
-            self.view.addSubview(viewOverlay)
-            UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
-                self.viewOverlay.alpha = 0.6
+            
+            let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+            blurEffectView = UIVisualEffectView(effect: blurEffect)
+            blurEffectView.frame = view.bounds
+            blurEffectView.backgroundColor = .black
+            blurEffectView.alpha = 0.4
+            blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            self.view.addSubview(blurEffectView)
+            
+            UIView.animate(withDuration: 2, delay: 0, options: [.repeat, .autoreverse], animations: {
+                self.blurEffectView.alpha = 0.7
             }, completion: nil)
+            
             let parameter = [
                 "mail": GlobalUser.email
                 , "name": textTrimmed!
@@ -268,6 +275,7 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
         let when = DispatchTime.now() + 0.6
         DispatchQueue.main.asyncAfter(deadline: when) {
             self.player?.play()
+            self.blurEffectView.layer.removeAllAnimations()
         }
         UIView.animate(withDuration: 0.5, delay: 1, options: .curveLinear, animations: {
             label.alpha = 1
@@ -278,6 +286,7 @@ class addEmergency: UIViewController, UIGestureRecognizerDelegate, UITextFieldDe
                 label.alpha = 0
                 imgProfile.alpha = 0
                 self.viewOverlay.alpha = 0
+                self.blurEffectView.alpha = 0
             })
         })
     }

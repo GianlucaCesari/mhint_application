@@ -170,28 +170,32 @@ class TeachingController: UIViewController{
             if let result = response.result.value {
                 for anItem in result as! [[String:Any]] {
                 
-                self.titleArray.append(anItem["name"]! as! String)
-                self.idArray.append(anItem["_id"]! as! String)
-                self.imageArray.append(anItem["img_url"]! as! String)
-                
-                var arrayName = ""
-                var arrayValue = ""
-                
-                for nutriments in anItem["nutrients"] as! [[String:Any]] {
-                    if let name = nutriments["name"]{
-                        arrayName = "\(arrayName)\(String(describing: name)) \n"
-                    }
-                    if let value = nutriments["value"] {
-                        var val = String(describing: value)
-                        if val.characters.count > 5 {
-                            let endIndex = val.index(val.endIndex, offsetBy: (5-val.characters.count))
-                            val = val.substring(to: endIndex)
+                    self.titleArray.append(anItem["name"]! as! String)
+                    self.idArray.append(anItem["_id"]! as! String)
+                    self.imageArray.append(anItem["img_url"]! as! String)
+                    
+                    var arrayName = ""
+                    var arrayValue = ""
+                    
+                    var index = -1
+                    for nutriments in anItem["nutrients"] as! [[String:Any]] {
+                        index += 1
+                        if index < 8 {
+                            if let name = nutriments["name"]{
+                                arrayName = "\(arrayName)\(String(describing: name)) \n"
+                            }
+                            if let value = nutriments["amount"] {
+                                var val = String(describing: value)
+                                if val.characters.count > 5 {
+                                    let endIndex = val.index(val.endIndex, offsetBy: (5-val.characters.count))
+                                    val = val.substring(to: endIndex)
+                                }
+                                arrayValue = "\(arrayValue)\(val) \(nutriments["unit"]!)\n"
+                            }
                         }
-                        arrayValue = "\(arrayValue)\(val) \(nutriments["unit"]!)\n"
                     }
-                }
-                self.nutrimentsName.append(arrayName)
-                self.nutrimentsValue.append(arrayValue)
+                    self.nutrimentsName.append(arrayName)
+                    self.nutrimentsValue.append(arrayValue)
                 }
             } else {
                 self.finishCard()

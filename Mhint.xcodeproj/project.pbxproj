@@ -691,16 +691,17 @@
 						DevelopmentTeam = L4KF22FNCY;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
 					1627BCC41EEFE029004D68B1 = {
 						CreatedOnToolsVersion = 9.0;
 						DevelopmentTeam = L4KF22FNCY;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -710,7 +711,7 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1103,7 +1104,6 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "Mhint Watch/Mhint Watch.entitlements";
 				DEVELOPMENT_TEAM = L4KF22FNCY;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				IBSC_MODULE = Mhint_Watch_Extension;
@@ -1130,7 +1130,6 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "Mhint Watch/Mhint Watch.entitlements";
 				DEVELOPMENT_TEAM = L4KF22FNCY;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				IBSC_MODULE = Mhint_Watch_Extension;
@@ -1156,13 +1155,15 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "Mhint Watch Extension/Mhint Watch Extension.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L4KF22FNCY;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Mhint Watch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.gianlucacesari.Mhint.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gianlucacesari.Mhint.watchkitapp.mhintwatch;
 				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
@@ -1182,13 +1183,15 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "Mhint Watch Extension/Mhint Watch Extension.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L4KF22FNCY;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Mhint Watch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.gianlucacesari.Mhint.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gianlucacesari.Mhint.watchkitapp.mhintwatch;
 				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;

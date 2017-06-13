@@ -776,6 +776,8 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         }, completion: nil)
         
         map.showsBuildings = true
+        print(sender.tag)
+        print(emergencySendFalseLat)
         let coordinates = CLLocationCoordinate2DMake(emergencySendFalseLat[sender.tag],emergencySendFalseLon[sender.tag])
         map.region = MKCoordinateRegionMakeWithDistance(coordinates, 0,0)
         map.mapType = MKMapType.standard

@@ -10,9 +10,6 @@ import WatchKit
 import Foundation
 import WatchConnectivity
 
-//let saveData = UserDefaults.standard
-//var email = saveData.string(forKey: "email")
-
 var itemShoppingList = [String]()
 var idShoppingList = [String]()
 var checkShoppingList = [Int]()
@@ -20,9 +17,17 @@ var quantityShoppingList = [String]()
 
 class InterfaceController: WKInterfaceController {
     
-//    @IBOutlet var loadingShoppingList: WKInterfaceGroup!
     @IBOutlet var tableShoppingList: WKInterfaceTable!
     @IBOutlet var loading: WKInterfaceGroup!
+    
+    var session: WCSession? {
+        didSet {
+            if let session = session {
+                session.delegate = self
+                session.activate()
+            }
+        }
+    }
     
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
@@ -32,42 +37,32 @@ class InterfaceController: WKInterfaceController {
     
     func loadingIcon() {
         loading.startAnimating()
-        loading.startAnimatingWithImages(in: NSRange(location: 0,
-                                                 length: 6), duration: 7, repeatCount: 2)
+        loading.startAnimatingWithImages(in: NSRange(location: 1, length: 31), duration: 7, repeatCount: 10)
     }
     
     func tableListShopping() {
-        
         loading.setVerticalAlignment(.top)
         loading.setHidden(true)
-        
         tableShoppingList.setNumberOfRows(itemShoppingList.count, withRowType: "TableRowController")
         for (index, _) in itemShoppingList.enumerated() {
-            
             let row = tableShoppingList.rowController(at: index) as! TableRowController
-            
-            row.group.setBackgroundColor(UIColor.init(red: 80/255, green: 227/255, blue: 194/255, alpha: 1))
-            
-            if checkShoppingList[index] == 1 {
-                row.image.setImageNamed("check-true")
-            } else {
-                row.image.setImageNamed("check-false")
-            }
-            
             let name = itemShoppingList[index]
             let quantity = quantityShoppingList[index]
-            
             let myString:String = name + "\n" + quantity
             var myMutableString = NSMutableAttributedString()
-            myMutableString = NSMutableAttributedString(string: myString, attributes: [NSAttributedStringKey.fontAttributeName:UIFont.systemFont(ofSize: 11, weight: .regular)])
+            myMutableString = NSMutableAttributedString(string: myString, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 11, weight: .regular)])
             let rangeSubtitle = NSString(string: myString).range(of: quantity)
-            myMutableString.addAttribute(NSAttributedStringKey.fontAttributeName, value: UIFont.systemFont(ofSize: 10, weight: .light), range: rangeSubtitle)
-            myMutableString.addAttribute(NSAttributedStringKey.foregroundColorAttributeName, value: UIColor.white, range: rangeSubtitle)
-            
+            myMutableString.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 10, weight: .light), range: rangeSubtitle)
+            if checkShoppingList[index] == 1 {
+                row.image.setImageNamed("check-true")
+                row.group.setBackgroundColor(.black)
+                row.lbl.setTextColor(.white)
+            } else {
+                row.image.setImageNamed("check-false")
+                row.group.setBackgroundColor(UIColor.init(red: 80/255, green: 227/255, blue: 194/255, alpha: 1))
+                row.lbl.setTextColor(.black)
+            }
             row.lbl.setAttributedText(myMutableString)
-            row.lbl.setTextColor(.black)
-            
-            print(name + " " + quantity)
         }
     }
     
@@ -128,15 +123,21 @@ class InterfaceController: WKInterfaceController {
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
         let row = tableShoppingList.rowController(at: rowIndex) as! TableRowController
         var boolImage:Bool = true
+        
         if checkShoppingList[rowIndex] == 1 {
             boolImage = false
             row.image.setImageNamed("check-false")
             checkShoppingList[rowIndex] = 0
+            row.group.setBackgroundColor(UIColor.init(red: 80/255, green: 227/255, blue: 194/255, alpha: 1))
+            row.lbl.setTextColor(.black)
         } else {
             boolImage = true
             row.image.setImageNamed("check-true")
             checkShoppingList[rowIndex] = 1
+            row.group.setBackgroundColor(.black)
+            row.lbl.setTextColor(.white)
         }
+        
         let urlString = "https://api.mhint.eu/itemchecked"
         var request = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "POST"
@@ -146,9 +147,6 @@ class InterfaceController: WKInterfaceController {
             DispatchQueue.main.async {
                 if error == nil {
                     do {
-                        if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [String: Any] {
-                            print(json)
-                        }
                     } catch {
                         print("error 2")
                     }
@@ -158,10 +156,9 @@ class InterfaceController: WKInterfaceController {
             }
         }
         task.resume()
-        print("I: ", rowIndex)
     }
     
-    override func didAppear() {
+    override func willActivate() {
         if itemShoppingList.count != 0 {
             tableShoppingList.setNumberOfRows(itemShoppingList.count, withRowType: "TableRowController")
             for (index, _) in itemShoppingList.enumerated() {
@@ -169,7 +166,6 @@ class InterfaceController: WKInterfaceController {
                 row.lbl.setText("Loading...")
                 row.image.setImageNamed("check-false")
                 if index == itemShoppingList.count-1 {
-                    print("Table pulita")
                     itemShoppingList.removeAll()
                     idShoppingList.removeAll()
                     checkShoppingList.removeAll()
@@ -182,14 +178,24 @@ class InterfaceController: WKInterfaceController {
                 }
             }
         }
+        super.willActivate()
     }
     
-    override func willActivate() {
-        super.willActivate()
+    override func didAppear() {
+        session = WCSession.default
+        session!.sendMessage(["email": "request"], replyHandler: { (response) -> Void in
+            print(response)
+        }, errorHandler: { (error) -> Void in
+            print(error)
+        })
     }
     
     override func didDeactivate() {
         super.didDeactivate()
     }
 
+}
+
+extension InterfaceController: WCSessionDelegate {
+    
 }

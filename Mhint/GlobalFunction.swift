@@ -284,30 +284,21 @@ class GlobalFunc: UIView, UIGestureRecognizerDelegate{
     
     //POSIZIONE
     func getLocation(latitude: Double, longitude: Double) {
-        
-        let accuracy:Double = 100
+        let accuracy:Double = 100000
         //let accuracy:Double = 10
-        
         let lat = Double(round(latitude*accuracy)/accuracy)
         let lon = Double(round(longitude*accuracy)/accuracy)
-        
         if lat != saveData.double(forKey: "latitudeHistory") || lon != saveData.double(forKey: "longitudeHistory") {
-            
             let parameter = [
                 "mail": saveData.string(forKey: "email")!//STRING
                 , "lat": String(lat)
                 , "long": String(lon)
                 ] as [String : Any]
-            
             Alamofire.request("https://api.mhint.eu/userpositions", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON {_ in }
-            
             saveData.set(lat, forKey: "latitudeHistory")
             saveData.set(lon, forKey: "longitudeHistory")
-            
             print("POSIZIONE: lon", lon, " lat", lat)
-            
         }
-        
     }
     
     //LOADING CHAT
