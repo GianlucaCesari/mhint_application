@@ -42,6 +42,7 @@
 		16561D7B1ED826AF0040509C /* HomeDetailsRecipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16561D7A1ED826AF0040509C /* HomeDetailsRecipes.swift */; };
 		16561D7D1ED8589A0040509C /* HomeDetailsRecipesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16561D7C1ED8589A0040509C /* HomeDetailsRecipesCell.swift */; };
 		165C45B81EE83E8100411CCD /* ViewEmergency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165C45B71EE83E8100411CCD /* ViewEmergency.swift */; };
+		16664B991EF00C910071BAE5 /* TableRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16664B981EF00C910071BAE5 /* TableRowController.swift */; };
 		166AFC961ED42128008FF8F4 /* listRecipesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166AFC951ED42128008FF8F4 /* listRecipesCell.swift */; };
 		166AFC981ED4706F008FF8F4 /* shoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166AFC971ED4706F008FF8F4 /* shoppingList.swift */; };
 		166AFC9B1ED471CC008FF8F4 /* shoppingListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166AFC9A1ED471CC008FF8F4 /* shoppingListCell.swift */; };
@@ -173,6 +174,7 @@
 		16561D7A1ED826AF0040509C /* HomeDetailsRecipes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeDetailsRecipes.swift; path = Mhint/HomeDetailsRecipes.swift; sourceTree = "<group>"; };
 		16561D7C1ED8589A0040509C /* HomeDetailsRecipesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeDetailsRecipesCell.swift; path = Mhint/HomeDetailsRecipesCell.swift; sourceTree = "<group>"; };
 		165C45B71EE83E8100411CCD /* ViewEmergency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ViewEmergency.swift; path = Mhint/ViewEmergency.swift; sourceTree = "<group>"; };
+		16664B981EF00C910071BAE5 /* TableRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableRowController.swift; sourceTree = "<group>"; };
 		166AFC951ED42128008FF8F4 /* listRecipesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = listRecipesCell.swift; path = Mhint/listRecipesCell.swift; sourceTree = "<group>"; };
 		166AFC971ED4706F008FF8F4 /* shoppingList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = shoppingList.swift; path = Mhint/shoppingList.swift; sourceTree = "<group>"; };
 		166AFC9A1ED471CC008FF8F4 /* shoppingListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = shoppingListCell.swift; path = Mhint/shoppingListCell.swift; sourceTree = "<group>"; };
@@ -187,6 +189,8 @@
 		1695A4731EA291CB005667F4 /* Mhint.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mhint.entitlements; sourceTree = "<group>"; };
 		169D5DB61EBCA8D90020436F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		16A1C8CA1EEA9B5200C1A11E /* bamboo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bamboo.mp3; sourceTree = "<group>"; };
+		16B00A681EF017D6007CC6A2 /* Mhint Watch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Mhint Watch Extension.entitlements"; sourceTree = "<group>"; };
+		16B00A691EF017E1007CC6A2 /* Mhint Watch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Mhint Watch.entitlements"; sourceTree = "<group>"; };
 		16B6B24D1EEAE31900932656 /* load-long.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "load-long.gif"; sourceTree = "<group>"; };
 		16D917BA1EA7C1940049394A /* GlobalFunction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalFunction.swift; sourceTree = "<group>"; };
 		16D917BC1EA7C1A80049394A /* GlobalColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalColor.swift; sourceTree = "<group>"; };
@@ -293,6 +297,7 @@
 		1627BCBA1EEFE029004D68B1 /* Mhint Watch */ = {
 			isa = PBXGroup;
 			children = (
+				16B00A691EF017E1007CC6A2 /* Mhint Watch.entitlements */,
 				1627BCBB1EEFE029004D68B1 /* Interface.storyboard */,
 				1627BCBE1EEFE029004D68B1 /* Assets.xcassets */,
 				1627BCC01EEFE029004D68B1 /* Info.plist */,
@@ -303,7 +308,9 @@
 		1627BCC91EEFE029004D68B1 /* Mhint Watch Extension */ = {
 			isa = PBXGroup;
 			children = (
+				16B00A681EF017D6007CC6A2 /* Mhint Watch Extension.entitlements */,
 				1627BCCA1EEFE029004D68B1 /* InterfaceController.swift */,
+				16664B981EF00C910071BAE5 /* TableRowController.swift */,
 				1627BCCC1EEFE029004D68B1 /* ExtensionDelegate.swift */,
 				1627BCCE1EEFE029004D68B1 /* NotificationController.swift */,
 				1627BCD01EEFE029004D68B1 /* Assets.xcassets */,
@@ -682,16 +689,29 @@
 					1627BCB81EEFE029004D68B1 = {
 						CreatedOnToolsVersion = 9.0;
 						DevelopmentTeam = L4KF22FNCY;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					1627BCC41EEFE029004D68B1 = {
 						CreatedOnToolsVersion = 9.0;
 						DevelopmentTeam = L4KF22FNCY;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					16FFCF1A1EA28285005A4A59 = {
 						CreatedOnToolsVersion = 8.2;
 						DevelopmentTeam = L4KF22FNCY;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
@@ -958,6 +978,7 @@
 				1627BCCF1EEFE029004D68B1 /* NotificationController.swift in Sources */,
 				1627BCCD1EEFE029004D68B1 /* ExtensionDelegate.swift in Sources */,
 				1627BCCB1EEFE029004D68B1 /* InterfaceController.swift in Sources */,
+				16664B991EF00C910071BAE5 /* TableRowController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1082,6 +1103,7 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Mhint Watch/Mhint Watch.entitlements";
 				DEVELOPMENT_TEAM = L4KF22FNCY;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				IBSC_MODULE = Mhint_Watch_Extension;
@@ -1108,6 +1130,7 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Mhint Watch/Mhint Watch.entitlements";
 				DEVELOPMENT_TEAM = L4KF22FNCY;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				IBSC_MODULE = Mhint_Watch_Extension;
@@ -1133,6 +1156,7 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Mhint Watch Extension/Mhint Watch Extension.entitlements";
 				DEVELOPMENT_TEAM = L4KF22FNCY;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Mhint Watch Extension/Info.plist";
@@ -1158,6 +1182,7 @@
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Mhint Watch Extension/Mhint Watch Extension.entitlements";
 				DEVELOPMENT_TEAM = L4KF22FNCY;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Mhint Watch Extension/Info.plist";
@@ -1274,7 +1299,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = L4KF22FNCY;
 				INFOPLIST_FILE = Mhint/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1295,7 +1320,7 @@
 				CODE_SIGN_ENTITLEMENTS = Mhint/Mhint.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = L4KF22FNCY;
 				INFOPLIST_FILE = Mhint/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1380,6 +1405,7 @@
 				1627BCDA1EEFE029004D68B1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1627BCDD1EEFE029004D68B1 /* Build configuration list for PBXNativeTarget "Mhint Watch" */ = {
 			isa = XCConfigurationList;
@@ -1388,6 +1414,7 @@
 				1627BCD81EEFE029004D68B1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		16FFCF161EA28285005A4A59 /* Build configuration list for PBXProject "Mhint" */ = {
 			isa = XCConfigurationList;
