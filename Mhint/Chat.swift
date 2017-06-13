@@ -11,6 +11,7 @@ import UIKit
 import CoreLocation //POSIZIONE
 import HealthKit //SALUTE
 import Contacts //CONTACTS
+import AVFoundation //SOUND
 
 //SOCIAL IMPORT
 import FBSDKLoginKit //FACEBOOK SDK
@@ -43,6 +44,10 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     let collectionVHeight = UICollectionView(frame: CGRect(x: 0, y: GlobalSize().heightScreen*0.8, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1), collectionViewLayout: layout)
     
     let collectionVWeight = UICollectionView(frame: CGRect(x: 0, y: GlobalSize().heightScreen*0.8, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1), collectionViewLayout: layout)
+    
+    var player: AVAudioPlayer?
+    
+    let viewOverlay = UIButton()
     
     let cellId = "cellId"
     let cellIdHeight = "cellIdHeight"
@@ -256,26 +261,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             buttonChat[id].addTarget(self, action: #selector(foodSupply), for: .touchUpInside)
         }
         else if textButton == "Help & Needs" {
-            if ChatController.deniedAccessNeed == false {
-                buttonChat[id].addTarget(self, action: #selector(needSupply), for: .touchUpInside)
-            } else{
-                let controller = UIAlertController(title: "No Contacts Access", message: "This app requires access to the contacts to activate the Help & Needs section", preferredStyle: .alert)
-                let settingsAction = UIAlertAction(title: "Go to settings", style: .default) { (_) -> Void in
-                    let urlObj = NSURL.init(string:UIApplicationOpenSettingsURLString)
-                    if #available(iOS 10.0, *) {
-                        UIApplication.shared.open(urlObj as! URL, options: [ : ], completionHandler: { Success in })
-                    } else {
-                        _ = UIApplication.shared.openURL(urlObj as! URL)
-                    }
-                }
-                let dismissAction = UIAlertAction(title: "Cancel", style: .default, handler: { [] (_) in
-                    self.dismiss(animated: true, completion: nil)
-                })
-                
-                controller.addAction(settingsAction)
-                controller.addAction(dismissAction)
-                self.present(controller, animated: true, completion: nil)
-            }
+            buttonChat[id].addTarget(self, action: #selector(needSupply), for: .touchUpInside)
         }
         else if textButton == "I won't give it to you" {
             ChatController.deniedAccessNeed = true
@@ -292,15 +278,13 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         else if textButton == "Sport" || textButton == "Active" || textButton == "Lazy" {
             buttonChat[id].addTarget(self, action: #selector(finishFood), for: .touchUpInside)
         }
-        else if textButton == "Nope" || textButton == "Type my number" {
+        else if textButton == "Type my number" {
             buttonChat[id].addTarget(self, action: #selector(alertNumber), for: .touchUpInside)
         }
         else if textButton == "Yes" {
-            print(123)
-            print(textButton)
             buttonChat[id].addTarget(self, action: #selector(finishNeed), for: .touchUpInside)
         }
-        else if textButton == "Stop" {
+        else if textButton == "Start using Mhint" {
             buttonChat[id].addTarget(self, action: #selector(endChat), for: .touchUpInside)
         }
         else{
@@ -411,10 +395,9 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func finishFood(sender: UIButton) {
-        
         sectionFood = true
         saveData.set(true, forKey: "food")
-        
+
         if sender.titleLabel?.text == "Sport" {
             GlobalUser.lifestyle = 1
         } else if sender.titleLabel?.text == "Active" {
@@ -424,9 +407,9 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
         GlobalFunc().saveUserProfile(value: GlobalUser.lifestyle, description: "lifestyle")
         archiveMessages?.insert((sender.titleLabel?.text)!, at: 0)
-        if saveData.bool(forKey: "need") == false {
+        if !saveData.bool(forKey: "need") {
             archiveMessages?.insert("Wow, now what do you want to do ?", at: 1)
-            archiveMessages?.insert("Stop;Help & Needs", at: 2)
+            archiveMessages?.insert("Start using Mhint;Help & Needs", at: 2)
             self.activateResponse()
         } else {
             self.endChat()
@@ -448,56 +431,72 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         for x in 0..<self.buttonChat.count {
             self.buttonChat[x].removeFromSuperview()
         }
-        GlobalFunc().loadingChat(s: self, frame: CGRect(x: -self.view.frame.width*0.5, y: self.view.frame.height*0.6, width: self.view.frame.width*2, height: self.view.frame.width), nameGif: "load-chat")
         self.view.addSubview(collectionView!)
         
-        ChatController.boolResponeWithoutButton = true
-        archiveMessages?.remove(at: 0)
-        archiveMessages?.insert("My info from Contacts", at: 0)
-        archiveMessages?.insert("Loading...", at: 1)
-        self.activateResponse()
-        
-        let addressBookStore = CNContactStore()
-        
-        addressBookStore.requestAccess(for: CNEntityType.contacts) { (isGranted, error) in
-            if ChatController.deniedAccessNeed == true {
-                ChatController.boolResponeWithoutButton = false
-                self.sectionFood = true
-                saveData.set(true, forKey: "need")
-                archiveMessages?.insert("No access to my number", at: 0)
-                archiveMessages?.insert("Ops, we need your number to activate the Help & Needs section.", at: 1)
-                if saveData.bool(forKey: "food") == true {
-                    archiveMessages?.insert("Stop;Help & Needs", at: 2)
-                } else {
-                    archiveMessages?.insert("Help & Needs;Food & Supply", at: 2)
-                }
-            } else if isGranted == true {
-                ChatController.boolResponeWithoutButton = false
-                GlobalFunc().saveUserProfile(value: true, description: "need")
-                ChatController.deniedAccessNeed = false
-                GlobalFunc().getContacts()
-                archiveMessages?.insert("Take my friends contacts", at: 0)
-                if GlobalUser.phoneNumber != nil && GlobalUser.phoneNumber != "" && (GlobalUser.emailGoogle?.range(of:"@") != nil || GlobalUser.emailFacebook?.range(of:"@") != nil ) {
-                    archiveMessages?.insert("Is your number \(GlobalUser.phoneNumber!)?", at: 1)
-                    archiveMessages?.insert("Yes;Nope", at: 2)
-                } else {
-                    archiveMessages?.insert("Sorry, I couldn't find your number, would you please give it to me?", at: 1)
-                    archiveMessages?.insert("Type my number;I won't give it to you", at: 2)
-                }
+        if ChatController.deniedAccessNeed {
+            archiveMessages?.insert("No access to my number", at: 0)
+            archiveMessages?.insert("Ops, we need your number to activate the Help & Needs section.", at: 1)
+            if saveData.bool(forKey: "food") {
+                archiveMessages?.insert("Start using Mhint", at: 2)
             } else {
-                ChatController.boolResponeWithoutButton = false
-                ChatController.deniedAccessNeed = true
-                archiveMessages?.remove(at: 0)
-                archiveMessages?.insert("I won't give you access to my contacts", at: 0)
-                archiveMessages?.insert("Ops, we need your contacts information to activate the Help & Needs section.", at: 1)
-                archiveMessages?.insert("Help & Needs;Food & Supply", at: 2)
+                archiveMessages?.insert("Food & Supply;Help & Needs", at: 2)
             }
             self.activateResponse()
+        } else {
+            ChatController.boolResponeWithoutButton = false
+            archiveMessages?.insert("Activate.", at: 0)
+            archiveMessages?.insert("We need your number to activate the Help & Needs section.", at: 1)
+            archiveMessages?.insert("Type my number;I won't give it to you", at: 2)
+            self.activateResponse()
         }
+        
+//        ChatController.boolResponeWithoutButton = true
+//        archiveMessages?.remove(at: 0)
+//        archiveMessages?.insert("My info from Contacts", at: 0)
+//        archiveMessages?.insert("Loading...", at: 1)
+//        self.activateResponse()
+//
+//        let addressBookStore = CNContactStore()
+//
+//        addressBookStore.requestAccess(for: CNEntityType.contacts) { (isGranted, error) in
+//            if ChatController.deniedAccessNeed == true {
+//                ChatController.boolResponeWithoutButton = false
+//                self.sectionFood = true
+//                saveData.set(true, forKey: "need")
+//                archiveMessages?.insert("No access to my number", at: 0)
+//                archiveMessages?.insert("Ops, we need your number to activate the Help & Needs section.", at: 1)
+//                if saveData.bool(forKey: "food") == true {
+//                    archiveMessages?.insert("Start using Mhint;Help & Needs", at: 2)
+//                } else {
+//                    archiveMessages?.insert("Help & Needs;Food & Supply", at: 2)
+//                }
+//            } else if isGranted == true {
+//                ChatController.boolResponeWithoutButton = false
+//                GlobalFunc().saveUserProfile(value: true, description: "need")
+//                ChatController.deniedAccessNeed = false
+//                GlobalFunc().getContacts()
+//                archiveMessages?.insert("Take my friends contacts", at: 0)
+//                if GlobalUser.phoneNumber != nil && GlobalUser.phoneNumber != "" && (GlobalUser.emailGoogle?.range(of:"@") != nil || GlobalUser.emailFacebook?.range(of:"@") != nil ) {
+//                    archiveMessages?.insert("Is your number \(GlobalUser.phoneNumber!)?", at: 1)
+//                    archiveMessages?.insert("Yes;Nope", at: 2)
+//                } else {
+//                    archiveMessages?.insert("Sorry, I couldn't find your number, would you please give it to me?", at: 1)
+//                    archiveMessages?.insert("Type my number;I won't give it to you", at: 2)
+//                }
+//            } else {
+//                ChatController.boolResponeWithoutButton = false
+//                ChatController.deniedAccessNeed = true
+//                archiveMessages?.remove(at: 0)
+//                archiveMessages?.insert("I won't give you access to my contacts", at: 0)
+//                archiveMessages?.insert("Ops, we need your contacts information to activate the Help & Needs section.", at: 1)
+//                archiveMessages?.insert("Help & Needs;Food & Supply", at: 2)
+//            }
+//            self.activateResponse()
+//        }
     }
     
     func alertNumber() {
-        let alert = UIAlertController(title: "What's your number ?", message: "Type it here", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Your telephone number ?", message: "For activate this section we need your telephone number, type it here.", preferredStyle: .alert)
         alert.addTextField { (textField) in
             textField.text = ""
             textField.keyboardType = UIKeyboardType.phonePad
@@ -508,13 +507,12 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             let firstTextField = (alert?.textFields![0])! as UITextField
             if let number = firstTextField.text {
-                    let num = Int(number)!
-                    if num > 0 {
-                        GlobalUser.phoneNumber = number
-                        self.takeNumber(n: number)
-                    } else {
-                        self.alertNumber()
-                    }
+                if self.isStringAnInt(string: number) {
+                    GlobalUser.phoneNumber = number
+                    self.takeNumber(n: number)
+                } else {
+                    self.alertNumber()
+                }
             } else {
                 self.alertNumber()
             }
@@ -522,13 +520,17 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         self.present(alert, animated: true, completion: nil)
     }
     
+    func isStringAnInt(string: String) -> Bool {
+        return Int(string) != nil
+    }
+    
     func takeNumber(n: String) {
-        sectionNeed = true
+        self.sectionNeed = true
         saveData.set(true, forKey: "need")
         archiveMessages?.insert("My number \(n)", at: 0)
         if saveData.bool(forKey: "food") == false {
             archiveMessages?.insert("Do you want to stop or do you want to activate the Food & Supply section?", at: 1)
-            archiveMessages?.insert("Stop;Food & Supply", at: 2)
+            archiveMessages?.insert("Start using Mhint;Food & Supply", at: 2)
         } else {
             self.endChat()
         }
@@ -541,7 +543,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         if saveData.bool(forKey: "food") == false {
             archiveMessages?.insert("Yes", at: 0)
             archiveMessages?.insert("Do you want to stop or do you want to activate the Food & Supply section?", at: 1)
-            archiveMessages?.insert("Stop;Food & Supply", at: 2)
+            archiveMessages?.insert("Start using Mhint;Food & Supply", at: 2)
         } else {
             archiveMessages?.remove(at: 0)
             archiveMessages?.insert("Yes", at: 0)
@@ -563,15 +565,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     //END CHAT
     func endChat() {
         
-        archiveMessages?.insert("Stop", at: 0)
+        archiveMessages?.insert("Start using Mhint", at: 0)
         archiveMessages?.insert("You can now start exploring the app.", at: 1)
-        
-        //POSIZIONE
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.startUpdatingLocation()
-        locationManager.requestAlwaysAuthorization()
         
         sideMenuViewController?.panGestureLeftEnabled = true //DA ATTIVARE ALLA FINE DELLA CHAT
         GlobalFunc().navBarMenu(nav: navigationItem, s: self) //MOSTRA IL MENU, DEVE ESSERE FATTO ALLA FINE DELLA CHAT
@@ -629,15 +624,27 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         sideMenuViewController?.panGestureLeftEnabled = true //DA ATTIVARE ALLA FINE DELLA CHAT
         GlobalFunc().navBarMenu(nav: navigationItem, s: self) //MOSTRA IL MENU, DEVE ESSERE FATTO ALLA FINE DELLA CHAT
         
+        //ANIMATION
+        viewOverlay.backgroundColor = .black
+        viewOverlay.alpha = 0
+        viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
+        viewOverlay.addTarget(self, action: #selector(self.presentLeftMenuViewController(_:)), for: .touchUpInside)
+        self.navigationController?.view.addSubview(viewOverlay)
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+            self.viewOverlay.alpha = 0.6
+        }, completion: nil)
+        if GlobalUser.firstName != "" {
+            self.animationImage(i: GlobalUser.imageProfile!, n: "\(GlobalUser.firstName),\nWelcome to Mhint", color: UIColor.darkGray.cgColor)
+        } else {
+            self.animationImage(i: GlobalUser.imageProfile!, n: "Welcome to Mhint", color: UIColor.darkGray.cgColor)
+        }
     }
-    //SECTION NEED
-    
+    //END CHAT
     
     
     
     //----------------------------------------------------------------------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------------------------------------------------------------------
-    
     
     
     
@@ -1003,8 +1010,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             let itemA = self.collectionView(self.collectionView!, numberOfItemsInSection: 0) - 1
             let lastItemIndex = NSIndexPath(item: itemA, section: 0)
             self.collectionView?.scrollToItem(at: lastItemIndex as IndexPath, at: UICollectionViewScrollPosition.top, animated: true)
-        }
-        else if ((archiveMessages?.count)! > 2){
+        } else if ((archiveMessages?.count)! > 2){
             ChatController.boolResponeWithoutButton = false
             for locView in self.view.subviews {
                 if locView.isKind(of: UIButton.self) {
@@ -1013,7 +1019,6 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     }
                 }
             }
-            GlobalFunc().removeLoadingChat(s: self)
             
             messages?.append((archiveMessages?[0])!)
             messagesType?.append((archiveMessagesType?[0])!)
@@ -1040,7 +1045,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             let itemA = self.collectionView(self.collectionView!, numberOfItemsInSection: 0) - 1
             let lastItemIndex = NSIndexPath(item: itemA, section: 0)
             self.collectionView?.scrollToItem(at: lastItemIndex as IndexPath, at: UICollectionViewScrollPosition.top, animated: true)
-            
+            GlobalFunc().removeLoadingChat(s: self)
         }
     }
     
@@ -1183,6 +1188,61 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
     //COLLECTION VIEW END
+    
+    
+    //ANIMATE FINAL
+    func animationImage(i: String, n: String, color: CGColor) {
+        UIApplication.shared.statusBarView?.backgroundColor = .clear
+        guard let url = Bundle.main.url(forResource: "bamboo", withExtension: "mp3") else {
+            return
+        }
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            player = try AVAudioPlayer(contentsOf: url)
+            guard let player = player else { return }
+        } catch let error { }
+        
+        let imgProfile = UIImageView()
+        imgProfile.frame = CGRect(x: GlobalSize().widthScreen*0.375, y: GlobalSize().heightScreen*1.5, width: GlobalSize().widthScreen*0.25, height: GlobalSize().widthScreen*0.25)
+        imgProfile.sd_setImage(with: URL(string: i), placeholderImage: nil)
+        imgProfile.layer.cornerRadius = GlobalSize().widthScreen*0.125
+        imgProfile.layer.borderWidth = 5
+        imgProfile.layer.borderColor = GlobalColor().greenSea.cgColor
+        imgProfile.layer.masksToBounds = true
+        imgProfile.layer.shadowColor = UIColor.black.cgColor
+        imgProfile.layer.shadowOpacity = 0.6
+        imgProfile.layer.shadowRadius = GlobalSize().widthScreen*0.1
+        self.navigationController?.view.addSubview(imgProfile)
+        
+        let label = UILabel()
+        label.text = n.uppercased()
+        label.alpha = 0
+        label.numberOfLines = 2
+        label.addTextSpacing()
+        label.textColor = .white
+        label.font = UIFont(name: "AvenirLTStd-Black", size: GlobalSize().widthScreen*0.03)
+        label.textAlignment = .center
+        label.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.482, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
+        self.navigationController?.view.addSubview(label)
+        UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
+            imgProfile.frame.origin.y = GlobalSize().heightScreen*0.38
+        }, completion: nil)
+        let when = DispatchTime.now() + 0.6
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.player?.play()
+        }
+        UIView.animate(withDuration: 0.5, delay: 1, options: .curveLinear, animations: {
+            label.alpha = 1
+        })
+        UIView.animate(withDuration: 0, delay: 2, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
+            self.locationManager = CLLocationManager()
+            self.locationManager.delegate = self
+            self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            self.locationManager.startUpdatingLocation()
+            self.locationManager.requestAlwaysAuthorization()
+        })
+    }
     
 }
 

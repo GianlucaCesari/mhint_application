@@ -176,7 +176,5 @@ class GlobalUser{
         Alamofire.request("https://api.mhint.eu/user", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
             print(response)
         }
-        
     }
-    
 }
