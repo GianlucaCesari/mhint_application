@@ -39,6 +39,7 @@ class TeachingController: UIViewController{
     let heightCard = GlobalSize().heightScreen*0.5
     
     private var swipeView: DMSwipeCardsView<String>!
+    private var swipeViewApp: DMSwipeCardsView<String>!
     var currentIndex = Int()
     
     var imageLoadingView = UIImageView()
@@ -54,6 +55,8 @@ class TeachingController: UIViewController{
         
         let viewGenerator: (String, CGRect) -> (UIView) = { (element: String, frame: CGRect) -> (UIView) in
             let container = UIView(frame: CGRect(x: GlobalSize().widthScreen*0.14, y: GlobalSize().heightScreen*0.1, width: self.widthCard, height: self.heightCard))
+            
+            let index = Int(element)!
             
             let label = UILabel(frame: container.bounds)
             label.textAlignment = .center
@@ -75,8 +78,9 @@ class TeachingController: UIViewController{
             titleView.sd_setImage(with: URL(string: self.imageArray[Int(element)!]), placeholderImage: nil)
             container.addSubview(titleView)
             
-            self.showNutriments(name: self.nutrimentsName[Int(element)!], value: self.nutrimentsValue[Int(element)!])
-            
+            if index-1 != -1 {
+                self.showNutriments(name: self.nutrimentsName[index-1], value: self.nutrimentsValue[index-1])
+            }
             let titleCard = UILabel()
             self.currentIndex = Int(element)!
             titleCard.text = self.titleArray[Int(element)!]
@@ -105,10 +109,6 @@ class TeachingController: UIViewController{
         }
         
         let frame = CGRect(x: 0, y: 80, width: self.view.frame.width, height: self.view.frame.height - 160)
-        swipeView = DMSwipeCardsView<String>(frame: frame,
-                                             viewGenerator: viewGenerator,
-                                             overlayGenerator: overlayGenerator)
-        swipeView.delegate = self
         self.view.backgroundColor = .white
         
         imageLoadingView = UIImageView(gifImage: UIImage(gifName: "load"), manager: SwiftyGifManager(memoryLimit:20))
@@ -119,6 +119,7 @@ class TeachingController: UIViewController{
         
         header()
         
+        swipeViewApp = DMSwipeCardsView<String>(frame: frame, viewGenerator: viewGenerator, overlayGenerator: overlayGenerator)
     }
     
     func showNutriments(name: String, value: String) {
@@ -151,6 +152,8 @@ class TeachingController: UIViewController{
     func checkCardExist() {
         if titleArray.count > 0 {
             self.imageLoadingView.removeFromSuperview()
+            self.swipeView = self.swipeViewApp
+            self.swipeView.delegate = self
             self.swipeView.addCards((0...(titleArray.count-1)).map({"\($0)"}), onTop: false)
             self.view.addSubview(swipeView)
             timerCard.invalidate()
@@ -222,7 +225,6 @@ class TeachingController: UIViewController{
         case -1:
             sendVote(val: false, index: currentIndex)
         default:
-            print()
         }
     }
     

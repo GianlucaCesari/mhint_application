@@ -19,16 +19,16 @@ class InterfaceController: WKInterfaceController {
     
     @IBOutlet var tableShoppingList: WKInterfaceTable!
     @IBOutlet var loading: WKInterfaceGroup!
-    
-    var session: WCSession? {
-        didSet {
-            if let session = session {
-                session.delegate = self
-                session.activate()
-            }
-        }
-    }
-    
+//    
+//    var session: WCSession? {
+//        didSet {
+//            if let session = session {
+//                session.delegate = self
+//                session.activate()
+//            }
+//        }
+//    }
+//    
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         loadingIcon()
@@ -181,14 +181,14 @@ class InterfaceController: WKInterfaceController {
         super.willActivate()
     }
     
-    override func didAppear() {
-        session = WCSession.default
-        session!.sendMessage(["email": "request"], replyHandler: { (response) -> Void in
-            print(response)
-        }, errorHandler: { (error) -> Void in
-            print(error)
-        })
-    }
+//    override func didAppear() {
+//        session = WCSession.default
+//        session!.sendMessage(["email": "request"], replyHandler: { (response) -> Void in
+//            print(response)
+//        }, errorHandler: { (error) -> Void in
+//            print(error)
+//        })
+//    }
     
     override func didDeactivate() {
         super.didDeactivate()
@@ -196,6 +196,7 @@ class InterfaceController: WKInterfaceController {
 
 }
 
-extension InterfaceController: WCSessionDelegate {
-    
-}
+//extension InterfaceController: WCSessionDelegate {
+//
+//}
+

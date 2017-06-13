@@ -78,14 +78,6 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             openHome()
             self.view.addSubview(collectionView!)
         }
-        
-        //SEND EMAIL TO WATCH
-        if let userDefaults = UserDefaults(suiteName: "group.gianlucacesari.mhint") {
-            print(123)
-            userDefaults.set("GlobalUser.email", forKey: "email")
-            userDefaults.synchronize()
-        }
-        
         collectionVieShow()
     }
     
