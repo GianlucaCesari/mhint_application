@@ -9,6 +9,7 @@
 import UIKit
 import UserNotifications //NOTIFICHE
 import CoreLocation //POSIZIONE
+import WatchConnectivity
 //LOGIN
 import FBSDKCoreKit
 import GoogleSignIn
@@ -32,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
     var emergencyController = EmergencyController()
     var locationManager: CLLocationManager!
     let apiai = ApiAI.shared()!
+    var connectivityHandler : ConnectivityHandler?
     
     func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
         if application.applicationState == UIApplicationState.inactive || application.applicationState == UIApplicationState.background {
@@ -90,6 +92,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         }
     }
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        
+        if WCSession.isSupported() {
+            self.connectivityHandler = ConnectivityHandler()
+        } else {
+            NSLog("WCSession not supported (f.e. on iPad).")
+        }
         
         let controller = launchViewController() as launchViewController
         self.window = UIWindow(frame: UIScreen.main.bounds)

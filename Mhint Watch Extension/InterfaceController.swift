@@ -15,19 +15,13 @@ var idShoppingList = [String]()
 var checkShoppingList = [Int]()
 var quantityShoppingList = [String]()
 
-class InterfaceController: WKInterfaceController {
+class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     @IBOutlet var tableShoppingList: WKInterfaceTable!
     @IBOutlet var loading: WKInterfaceGroup!
     
-    var session: WCSession? {
-        didSet {
-            if let session = session {
-                session.delegate = self
-                session.activate()
-            }
-        }
-    }
+    var session : WCSession?
+    
     
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
@@ -159,6 +153,26 @@ class InterfaceController: WKInterfaceController {
     }
     
     override func willActivate() {
+        super.willActivate()
+        print("bho")
+        
+        session = WCSession.default
+        session?.delegate = self
+        session?.activate()
+        
+        print("ok")
+        
+//        session?.sendMessage(["request" : "date"],replyHandler: { (response) in
+//            print(response)
+//        },errorHandler: { (error) in
+//            print("Error sending message: %@", error)
+//        }
+        session?.sendMessage(["request": "email"], replyHandler: { (response) in
+            print(response)
+        }, errorHandler: {(error) in
+            print("Error sending message: %@", error)
+        })
+        
         if itemShoppingList.count != 0 {
             tableShoppingList.setNumberOfRows(itemShoppingList.count, withRowType: "TableRowController")
             for (index, _) in itemShoppingList.enumerated() {
@@ -178,24 +192,15 @@ class InterfaceController: WKInterfaceController {
                 }
             }
         }
-        super.willActivate()
     }
     
-    override func didAppear() {
-        session = WCSession.default
-        session!.sendMessage(["email": "request"], replyHandler: { (response) -> Void in
-            print(response)
-        }, errorHandler: { (error) -> Void in
-            print(error)
-        })
-    }
     
     override func didDeactivate() {
         super.didDeactivate()
     }
-
-}
-
-extension InterfaceController: WCSessionDelegate {
     
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        
+    }
 }
+

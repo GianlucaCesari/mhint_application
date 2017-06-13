@@ -75,6 +75,7 @@
 		24E55129CE9EFEECD6F424BA /* Pods_MhintUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B72F63FE4B207186F53B62 /* Pods_MhintUITests.framework */; };
 		520B0EA81ED83CDC00A8DCEE /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 520B0EA71ED83CDC00A8DCEE /* UserNotifications.framework */; };
 		52B4A11E1EE866C2002701F7 /* addEmergency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B4A11D1EE866C2002701F7 /* addEmergency.swift */; };
+		52F617BE1EF092B500181897 /* ConnectivityHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F617BD1EF092B500181897 /* ConnectivityHandler.swift */; };
 		8331DB63C562F7929F5F1439 /* Pods_Mhint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3E260A3705318002BFE6E8 /* Pods_Mhint.framework */; };
 		980E41088CBE4DABC19A1DB4 /* Pods_MhintTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 268FB687E93765EDC33E154F /* Pods_MhintTests.framework */; };
 /* End PBXBuildFile section */
@@ -218,6 +219,7 @@
 		50ED0B0BC04AC2BEE5F2A675 /* Pods-MhintTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MhintTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MhintTests/Pods-MhintTests.debug.xcconfig"; sourceTree = "<group>"; };
 		520B0EA71ED83CDC00A8DCEE /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		52B4A11D1EE866C2002701F7 /* addEmergency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = addEmergency.swift; path = Mhint/addEmergency.swift; sourceTree = "<group>"; };
+		52F617BD1EF092B500181897 /* ConnectivityHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectivityHandler.swift; sourceTree = "<group>"; };
 		66317E44FE10363323285E8A /* Pods-MhintTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MhintTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MhintTests/Pods-MhintTests.release.xcconfig"; sourceTree = "<group>"; };
 		6BA00CCA66FF6CEF76FD604C /* Pods-Mhint.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mhint.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mhint/Pods-Mhint.debug.xcconfig"; sourceTree = "<group>"; };
 		83B72F63FE4B207186F53B62 /* Pods_MhintUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MhintUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -500,6 +502,7 @@
 				1695A4731EA291CB005667F4 /* Mhint.entitlements */,
 				16FFCF1E1EA28285005A4A59 /* AppDelegate.swift */,
 				160F4E0A1EEED3DF0005102C /* launchViewController.swift */,
+				52F617BD1EF092B500181897 /* ConnectivityHandler.swift */,
 				16E91A2A1EA8E2F300C4EEFE /* Sections */,
 				16F95DB81EA7FD5B007C64F0 /* Menu.swift */,
 				16FFCF201EA28285005A4A59 /* Chat.swift */,
@@ -1012,6 +1015,7 @@
 				160547001EDDA07300D1253E /* Home.swift in Sources */,
 				1609621F1EC1970F00C5B4B0 /* cellEditProfile.swift in Sources */,
 				168B94381ED061E600372475 /* Diet.swift in Sources */,
+				52F617BE1EF092B500181897 /* ConnectivityHandler.swift in Sources */,
 				168B94411ED0657000372475 /* Teaching.swift in Sources */,
 				1635E7771EBF9F900079E64E /* CellChat.swift in Sources */,
 				1635E7741EBF9D570079E64E /* indexBotSetting.swift in Sources */,
