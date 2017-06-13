@@ -14,7 +14,6 @@ import AudioToolbox
 import SwiftyGif //GIF
 import SwiftGifOrigin //GIF
 import Gifu
-import ApiAI
 
 import RevealingSplashView //SPLASH SCREEN
 
@@ -325,45 +324,30 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         let textTrimmed = (inputText.text!).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         if textTrimmed != "" {
             printOnCollectionView(text: textTrimmed, who: false)
-//            let parameter = [
-//                "message": textTrimmed//STRING
-//            ] as [String : Any]
-//            inputText.text = ""
+            let parameter = [
+                "chat": textTrimmed,
+                "mail": saveData.string(forKey: "email")!,
+                "lat": saveData.double(forKey: "latitudeHistory"),
+                "long": saveData.double(forKey: "longitudeHistory"),
+                "list_id": saveData.string(forKey: "shopping_list")!
+            ] as [String : Any]
+            
+            print(parameter)
+            inputText.text = ""
             button.setImage(UIImage(named: "google_mic"), for: .normal)
-            
-            
-            let request = ApiAI.shared().textRequest()
-            
-            if let text = inputText.text {
-                request?.query = [text]
-            } else {
-                request?.query = [""]
-            }
             
             inputText.text = ""
             
-            request?.setMappedCompletionBlockSuccess({ (request, response) in
-                let response = response as! AIResponse
-//                print(response.result! as AnyObject)
-//                print(response.result.fulfillment.messages[0]["speech"]!)
-                self.printOnCollectionView(text: response.result.fulfillment.messages[0]["speech"]! as! String, who: true)
-//                if response.result.action == "money" {
-//                    if let parameters = response.result.parameters as? [String: AIResponseParameter]{
-//                        let amount = parameters["amout"]!.stringValue
-//                        let currency = parameters["currency"]!.stringValue
-//                        let date = parameters["date"]!.dateValue
-//                        
-//                        print("Spended \(amount) of \(currency) on \(date)")
-//                    }
-//                }
-            }, failure: { (request, error) in
-                // TODO: handle error
-            })
             
-            ApiAI.shared().enqueue(request)
-//            Alamofire.request("https://nodered.mhint.eu/chat", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
-//                self.printOnCollectionView(text: ((response.value! as AnyObject)["message"]! as! String), who: true)
-//            }
+            Alamofire.request("https://api.mhint.eu/chat", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
+                print(response)
+                if response.response?.statusCode == 200 {
+                    self.printOnCollectionView(text: ((response.value! as AnyObject)["text"]! as! String), who: true)
+                } else {
+                    self.printOnCollectionView(text: "There was an error procesing your request", who: true)
+                }
+                
+            }
         }
     }
     
