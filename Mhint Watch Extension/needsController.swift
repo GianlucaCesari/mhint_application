@@ -67,7 +67,9 @@ class needsController: WKInterfaceController {
         let url = URL(string: urlString)!
         let task = session.dataTask(with: url, completionHandler: { (data, response, error) in
             DispatchQueue.main.async {
+                print("quidentro")
                 if error == nil {
+                    print("qui dentro")
                     do {
                         var x = 0
                         if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [String: Any] {
@@ -95,14 +97,17 @@ class needsController: WKInterfaceController {
                         } else {
                             self.enableNeed.setHidden(false)
                             self.loading.setHidden(true)
+                            print("erro1")
                         }
                     } catch {
                         self.enableNeed.setHidden(false)
                         self.loading.setHidden(true)
+                        print("erro2")
                     }
                 } else {
                     self.enableNeed.setHidden(false)
                     self.loading.setHidden(true)
+                    print("erro3")
                 }
             }
         })
