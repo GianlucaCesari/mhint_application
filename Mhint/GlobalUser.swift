@@ -98,6 +98,7 @@ class GlobalUser{
         
         let password = randomStringPassword(length: 10)
         var token = saveData.string(forKey: "deviceTokenString")!
+//        var token = "" //PER QUANDO UTILIZZIAMO IL SIMULATORE
 
         let b = birthday.replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "")
         

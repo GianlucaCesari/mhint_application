@@ -53,10 +53,10 @@ class shoppingListController: WKInterfaceController {
             let name = itemShoppingList[index].capitalized
             let quantity = quantityShoppingList[index]
             let myString:String = name + "\n" + quantity
-//            var myMutableString = NSMutableAttributedString()
-//            myMutableString = NSMutableAttributedString(string: myString, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 11, weight: .regular)])
-//            let rangeSubtitle = NSString(string: myString).range(of: quantity)
-//            myMutableString.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 10, weight: .light), range: rangeSubtitle)
+            var myMutableString = NSMutableAttributedString()
+            myMutableString = NSMutableAttributedString(string: myString, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 11, weight: CGFloat(10))])
+            let rangeSubtitle = NSString(string: myString).range(of: quantity)
+            myMutableString.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 10, weight: CGFloat(5)), range: rangeSubtitle)
             if checkShoppingList[index] == 1 {
                 row.image.setImageNamed("check-true")
                 row.group.setBackgroundColor(.black)
@@ -66,7 +66,7 @@ class shoppingListController: WKInterfaceController {
                 row.group.setBackgroundColor(UIColor.init(red: 80/255, green: 227/255, blue: 194/255, alpha: 1))
                 row.lbl.setTextColor(.black)
             }
-            row.lbl.setText(myString)
+            row.lbl.setAttributedText(myMutableString)
         }
     }
     
@@ -87,7 +87,6 @@ class shoppingListController: WKInterfaceController {
                         if let json = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [String: Any] {
                             if let items = json["items"] as? [[String: Any]] {
                                 for item in items {
-                                    
                                     var value = ""
                                     if let v = item["value"] {
                                         value = v as! String
@@ -100,10 +99,16 @@ class shoppingListController: WKInterfaceController {
                                     if let u = item["unit"] {
                                         unit = u as! String
                                     }
+                                    
+                                    var checked = 1
+                                    if String(describing: item["checked"]!) == "0" {
+                                        checked = 0
+                                    }
+                                    
                                     x += 1
                                     itemShoppingList.append(item["name"]! as! String)
                                     idShoppingList.append(item["_id"]! as! String)
-                                    checkShoppingList.append(item["checked"]! as! Int)
+                                    checkShoppingList.append(checked)
                                     quantityShoppingList.append("\(value) \(unit)")
                                     if items.count == x {
                                         self.tableListShopping()
@@ -152,14 +157,14 @@ class shoppingListController: WKInterfaceController {
         request.httpBody = postString.data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
-                if error == nil {
-                    do {
-                    } catch {
-                        print("error 2")
-                    }
-                } else {
-                    print("error 3")
-                }
+//                if error == nil {
+//                    do {
+//                    } catch {
+//                        print("error 2")
+//                    }
+//                } else {
+//                    print("error 3")
+//                }
             }
         }
         task.resume()

@@ -76,6 +76,7 @@ class needsController: WKInterfaceController {
                             if let items = json["value"] as? [[String: Any]] {
                                 if items.count > 0 {
                                     for item in items {
+                                        print("ITEM: ", item)
                                         x += 1
                                         if String(describing: item["status"]!) == "accepted" {
                                             titleNeeds.append(item["name"] as! String)
