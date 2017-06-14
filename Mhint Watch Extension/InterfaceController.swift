@@ -21,7 +21,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         session = WCSession.default
         session?.delegate = self
         session?.activate()
-        sleep(3)
+        sleep(2)
         //CONNESSIONE
         session?.sendMessage(["request": "email"], replyHandler: { (response) in
             saveData.set(response["email"], forKey: "email")

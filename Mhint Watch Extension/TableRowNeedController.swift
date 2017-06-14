@@ -10,7 +10,7 @@ import Foundation
 import WatchKit
 
 class TableRowNeedController : NSObject {
-    
-    
-    
+    @IBOutlet var lbl: WKInterfaceLabel!
+    @IBOutlet var img: WKInterfaceImage!
+    @IBOutlet var group: WKInterfaceGroup!
 }

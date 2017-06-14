@@ -85,8 +85,6 @@
 			<string></string>
 		</dict>
 	</dict>
-	<key>NSContactsUsageDescription</key>
-	<string>We access your contacts to know if other user using Mhint are your friends</string>
 	<key>NSHealthShareUsageDescription</key>
 	<string>We use this information to generate a correct diet plan</string>
 	<key>NSHealthUpdateUsageDescription</key>

@@ -75,7 +75,28 @@
                         <table alignment="left" id="Di9-B7-Qxk">
                             <items>
                                 <tableRow identifier="TableRowNeedController" id="PdW-Hq-QC5" customClass="TableRowNeedController" customModule="Mhint_Watch_Extension">
-                                    <group key="rootItem" width="1" alignment="left" id="lwc-RR-sVk"/>
+                                    <group key="rootItem" width="1" height="50" alignment="left" id="lwc-RR-sVk">
+                                        <items>
+                                            <group width="40" height="40" alignment="left" verticalAlignment="center" radius="20" id="9k6-wl-lXs">
+                                                <items>
+                                                    <imageView width="1" height="1" alignment="center" verticalAlignment="center" image="default" id="et6-SE-Y5B"/>
+                                                </items>
+                                            </group>
+                                            <group width="1" alignment="left" verticalAlignment="center" id="ieu-c5-QRq">
+                                                <items>
+                                                    <label alignment="left" verticalAlignment="center" text="Label" id="as6-B0-1Zw">
+                                                        <fontDescription key="font" type="system" weight="medium" pointSize="12"/>
+                                                    </label>
+                                                </items>
+                                                <edgeInsets key="margins" left="4" right="0.0" top="0.0" bottom="0.0"/>
+                                            </group>
+                                        </items>
+                                    </group>
+                                    <connections>
+                                        <outlet property="group" destination="lwc-RR-sVk" id="74U-0Z-YLd"/>
+                                        <outlet property="img" destination="et6-SE-Y5B" id="ia1-Py-rmb"/>
+                                        <outlet property="lbl" destination="as6-B0-1Zw" id="xJu-oN-vSs"/>
+                                    </connections>
                                 </tableRow>
                             </items>
                         </table>
@@ -88,6 +109,7 @@
                     <connections>
                         <outlet property="enableNeed" destination="Fcl-RN-MC8" id="w9g-eb-Rwz"/>
                         <outlet property="loading" destination="wQj-W6-NML" id="lNg-9X-aSA"/>
+                        <outlet property="tableNeed" destination="Di9-B7-Qxk" id="Znp-oo-xDi"/>
                     </connections>
                 </controller>
             </objects>

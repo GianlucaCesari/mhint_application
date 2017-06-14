@@ -248,67 +248,68 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
     
     func getEmergencyAccepted() {
         Alamofire.request("https://api.mhint.eu/requests?mail=\(GlobalUser.email)", encoding: JSONEncoding.default).responseJSON { response in
-            if let items = response.result.value as? [[String: Any]] {
-                self.emergencyReceive.removeAll()
-                if items.count == 0 {
-                    self.boolCall2 = true
-                } else {
-                    for item in items {
-                        if String(describing: item["status"]!) == "pending" {
-                            self.emergencyReceive.append(item["_id"] as! String)
-                            self.emergencyReceiveName.append(item["name"] as! String)
+            if let itemss = response.result.value as? [String: Any] {
+                if let items = itemss["value"] as? [[String: Any]] {
+                    self.emergencyReceive.removeAll()
+                    if items.count == 0 {
+                        self.boolCall2 = true
+                    } else {
+                        for item in items {
+                            if String(describing: item["status"]!) == "pending" {
+                                self.emergencyReceive.append(item["_id"] as! String)
+                                self.emergencyReceiveName.append(item["name"] as! String)
+                                
+                                let time = item["created_at"] as! String
+                                let timeHour = time.components(separatedBy: "T")[1].components(separatedBy: ".")[0].components(separatedBy: ":")
+                                
+                                let description = item["description"] as! String
+                                if description != "" {
+                                    self.emergencyReceiveDescription.append(description)
+                                } else {
+                                    self.emergencyReceiveDescription.append("")
+                                }
+                                
+                                if let user = item["user_sender"] as? [String: Any] {
+                                    self.emergencyReceiveUser.append(user["name"] as! String + " at " + timeHour[0] + ":" + timeHour[1])
+                                    self.emergencyReceiveUserImage.append(user["image_profile"] as! String)
+                                }
+                                if let position = item["display_position"] as? [String: Double] {
+                                    self.emergencyReceiveLat.append(position["lat"]!)
+                                    self.emergencyReceiveLon.append(position["long"]!)
+                                }
+                            } else if String(describing: item["status"]!) == "accepted" {
+                                
+                                self.emergencySendFalse.append(item["_id"] as! String)
+                                self.emergencySendFalseName.append(item["name"] as! String)
+                                
+                                if String(describing: item["description"]!) != "" {
+                                    self.emergencySendFalseDescription.append(item["description"]! as! String)
+                                } else {
+                                    self.emergencySendFalseDescription.append("")
+                                }
+                                
+                                if let user = item["user_sender"] as? [String: Any] {
+                                    self.emergencySendFalseUser.append(user["name"] as! String)
+                                    self.emergencySendFalseUserImage.append(user["image_profile"] as! String)
+                                }
+                                if let position = item["display_position"] as? [String: Double] {
+                                    self.emergencySendFalseLat.append(position["lat"]!)
+                                    self.emergencySendFalseLon.append(position["long"]!)
+                                }
+                            }
                             
-                            let time = item["created_at"] as! String
-                            let timeHour = time.components(separatedBy: "T")[1].components(separatedBy: ".")[0].components(separatedBy: ":")
-                            
-                            let description = item["description"] as! String
-                            if description != "" {
-                                self.emergencyReceiveDescription.append(description)
-                            } else {
-                                self.emergencyReceiveDescription.append("")
+                            if (self.emergencyReceive.count + self.emergencySendFalse.count) == items.count+1 {
+                                self.allEmergency.removeAll()
+                                self.allEmergency.append(contentsOf: self.emergencyReceive)
+                                self.allEmergency.append(contentsOf: self.emergencySendFalse)
+                                self.allEmergency.append(contentsOf: self.emergencySendTrue)
+                                self.boolCall2 = true
                             }
-                        
-                            if let user = item["user_sender"] as? [String: Any] {
-                                self.emergencyReceiveUser.append(user["name"] as! String + " at " + timeHour[0] + ":" + timeHour[1])
-                                self.emergencyReceiveUserImage.append(user["image_profile"] as! String)
-                            }
-                            if let position = item["display_position"] as? [String: Double] {
-                                self.emergencyReceiveLat.append(position["lat"]!)
-                                self.emergencyReceiveLon.append(position["long"]!)
-                            }
-                        } else if String(describing: item["status"]!) == "accepted" {
-                            
-                            self.emergencySendFalse.append(item["_id"] as! String)
-                            self.emergencySendFalseName.append(item["name"] as! String)
-                            
-                            if String(describing: item["description"]!) != "" {
-                                self.emergencySendFalseDescription.append(item["description"]! as! String)
-                            } else {
-                                self.emergencySendFalseDescription.append("")
-                            }
-                            
-                            if let user = item["user_sender"] as? [String: Any] {
-                                self.emergencySendFalseUser.append(user["name"] as! String)
-                                self.emergencySendFalseUserImage.append(user["image_profile"] as! String)
-                            }
-                            if let position = item["display_position"] as? [String: Double] {
-                                self.emergencySendFalseLat.append(position["lat"]!)
-                                self.emergencySendFalseLon.append(position["long"]!)
-                            }
-                        }
-                        
-                        if (self.emergencyReceive.count + self.emergencySendFalse.count) == items.count+1 {
-                            self.allEmergency.removeAll()
-                            self.allEmergency.append(contentsOf: self.emergencyReceive)
-                            self.allEmergency.append(contentsOf: self.emergencySendFalse)
-                            self.allEmergency.append(contentsOf: self.emergencySendTrue)
-                            self.boolCall2 = true
                         }
                     }
                 }
             }
         }
-        
     }
     
     //COLLECTIONVIEW

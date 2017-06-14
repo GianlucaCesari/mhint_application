@@ -114,16 +114,11 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
         
             case 1:
                 if saveData.bool(forKey: "need") {
-                    let emergencyView = EmergencyController(collectionViewLayout: layout)
-                    
                     locationManager = CLLocationManager()
                     locationManager.delegate = self
                     locationManager.desiredAccuracy = kCLLocationAccuracyBest
                     locationManager.startUpdatingLocation()
                     locationManager.requestAlwaysAuthorization()
-                    
-                    self.sideMenuViewController!.setContentViewController(UINavigationController.init(rootViewController: emergencyView), animated: true)
-                    self.sideMenuViewController!.hideMenuViewController()
                 } else {
                     GlobalFunc().alertCustom(stringAlertTitle: "Need section not available", stringAlertDescription: "You need to activate this section", button:"Ok", s: self)
                 }
@@ -176,4 +171,18 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
         cell!.textLabel?.text = titles[(indexPath as NSIndexPath).row]
         return cell!
     }
+    
+    public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedAlways {
+            if CLLocationManager.isMonitoringAvailable(for: CLBeaconRegion.self) {
+                if CLLocationManager.isRangingAvailable() {
+                    print("OK")
+                    let emergencyView = EmergencyController(collectionViewLayout: layout)
+                    self.sideMenuViewController!.setContentViewController(UINavigationController.init(rootViewController: emergencyView), animated: true)
+                    self.sideMenuViewController!.hideMenuViewController()
+                }
+            }
+        }
+    }
+    
 }

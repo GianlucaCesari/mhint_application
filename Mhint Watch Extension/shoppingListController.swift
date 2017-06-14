@@ -111,13 +111,16 @@ class shoppingListController: WKInterfaceController {
                                 }
                             }
                         } else {
-                            print("error 1")
+                            self.enambleGroup.setHidden(false)
+                            self.loading.setHidden(true)
                         }
                     } catch {
-                        print("error 2")
+                        self.enambleGroup.setHidden(false)
+                        self.loading.setHidden(true)
                     }
                 } else {
-                    print("error 3")
+                    self.enambleGroup.setHidden(false)
+                    self.loading.setHidden(true)
                 }
             }
         })
@@ -164,31 +167,6 @@ class shoppingListController: WKInterfaceController {
     
     override func willActivate() {
         super.willActivate()
-        enambleGroup.setHidden(true)
-        if saveData.bool(forKey: "food") {
-            if itemShoppingList.count != 0 {
-                tableShoppingList.setNumberOfRows(itemShoppingList.count, withRowType: "TableRowController")
-                for (index, _) in itemShoppingList.enumerated() {
-                    let row = tableShoppingList.rowController(at: index) as! TableRowController
-                    row.lbl.setText("Loading...")
-                    row.image.setImageNamed("check-false")
-                    if index == itemShoppingList.count-1 {
-                        itemShoppingList.removeAll()
-                        idShoppingList.removeAll()
-                        checkShoppingList.removeAll()
-                        quantityShoppingList.removeAll()
-                        itemShoppingList = [String]()
-                        idShoppingList = [String]()
-                        checkShoppingList = [Int]()
-                        quantityShoppingList = [String]()
-                        getShoppingList()
-                    }
-                }
-            }
-        } else {
-            enambleGroup.setHidden(false)
-            loading.setHidden(true)
-        }
     }
     
     override func didDeactivate() {

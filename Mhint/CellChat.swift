@@ -87,13 +87,12 @@ class ChatControllerCellHeight: BaseCellHeight {
         rect.backgroundColor = .white
         rect.layer.borderWidth = 0
         rect.layer.cornerRadius = GlobalSize().heightScreen*0.035
-        rect.layer.masksToBounds = true
+        rect.layer.masksToBounds = false
         
-        let shadowSquareColor : UIColor = UIColor.black
-        rect.layer.shadowColor = shadowSquareColor.cgColor
-        rect.layer.shadowOpacity = 0.8
-        rect.layer.shadowOffset = CGSize.zero
-        rect.layer.shadowRadius = 10
+        rect.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.15).cgColor
+        rect.layer.shadowOffset = CGSize(width: 0.0, height: 10.0)
+        rect.layer.shadowOpacity = 1.0
+        rect.layer.shadowRadius = 6.0
         
         return rect
     }()

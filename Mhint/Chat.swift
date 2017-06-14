@@ -213,16 +213,15 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         buttonChat[id].backgroundColor = .white
         buttonChat[id].layer.cornerRadius = view.frame.height*0.04
-        buttonChat[id].layer.masksToBounds = true
+        buttonChat[id].layer.masksToBounds = false
         buttonChat[id].setTitle(textButton, for: .normal)
         buttonChat[id].setTitleColor(.black, for: .normal)
         buttonChat[id].titleLabel?.font = UIFont(name: "AvenirLTStd-Medium", size: 14)
         
-        let shadowSquareColor : UIColor = UIColor.black
-        buttonChat[id].layer.shadowColor = shadowSquareColor.cgColor
-        buttonChat[id].layer.shadowOpacity = 0.8
-        buttonChat[id].layer.shadowOffset = CGSize.zero
-        buttonChat[id].layer.shadowRadius = view.frame.height*0.2
+        buttonChat[id].layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.15).cgColor
+        buttonChat[id].layer.shadowOffset = CGSize(width: 0.0, height: 10.0)
+        buttonChat[id].layer.shadowOpacity = 1.0
+        buttonChat[id].layer.shadowRadius = 6.0
         
         buttonChat[id].tag = 20
         buttonChat[id].removeTarget(self, action: nil, for: .touchUpInside)
@@ -303,7 +302,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             }
         }
         self.collectionVHeight.backgroundColor = .clear
-        self.collectionVHeight.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.8, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
+        self.collectionVHeight.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.8, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.2)
         self.view.addSubview(self.collectionVHeight)
     }
     
@@ -317,7 +316,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
         self.collectionVHeight.removeFromSuperview()
         self.collectionVWeight.backgroundColor = .clear
-        self.collectionVWeight.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.8, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
+        self.collectionVWeight.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.8, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.17)
         self.view.addSubview(self.collectionVWeight)
     }
     
@@ -577,7 +576,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         viewOverlay.addTarget(self, action: #selector(self.presentLeftMenuViewController(_:)), for: .touchUpInside)
         self.navigationController?.view.addSubview(viewOverlay)
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
-            self.viewOverlay.alpha = 0.95
+            self.viewOverlay.alpha = 0.9
         }, completion: nil)
         if GlobalUser.firstName != "" {
             self.animationImage(i: GlobalUser.imageProfile!, n: GlobalUser.firstName, color: UIColor.darkGray.cgColor)
