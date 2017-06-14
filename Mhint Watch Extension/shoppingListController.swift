@@ -53,10 +53,10 @@ class shoppingListController: WKInterfaceController {
             let name = itemShoppingList[index].capitalized
             let quantity = quantityShoppingList[index]
             let myString:String = name + "\n" + quantity
-            var myMutableString = NSMutableAttributedString()
-            myMutableString = NSMutableAttributedString(string: myString, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 11, weight: .regular)])
-            let rangeSubtitle = NSString(string: myString).range(of: quantity)
-            myMutableString.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 10, weight: .light), range: rangeSubtitle)
+//            var myMutableString = NSMutableAttributedString()
+//            myMutableString = NSMutableAttributedString(string: myString, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 11, weight: .regular)])
+//            let rangeSubtitle = NSString(string: myString).range(of: quantity)
+//            myMutableString.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 10, weight: .light), range: rangeSubtitle)
             if checkShoppingList[index] == 1 {
                 row.image.setImageNamed("check-true")
                 row.group.setBackgroundColor(.black)
@@ -66,7 +66,7 @@ class shoppingListController: WKInterfaceController {
                 row.group.setBackgroundColor(UIColor.init(red: 80/255, green: 227/255, blue: 194/255, alpha: 1))
                 row.lbl.setTextColor(.black)
             }
-            row.lbl.setAttributedText(myMutableString)
+            row.lbl.setText(myString)
         }
     }
     
