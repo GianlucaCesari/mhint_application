@@ -81,10 +81,8 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     
     func openHome() {
-        
         self.speechRecognizer?.delegate = self
         self.button?.isEnabled = false
-        
         SFSpeechRecognizer.requestAuthorization { (authStatus) in
             var isButtonEnabled = false
             
@@ -324,20 +322,27 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         let textTrimmed = (inputText.text!).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         if textTrimmed != "" {
             printOnCollectionView(text: textTrimmed, who: false)
-            let parameter = [
-                "chat": textTrimmed,
-                "mail": saveData.string(forKey: "email")!,
-                "lat": saveData.double(forKey: "latitudeHistory"),
-                "long": saveData.double(forKey: "longitudeHistory"),
-                "list_id": saveData.string(forKey: "shopping_list")!
-            ] as [String : Any]
+            var parameter:[String : Any]
+            if saveData.string(forKey: "shopping_list") != nil {
+                parameter = [
+                    "chat": textTrimmed,
+                    "mail": saveData.string(forKey: "email")!,
+                    "lat": saveData.double(forKey: "latitudeHistory"),
+                    "long": saveData.double(forKey: "longitudeHistory"),
+                    "list_id": saveData.string(forKey: "shopping_list")!
+                ] as [String : Any]
+            } else {
+                parameter = [
+                    "chat": textTrimmed,
+                    "mail": saveData.string(forKey: "email")!,
+                    "lat": saveData.double(forKey: "latitudeHistory"),
+                    "long": saveData.double(forKey: "longitudeHistory")
+                    ] as [String : Any]
+            }
             
-            print(parameter)
             inputText.text = ""
             button.setImage(UIImage(named: "google_mic"), for: .normal)
-            
             inputText.text = ""
-            
             
             Alamofire.request("https://api.mhint.eu/chat", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
                 print(response)
@@ -346,7 +351,6 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
                 } else {
                     self.printOnCollectionView(text: "There was an error procesing your request", who: true)
                 }
-                
             }
         }
     }

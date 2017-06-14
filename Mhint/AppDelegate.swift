@@ -21,6 +21,9 @@ import Whisper
 //MENU
 import AKSideMenu
 
+//WATCH
+import WatchConnectivity
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSideMenuDelegate, CLLocationManagerDelegate {
     
@@ -30,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
     var chatbotController = ChatBotController()
     var emergencyController = EmergencyController()
     var locationManager: CLLocationManager!
+    var connectivityHandler:ConnectivityHandler?
     
     func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
         if application.applicationState == UIApplicationState.inactive || application.applicationState == UIApplicationState.background {
@@ -114,6 +118,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         chatController = ChatController(collectionViewLayout: layoutChat)
         
         GlobalUser().start()//ISTANZIA
+        
+        //CONNECTIVITY WATCH
+        if WCSession.isSupported() {
+            self.connectivityHandler = ConnectivityHandler()
+        } else {
+            print("Error")
+        }
         
         //MENU
         var navigationController = UINavigationController()
@@ -320,6 +331,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
     
     func applicationWillResignActive(_ application: UIApplication) {}
     func applicationDidEnterBackground(_ application: UIApplication) {
+        
+        //CONNECTIVITY WATCH
+        if WCSession.isSupported() {
+            self.connectivityHandler = ConnectivityHandler()
+        } else {
+            print("Error")
+        }
+        
         if CLLocationManager.locationServicesEnabled() {
             locationManager = CLLocationManager()
             locationManager.delegate = self
@@ -363,20 +382,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         var succeeded = false
         if saveData.bool(forKey: "welcomeFinish0") {
             if(shortcutItem.type == "Mhint") {
-                
                 var navigationController = UINavigationController()
-                
                 let layoutChat = UICollectionViewFlowLayout.init()
                 layoutChat.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
                 layoutChat.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
-                let emergency = ChatBotController(collectionViewLayout: layoutChat)
-                navigationController = UINavigationController(rootViewController: emergency)
-                
+                let emergency:UIViewController?
+                if saveData.bool(forKey: "welcomeFinish0") {
+                    emergency = ChatBotController(collectionViewLayout: layoutChat)
+                } else {
+                    emergency = ChatController(collectionViewLayout: layoutChat)
+                }
+                navigationController = UINavigationController(rootViewController: emergency!)
                 let leftMenuViewController = LeftMenuViewController()
                 let rightMenuViewController = LeftMenuViewController()
                 let sideMenuViewController: AKSideMenu = AKSideMenu(contentViewController: navigationController, leftMenuViewController: leftMenuViewController, rightMenuViewController: rightMenuViewController)
-                sideMenuViewController.setContentViewController(UINavigationController.init(rootViewController: emergency), animated: true)
-                
+                sideMenuViewController.setContentViewController(UINavigationController.init(rootViewController: emergency!), animated: true)
                 sideMenuViewController.panGestureRightEnabled = false
                 sideMenuViewController.menuPreferredStatusBarStyle = .lightContent
                 sideMenuViewController.delegate = self
@@ -388,23 +408,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
                 self.window!.rootViewController = sideMenuViewController
                 self.window!.backgroundColor = .white
                 self.window?.makeKeyAndVisible()
-                
                 succeeded = true
             }
             else if( shortcutItem.type == "Food" ) {
                 
                 var navigationController = UINavigationController()
-                
                 let layoutChat = UICollectionViewFlowLayout.init()
                 layoutChat.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
                 layoutChat.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
-                let emergency = HomeFoodController(collectionViewLayout: layoutChat)
-                navigationController = UINavigationController(rootViewController: emergency)
-                
+                let foodView:UIViewController?
+                if saveData.bool(forKey: "HomeFood") == true {
+                    foodView = HomeFoodController(collectionViewLayout: layoutChat)
+                } else {
+                    foodView = FoodController(collectionViewLayout: layoutChat)
+                }
+                navigationController = UINavigationController(rootViewController: foodView!)
                 let leftMenuViewController = LeftMenuViewController()
                 let rightMenuViewController = LeftMenuViewController()
                 let sideMenuViewController: AKSideMenu = AKSideMenu(contentViewController: navigationController, leftMenuViewController: leftMenuViewController, rightMenuViewController: rightMenuViewController)
-                sideMenuViewController.setContentViewController(UINavigationController.init(rootViewController: emergency), animated: true)
+                sideMenuViewController.setContentViewController(UINavigationController.init(rootViewController: foodView!), animated: true)
                 
                 sideMenuViewController.panGestureRightEnabled = false
                 sideMenuViewController.menuPreferredStatusBarStyle = .lightContent
@@ -426,13 +448,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
                 let layoutChat = UICollectionViewFlowLayout.init()
                 layoutChat.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
                 layoutChat.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
-                let emergency = EmergencyController(collectionViewLayout: layoutChat)
-                navigationController = UINavigationController(rootViewController: emergency)
+                let emergency:UIViewController?
+                if saveData.bool(forKey: "need") == true {
+                    emergency = EmergencyController(collectionViewLayout: layoutChat)
+                } else {
+                    emergency = SettingsController(collectionViewLayout: layout)
+                }
+                navigationController = UINavigationController(rootViewController: emergency!)
                 
                 let leftMenuViewController = LeftMenuViewController()
                 let rightMenuViewController = LeftMenuViewController()
                 let sideMenuViewController: AKSideMenu = AKSideMenu(contentViewController: navigationController, leftMenuViewController: leftMenuViewController, rightMenuViewController: rightMenuViewController)
-                sideMenuViewController.setContentViewController(UINavigationController.init(rootViewController: emergency), animated: true)
+                sideMenuViewController.setContentViewController(UINavigationController.init(rootViewController: emergency!), animated: true)
                 
                 sideMenuViewController.panGestureRightEnabled = false
                 sideMenuViewController.menuPreferredStatusBarStyle = .lightContent
@@ -454,13 +481,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
                 let layoutChat = UICollectionViewFlowLayout.init()
                 layoutChat.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
                 layoutChat.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
-                let emergency = TeachingController()
-                navigationController = UINavigationController(rootViewController: emergency)
+                
+                let emergency:UIViewController?
+                if saveData.bool(forKey: "welcomeFinish0") {
+                    emergency = TeachingController()
+                } else {
+                    emergency = SettingsController(collectionViewLayout: layout)
+                }
+                navigationController = UINavigationController(rootViewController: emergency!)
                 
                 let leftMenuViewController = LeftMenuViewController()
                 let rightMenuViewController = LeftMenuViewController()
                 let sideMenuViewController: AKSideMenu = AKSideMenu(contentViewController: navigationController, leftMenuViewController: leftMenuViewController, rightMenuViewController: rightMenuViewController)
-                sideMenuViewController.setContentViewController(UINavigationController.init(rootViewController: emergency), animated: true)
+                sideMenuViewController.setContentViewController(UINavigationController.init(rootViewController: emergency!), animated: true)
                 
                 sideMenuViewController.panGestureRightEnabled = false
                 sideMenuViewController.menuPreferredStatusBarStyle = .lightContent

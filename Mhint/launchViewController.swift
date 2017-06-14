@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 class launchViewController: UIViewController {
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -18,5 +17,4 @@ class launchViewController: UIViewController {
         img.image = UIImage(named: "iconChatSplashScreen")
         self.view.addSubview(img)
     }
-    
 }

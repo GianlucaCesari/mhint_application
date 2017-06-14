@@ -6,11 +6,13 @@
 //  Copyright © 2017 Andrea Merli. All rights reserved.
 //
 import UIKit
+import CoreLocation //POSIZIONE
 
-open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
     
     let globalColor = GlobalColor()
     let user = GlobalUser()
+    var locationManager: CLLocationManager!
     
     var tableView: UITableView?
     var titles: [String] = ["Food & Diet", "Needs & Emergency", "Teaching", "Settings", "Privacy policy"]
@@ -21,6 +23,14 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    //POSIZIONE
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let userLocation:CLLocation = locations[0]
+        let long = userLocation.coordinate.longitude;
+        let lat = userLocation.coordinate.latitude;
+        GlobalFunc().getLocation(latitude: lat, longitude: long)
     }
     
     override open func viewDidLoad() {
@@ -105,6 +115,13 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
             case 1:
                 if saveData.bool(forKey: "need") {
                     let emergencyView = EmergencyController(collectionViewLayout: layout)
+                    
+                    locationManager = CLLocationManager()
+                    locationManager.delegate = self
+                    locationManager.desiredAccuracy = kCLLocationAccuracyBest
+                    locationManager.startUpdatingLocation()
+                    locationManager.requestAlwaysAuthorization()
+                    
                     self.sideMenuViewController!.setContentViewController(UINavigationController.init(rootViewController: emergencyView), animated: true)
                     self.sideMenuViewController!.hideMenuViewController()
                 } else {

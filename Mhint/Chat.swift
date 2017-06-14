@@ -8,7 +8,6 @@
 //
 
 import UIKit
-import CoreLocation //POSIZIONE
 import HealthKit //SALUTE
 import Contacts //CONTACTS
 import AVFoundation //SOUND
@@ -39,7 +38,7 @@ var timerHeight : Timer!
 
 let layout:UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
 
-class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLayout, FBSDKLoginButtonDelegate, GIDSignInUIDelegate, CLLocationManagerDelegate{
+class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLayout, FBSDKLoginButtonDelegate, GIDSignInUIDelegate{
     
     let collectionVHeight = UICollectionView(frame: CGRect(x: 0, y: GlobalSize().heightScreen*0.8, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1), collectionViewLayout: layout)
     
@@ -73,8 +72,6 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     var nameFacebook = ""
     var facebookToken:String = ""
-    
-    var locationManager: CLLocationManager!
     
     let healthManager:HKHealthStore = HKHealthStore()
     
@@ -169,14 +166,6 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
-    //POSIZIONE
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let userLocation:CLLocation = locations[0]
-        let long = userLocation.coordinate.longitude;
-        let lat = userLocation.coordinate.latitude;
-        GlobalFunc().getLocation(latitude: lat, longitude: long)
-    }
-    
     //PRINT BUTTON START
     func generateButton(buttonMessage: String) {
         
@@ -231,9 +220,9 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         let shadowSquareColor : UIColor = UIColor.black
         buttonChat[id].layer.shadowColor = shadowSquareColor.cgColor
-        buttonChat[id].layer.shadowOpacity = 0.5
+        buttonChat[id].layer.shadowOpacity = 0.8
         buttonChat[id].layer.shadowOffset = CGSize.zero
-        buttonChat[id].layer.shadowRadius = view.frame.height*0.04
+        buttonChat[id].layer.shadowRadius = view.frame.height*0.2
         
         buttonChat[id].tag = 20
         buttonChat[id].removeTarget(self, action: nil, for: .touchUpInside)
@@ -449,54 +438,10 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             archiveMessages?.insert("Type my number;I won't give it to you", at: 2)
             self.activateResponse()
         }
-        
-//        ChatController.boolResponeWithoutButton = true
-//        archiveMessages?.remove(at: 0)
-//        archiveMessages?.insert("My info from Contacts", at: 0)
-//        archiveMessages?.insert("Loading...", at: 1)
-//        self.activateResponse()
-//
-//        let addressBookStore = CNContactStore()
-//
-//        addressBookStore.requestAccess(for: CNEntityType.contacts) { (isGranted, error) in
-//            if ChatController.deniedAccessNeed == true {
-//                ChatController.boolResponeWithoutButton = false
-//                self.sectionFood = true
-//                saveData.set(true, forKey: "need")
-//                archiveMessages?.insert("No access to my number", at: 0)
-//                archiveMessages?.insert("Ops, we need your number to activate the Help & Needs section.", at: 1)
-//                if saveData.bool(forKey: "food") == true {
-//                    archiveMessages?.insert("Start using Mhint;Help & Needs", at: 2)
-//                } else {
-//                    archiveMessages?.insert("Help & Needs;Food & Supply", at: 2)
-//                }
-//            } else if isGranted == true {
-//                ChatController.boolResponeWithoutButton = false
-//                GlobalFunc().saveUserProfile(value: true, description: "need")
-//                ChatController.deniedAccessNeed = false
-//                GlobalFunc().getContacts()
-//                archiveMessages?.insert("Take my friends contacts", at: 0)
-//                if GlobalUser.phoneNumber != nil && GlobalUser.phoneNumber != "" && (GlobalUser.emailGoogle?.range(of:"@") != nil || GlobalUser.emailFacebook?.range(of:"@") != nil ) {
-//                    archiveMessages?.insert("Is your number \(GlobalUser.phoneNumber!)?", at: 1)
-//                    archiveMessages?.insert("Yes;Nope", at: 2)
-//                } else {
-//                    archiveMessages?.insert("Sorry, I couldn't find your number, would you please give it to me?", at: 1)
-//                    archiveMessages?.insert("Type my number;I won't give it to you", at: 2)
-//                }
-//            } else {
-//                ChatController.boolResponeWithoutButton = false
-//                ChatController.deniedAccessNeed = true
-//                archiveMessages?.remove(at: 0)
-//                archiveMessages?.insert("I won't give you access to my contacts", at: 0)
-//                archiveMessages?.insert("Ops, we need your contacts information to activate the Help & Needs section.", at: 1)
-//                archiveMessages?.insert("Help & Needs;Food & Supply", at: 2)
-//            }
-//            self.activateResponse()
-//        }
     }
     
     func alertNumber() {
-        let alert = UIAlertController(title: "Your telephone number ?", message: "For activate this section we need your telephone number, type it here.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Your telephone number", message: "To activate this section we need your telephone number, type it here.", preferredStyle: .alert)
         alert.addTextField { (textField) in
             textField.text = ""
             textField.keyboardType = UIKeyboardType.phonePad
@@ -527,11 +472,12 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func takeNumber(n: String) {
         self.sectionNeed = true
         saveData.set(true, forKey: "need")
-        archiveMessages?.insert("My number \(n)", at: 0)
+        archiveMessages?.insert("My number is \(n)", at: 0)
         if saveData.bool(forKey: "food") == false {
             archiveMessages?.insert("Do you want to stop or do you want to activate the Food & Supply section?", at: 1)
             archiveMessages?.insert("Start using Mhint;Food & Supply", at: 2)
         } else {
+            archiveMessages?.remove(at: 0)
             self.endChat()
         }
         self.activateResponse()
@@ -631,12 +577,12 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         viewOverlay.addTarget(self, action: #selector(self.presentLeftMenuViewController(_:)), for: .touchUpInside)
         self.navigationController?.view.addSubview(viewOverlay)
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
-            self.viewOverlay.alpha = 0.8
+            self.viewOverlay.alpha = 0.95
         }, completion: nil)
         if GlobalUser.firstName != "" {
-            self.animationImage(i: GlobalUser.imageProfile!, n: "\(GlobalUser.firstName),\nWelcome to Mhint", color: UIColor.darkGray.cgColor)
+            self.animationImage(i: GlobalUser.imageProfile!, n: GlobalUser.firstName, color: UIColor.darkGray.cgColor)
         } else {
-            self.animationImage(i: GlobalUser.imageProfile!, n: "Welcome to Mhint", color: UIColor.darkGray.cgColor)
+            self.animationImage(i: GlobalUser.imageProfile!, n: GlobalUser.fullName!, color: UIColor.darkGray.cgColor)
         }
     }
     //END CHAT
@@ -1216,15 +1162,33 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         self.navigationController?.view.addSubview(imgProfile)
         
         let label = UILabel()
-        label.text = n.uppercased()
+        label.text = "\(n)".uppercased()
         label.alpha = 0
-        label.numberOfLines = 2
         label.addTextSpacing()
         label.textColor = .white
         label.font = UIFont(name: "AvenirLTStd-Black", size: GlobalSize().widthScreen*0.03)
         label.textAlignment = .center
-        label.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.5, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
+        label.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.51, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
         self.navigationController?.view.addSubview(label)
+        
+        let labelName = UILabel()
+        labelName.text = "Welcome to Mhint"
+        labelName.alpha = 0
+        labelName.textColor = .white
+        labelName.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.09)
+        labelName.textAlignment = .center
+        labelName.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.27, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
+        self.navigationController?.view.addSubview(labelName)
+        
+        let labelClick = UILabel()
+        labelClick.text = "Tap to start exploring the app."
+        labelClick.alpha = 0
+        labelClick.textColor = .white
+        labelClick.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.04)
+        labelClick.textAlignment = .center
+        labelClick.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.9, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
+        self.navigationController?.view.addSubview(labelClick)
+        
         UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
             imgProfile.frame.origin.y = GlobalSize().heightScreen*0.38
         }, completion: nil)
@@ -1234,16 +1198,10 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
         UIView.animate(withDuration: 0.5, delay: 1, options: .curveLinear, animations: {
             label.alpha = 1
-        })
-        UIView.animate(withDuration: 0, delay: 2, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
-            self.locationManager = CLLocationManager()
-            self.locationManager.delegate = self
-            self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            self.locationManager.startUpdatingLocation()
-            self.locationManager.requestAlwaysAuthorization()
+            labelName.alpha = 1
+            labelClick.alpha = 1
         })
     }
-    
 }
 
 

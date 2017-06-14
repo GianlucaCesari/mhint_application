@@ -149,6 +149,7 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
             
             timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.showCollectionView), userInfo: nil, repeats: true)
         }
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     func showCollectionView() {
