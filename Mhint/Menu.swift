@@ -113,6 +113,7 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
                 }
         
             case 1:
+                saveData.set(false, forKey: "boolNeed")
                 if saveData.bool(forKey: "need") {
                     locationManager = CLLocationManager()
                     locationManager.delegate = self
@@ -176,7 +177,6 @@ open class LeftMenuViewController: UIViewController, UITableViewDelegate, UITabl
         if status == .authorizedAlways {
             if CLLocationManager.isMonitoringAvailable(for: CLBeaconRegion.self) {
                 if CLLocationManager.isRangingAvailable() {
-                    print("OK")
                     let emergencyView = EmergencyController(collectionViewLayout: layout)
                     self.sideMenuViewController!.setContentViewController(UINavigationController.init(rootViewController: emergencyView), animated: true)
                     self.sideMenuViewController!.hideMenuViewController()

@@ -45,6 +45,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     let collectionVWeight = UICollectionView(frame: CGRect(x: 0, y: GlobalSize().heightScreen*0.8, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1), collectionViewLayout: layout)
     
     var player: AVAudioPlayer?
+    var xAccessHealth = 0
     
     let viewOverlay = UIButton()
     
@@ -285,8 +286,11 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     //FOOD SECTION
     func requestHealth() {
+        saveData.set(true, forKey: "loginHealth")
         ChatController.boolResponeWithoutButton = true
-        archiveMessages?.remove(at: 0)
+        if self.xAccessHealth == -1 {
+            archiveMessages?.remove(at: 0)
+        }
         archiveMessages?.insert("I'll give you", at: 0)
         archiveMessages?.insert("Let's start,\nHow tall are you (cm) ?", at: 1)
         self.heightResponse()
@@ -344,11 +348,49 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             self.activateResponse()
             
             if error == nil {
-                GlobalFunc().getBodyData(hM: self.healthManager)
-                self.heightResponseTimer()
+                
+                if let type = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.height) {
+                    let authorizationStatus = self.healthManager.authorizationStatus(for: type)
+                    switch authorizationStatus {
+                    case .sharingAuthorized: self.xAccessHealth += 1
+                    default: break
+                    }
+                }
+                
+                if let type = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass) {
+                    let authorizationStatus = self.healthManager.authorizationStatus(for: type)
+                    switch authorizationStatus {
+                    case .sharingAuthorized: self.xAccessHealth += 1
+                    default: break
+                    }
+                }
+                
+                if let type = HKObjectType.characteristicType(forIdentifier: HKCharacteristicTypeIdentifier.dateOfBirth) {
+                    let authorizationStatus = self.healthManager.authorizationStatus(for: type)
+                    switch authorizationStatus {
+                    case .sharingAuthorized: self.xAccessHealth += 1
+                    default: break
+                    }
+                }
+                
+                if let type = HKObjectType.characteristicType(forIdentifier: HKCharacteristicTypeIdentifier.biologicalSex) {
+                    let authorizationStatus = self.healthManager.authorizationStatus(for: type)
+                    switch authorizationStatus {
+                    case .sharingAuthorized: self.xAccessHealth += 1
+                    default: break
+                    }
+                }
+                
+                if self.xAccessHealth == 4 {
+                    GlobalFunc().getBodyData(hM: self.healthManager)
+                    saveData.set(true, forKey: "loginHealth")
+                    self.heightResponseTimer()
+                } else {
+                    self.requestHealth()
+                }
             } else {
+                self.xAccessHealth = -1
                 self.requestHealth()
-                saveData.set(true, forKey: "loginHealth")
             }
             GlobalFunc().removeLoadingChat(s: self)
         }
@@ -400,6 +442,9 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             archiveMessages?.insert("Start using Mhint;Help & Needs", at: 2)
             self.activateResponse()
         } else {
+            print(archiveMessages)
+            archiveMessages?.remove(at: 0)
+            archiveMessages?.insert("Start using Mhint", at: 0)
             self.endChat()
         }
     }
@@ -476,7 +521,9 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             archiveMessages?.insert("Do you want to stop or do you want to activate the Food & Supply section?", at: 1)
             archiveMessages?.insert("Start using Mhint;Food & Supply", at: 2)
         } else {
+            print(archiveMessages)
             archiveMessages?.remove(at: 0)
+            archiveMessages?.insert("Start using Mhint", at: 0)
             self.endChat()
         }
         self.activateResponse()
@@ -490,8 +537,9 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             archiveMessages?.insert("Do you want to stop or do you want to activate the Food & Supply section?", at: 1)
             archiveMessages?.insert("Start using Mhint;Food & Supply", at: 2)
         } else {
+            print(archiveMessages)
             archiveMessages?.remove(at: 0)
-            archiveMessages?.insert("Yes", at: 0)
+            archiveMessages?.insert("Start using Mhint", at: 0)
             self.endChat()
         }
         self.activateResponse()

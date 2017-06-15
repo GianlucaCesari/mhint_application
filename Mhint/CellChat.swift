@@ -48,8 +48,42 @@ class ChatControllerCell: BaseCell {
         return roundeView
     }()
     
+    let btnLink: UIButton = {
+        let btn = UIButton()
+        
+        btn.alpha = 0
+        
+        btn.backgroundColor = .white
+        btn.layer.masksToBounds = false
+        btn.setTitleColor(.black, for: .normal)
+        btn.titleLabel?.font = UIFont(name: "AvenirLTStd-Medium", size: 14)
+        
+        btn.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.15).cgColor
+        btn.layer.shadowOffset = CGSize(width: 0.0, height: 10.0)
+        btn.layer.shadowOpacity = 1.0
+        btn.layer.shadowRadius = 6.0
+        
+        return btn
+    }()
+    
+    let imgNeed: UIImageView = {
+        let img: UIImageView!
+        img = UIImageView(image: UIImage(named: "default"))
+        img.alpha = 0
+        img.layer.masksToBounds = true
+        img.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.15).cgColor
+        img.layer.shadowOffset = CGSize(width: 0.0, height: 10.0)
+        img.layer.shadowOpacity = 1.0
+        img.layer.shadowRadius = 6.0
+        return img
+    }()
+    
     override func setupViews() {
         super.setupViews()
+        
+        self.addSubview(btnLink)
+        self.addSubview(imgNeed)
+        
         self.addSubview(roundColor)
         self.addSubview(titleTextView)
         self.addSubview(messageTextView)

@@ -63,15 +63,29 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         saveData.set(false, forKey: "earlyAddEmergency")
         
         self.view.backgroundColor = .white
-        GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "NEEDS & EMERGENCY")
         GlobalFunc().loadingChat(s: self, frame: CGRect(x: GlobalSize().widthScreen*0.25, y: GlobalSize().heightScreen*0.4, width: GlobalSize().widthScreen*0.5, height:  GlobalSize().widthScreen*0.5), nameGif: "load-long")
         
         //RICHIEDE DAL SERVER
         getEmergencyPending()
         getEmergencyAccepted()
         
-        GlobalFunc().navBar(nav: navigationItem, s: self, show: true) //navigation bar
-        GlobalFunc().navBarRightChat(nav: navigationItem, s: self) //navigation v.a.
+        if saveData.bool(forKey: "boolNeed") {
+            
+            GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "NEEDS & EMERGENCY")
+            
+            let btnMenu = UIButton.init(type: .custom)
+            let imgMenu = UIImage(named: "arrowLeft")
+            btnMenu.frame = CGRect(x: 0, y: 0, width: GlobalSize().sizeIconMenuBar, height: GlobalSize().sizeIconMenuBar)
+            btnMenu.setImage(imgMenu, for: .normal)
+            btnMenu.addTarget(self, action: #selector(self.back(sender:)), for: .touchUpInside)
+            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: btnMenu)
+            
+        } else {
+            GlobalFunc().navBarSubView(nav: navigationItem, s: self, title: "NEEDS & EMERGENCY")
+            GlobalFunc().navBar(nav: navigationItem, s: self, show: true) //navigation bar
+            GlobalFunc().navBarRightChat(nav: navigationItem, s: self) //navigation v.a.
+        }
+        
         
         let btnMenu = UIButton.init(type: .custom)
         let imgMenu = UIImage(named: "plus")
@@ -101,6 +115,10 @@ class EmergencyController: UICollectionViewController, UICollectionViewDelegateF
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.showCollectionView), userInfo: nil, repeats: true)
         
         UIApplication.shared.applicationIconBadgeNumber = 0
+    }
+    
+    func back(sender: UIBarButtonItem) {
+        _ = navigationController?.popViewController(animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {

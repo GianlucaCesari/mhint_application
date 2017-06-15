@@ -26,6 +26,10 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
     var keyboardOpen = false
     var button : UIButton!
     
+    var responseNeedBtn:Bool = false
+    var responseText:String = ""
+    var responseImg:String = ""
+    
     let ball = UIView()
     
     var timerListening = Timer()
@@ -249,6 +253,8 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         
         cell.messageTextView.text = messagesChatBot?[indexPath.row]
+        cell.btnLink.alpha = 0
+        cell.imgNeed.alpha = 0
         
         cell.alpha = 0.1
         cell.messageTextView.font = UIFont(name: "AvenirLTStd-Heavy", size: 20 )
@@ -289,10 +295,47 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             if let messageText = messagesChatBot?[indexPath.row] {
                 let estimatedFrame = NSString(string: messageText).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 24)], context: nil)
                 cell.messageTextView.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: 10, width: GlobalSize().widthScreen*0.84, height: estimatedFrame.height + 25)
+                if messagesTypeText {
+                    if ((messagesTypeChatBot?.count)!-1) == indexPath.row {
+                        if responseNeedBtn {
+                            let estimatedFrameText = NSString(string: responseText).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 16)], context: nil)
+                            if responseText == "Show needs" {
+                                cell.imgNeed.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: cell.messageTextView.frame.height+5, width: GlobalSize().heightScreen*0.08, height: GlobalSize().heightScreen*0.08)
+                                cell.imgNeed.alpha = 1
+                                cell.imgNeed.sd_setImage(with: URL(string: self.responseImg), placeholderImage: UIImage(named: "default"))
+                                cell.imgNeed.layer.cornerRadius = GlobalSize().heightScreen*0.04
+                                cell.btnLink.frame = CGRect(x: GlobalSize().widthScreen*0.12, y: cell.messageTextView.frame.height+5, width: estimatedFrameText.width+100, height: GlobalSize().heightScreen*0.08)
+                            } else {
+                                cell.btnLink.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: cell.messageTextView.frame.height+5, width: estimatedFrameText.width+50, height: GlobalSize().heightScreen*0.08)
+                            }
+                            cell.btnLink.setTitle(responseText, for: .normal)
+                            cell.btnLink.layer.cornerRadius = GlobalSize().heightScreen*0.04
+                            cell.btnLink.alpha = 1
+                            
+                            if responseText == "Show needs" {
+                                saveData.set(true, forKey: "boolNeed")
+                                cell.btnLink.addTarget(self, action: #selector(self.goToNeeds), for: .touchUpInside)
+                            } else if responseText == "Show shopping list" {
+                                cell.btnLink.addTarget(self, action: #selector(self.goToShoppingList), for: .touchUpInside)
+                            }
+                            
+                        }
+                    }
+                }
             }
         }
         
         return cell
+    }
+    
+    func goToShoppingList() {
+        let newViewController = HomeShoppingListController(collectionViewLayout: layout)
+        self.navigationController?.pushViewController(newViewController, animated: true)
+    }
+    
+    func goToNeeds() {
+        let newViewController = EmergencyController(collectionViewLayout: layout)
+        self.navigationController?.pushViewController(newViewController, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -300,7 +343,13 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             let size = CGSize(width: 300, height: 1000)
             let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
             let estimatedFrame = NSString(string: messageText).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 24)], context: nil)
-            return CGSize(width: view.frame.width, height: estimatedFrame.height + 50)
+            var heightChat = estimatedFrame.height + 50
+            if ((messagesTypeChatBot?.count)!-1) == indexPath.row {
+                if responseNeedBtn {
+                    heightChat = estimatedFrame.height*2 + GlobalSize().heightScreen*0.08 + 40
+                }
+            }
+            return CGSize(width: view.frame.width, height: heightChat)
         }
         return CGSize(width: view.frame.width, height: 100)
     }
@@ -345,8 +394,26 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             inputText.text = ""
             
             Alamofire.request("https://api.mhint.eu/chat", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
-                print(response)
                 if response.response?.statusCode == 200 {
+                    print("V: ", (response.value! as AnyObject)["obj"]! as! [String: Any])
+                    self.responseNeedBtn = false
+                    let type = (response.value! as AnyObject)["model"]! as! String
+                    let obj = (response.value! as AnyObject)["obj"]! as! [String: Any]
+                    if obj.count > 0 {
+                        self.responseNeedBtn = true
+                        if type == "need_action" {
+                            self.responseText = "Show needs"
+                            if let user = obj["user_receiver"] as? [String: Any] {
+                                self.responseImg = user["image_profile"] as! String
+                            }
+                        } else if type == "shopping_list" {
+                            self.responseText = "Show shopping list"
+                        } else {
+                            self.responseNeedBtn = false
+                            self.responseText = ""
+                            self.responseImg = ""
+                        }
+                    }
                     self.printOnCollectionView(text: ((response.value! as AnyObject)["text"]! as! String), who: true)
                 } else {
                     self.printOnCollectionView(text: "There was an error procesing your request", who: true)
