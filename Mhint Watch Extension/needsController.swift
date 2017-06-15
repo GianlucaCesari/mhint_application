@@ -55,8 +55,9 @@ class needsController: WKInterfaceController {
     override func contextForSegue(withIdentifier segueIdentifier: String, in table: WKInterfaceTable, rowIndex: Int) -> Any? {
         return rowIndex
     }
+    
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
-        print(rowIndex)
+        print("BHO", rowIndex, table)
     }
     
     func getShoppingList() {
