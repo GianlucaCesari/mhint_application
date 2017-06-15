@@ -22,6 +22,10 @@ class shoppingListController: WKInterfaceController {
     @IBOutlet var enambleGroup: WKInterfaceGroup!
     
     override func awake(withContext context: Any?) {
+        itemShoppingList.removeAll()
+        idShoppingList.removeAll()
+        checkShoppingList.removeAll()
+        quantityShoppingList.removeAll()
         super.awake(withContext: context)
         enambleGroup.setHidden(true)
         if saveData.bool(forKey: "food") {

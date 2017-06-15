@@ -23,6 +23,10 @@ class needsController: WKInterfaceController {
     @IBOutlet var tableNeed: WKInterfaceTable!
     
     override func awake(withContext context: Any?) {
+        imageNeeds.removeAll()
+        titleNeeds.removeAll()
+        latNeeds.removeAll()
+        lonNeeds.removeAll()
         super.awake(withContext: context)
         enableNeed.setHidden(true)
         if saveData.bool(forKey: "need") {
@@ -53,11 +57,13 @@ class needsController: WKInterfaceController {
     }
     
     override func contextForSegue(withIdentifier segueIdentifier: String, in table: WKInterfaceTable, rowIndex: Int) -> Any? {
+        saveData.set(rowIndex, forKey: "need_index")
         return rowIndex
     }
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
         print("BHO", rowIndex, table)
+        
     }
     
     func getShoppingList() {

@@ -16,8 +16,10 @@ class mapViewController: WKInterfaceController {
     @IBOutlet var mapKit: WKInterfaceMap!
 
     override func didAppear() {
-        mapKit.setRegion(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 45.9, longitude: 9.45), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)))
-        mapKit.addAnnotation(CLLocationCoordinate2D(latitude: 45.9, longitude: 9.45), with: .red)
+        let index = saveData.integer(forKey: "need_index")
+        let lat = latNeeds[index]
+        let lon = lonNeeds[index]
+        mapKit.setRegion(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: lat, longitude: lon), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)))
+        mapKit.addAnnotation(CLLocationCoordinate2D(latitude: lat, longitude: lon), with: .red)
     }
-
 }
