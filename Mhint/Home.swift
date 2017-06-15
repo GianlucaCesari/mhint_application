@@ -29,6 +29,10 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
     var responseNeedBtn:Bool = false
     var responseText:String = ""
     var responseImg:String = ""
+    var responseTypeMeal:String = ""
+    var responseIndexImage:Int = 0
+    var dailyMealRecipesImage = [String]()
+    var dailyMealRecipesTitle = [String]()
     
     let ball = UIView()
     
@@ -49,7 +53,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
     
     var imageView = GIFImageView()
     
-//    SPEECH RECOGNIZER
+    //    SPEECH RECOGNIZER
     
     private let speechRecognizer = SFSpeechRecognizer(locale: Locale.init(identifier: "en-EN"))
     
@@ -117,7 +121,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         self.view.backgroundColor = .white
         self.imgWave = UIImageView (image: self.imgUrlLogo)
         self.imgWave.alpha = 0.8
-        self.imgWave.frame = CGRect(x: -self.view.frame.width*0.5, y: self.view.frame.height*0.55, width: self.view.frame.width*2, height: self.view.frame.width)
+        self.imgWave.frame = CGRect(x: -self.view.frame.width*0.6, y: self.view.frame.height*0.55, width: self.view.frame.width*2, height: self.view.frame.width)
         self.view.addSubview(self.imgWave)
         
         self.inputText = UITextField(frame: CGRect(x: 0, y: self.view.frame.height*0.92, width: self.view.frame.width, height: self.view.frame.height*0.08))
@@ -145,11 +149,9 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         self.imageView.animate(withGIFNamed: "load-voice")
         self.imageView.alpha = 0
         self.view.addSubview(self.imageView)
-        
         self.view.addSubview(self.inputText)
-        //        self.view.addSubview(self.imgMic)
         
-        //        LISTENER TASTIERA
+        //LISTENER TASTIERA
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.textFieldShouldReturnClose))
         self.view.addGestureRecognizer(tap)
         
@@ -304,18 +306,56 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
                                 cell.imgNeed.alpha = 1
                                 cell.imgNeed.sd_setImage(with: URL(string: self.responseImg), placeholderImage: UIImage(named: "default"))
                                 cell.imgNeed.layer.cornerRadius = GlobalSize().heightScreen*0.04
-                                cell.btnLink.frame = CGRect(x: GlobalSize().widthScreen*0.12, y: cell.messageTextView.frame.height+5, width: estimatedFrameText.width+100, height: GlobalSize().heightScreen*0.08)
+                                cell.btnLink.frame = CGRect(x: GlobalSize().widthScreen*0.1, y: cell.messageTextView.frame.height+5, width: estimatedFrameText.width+120, height: GlobalSize().heightScreen*0.08)
+                                cell.btnLink.layer.cornerRadius = GlobalSize().heightScreen*0.04
+                            } else if responseText == "check_recipe" {
+                                
+                                cell.imgNeed.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: cell.messageTextView.frame.height+5, width: estimatedFrameText.width+100, height: GlobalSize().heightScreen*0.18)
+                                cell.imgNeed.alpha = 1
+                                
+                                print(self.responseTypeMeal)
+                                
+                                var index = 0
+                                if self.responseTypeMeal == "breakfast" {
+                                    index = 1+(4*responseIndexImage)
+                                } else if self.responseTypeMeal == "lunch" {
+                                    index = 2+(4*responseIndexImage)
+                                } else if self.responseTypeMeal == "dinner" {
+                                    index = 3+(4*responseIndexImage)
+                                } else {
+                                    index = 3+(4*responseIndexImage)
+                                }
+                                print(index)
+                                
+                                cell.imgNeed.sd_setImage(with: URL(string: dailyMealRecipesImage[index]), placeholderImage: UIImage(named: "default"))
+                                cell.imgNeed.layer.cornerRadius = 0
+                                responseText = dailyMealRecipesTitle[index]
+                                cell.btnLink.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: cell.messageTextView.frame.height+5+(GlobalSize().heightScreen*0.18), width: estimatedFrameText.width+100, height: GlobalSize().heightScreen*0.08)
+                                
+                                let rectShape = CAShapeLayer()
+                                rectShape.bounds = cell.btnLink.frame
+                                rectShape.position = cell.btnLink.center
+                                rectShape.path = UIBezierPath(roundedRect: cell.btnLink.bounds, byRoundingCorners: [.bottomLeft , .bottomRight], cornerRadii: CGSize(width: 20, height: 20)).cgPath
+                                cell.btnLink.backgroundColor = GlobalColor().backgroundCollectionView
+                                cell.btnLink.layer.mask = rectShape
+                                
+                                let rectShape1 = CAShapeLayer()
+                                rectShape1.bounds = cell.imgNeed.frame
+                                rectShape1.position = cell.imgNeed.center
+                                rectShape1.path = UIBezierPath(roundedRect: cell.imgNeed.bounds, byRoundingCorners: [.topLeft , .topRight], cornerRadii: CGSize(width: 20, height: 20)).cgPath
+                                cell.imgNeed.layer.mask = rectShape1
+                                
                             } else {
                                 cell.btnLink.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: cell.messageTextView.frame.height+5, width: estimatedFrameText.width+50, height: GlobalSize().heightScreen*0.08)
+                                cell.btnLink.layer.cornerRadius = GlobalSize().heightScreen*0.04
                             }
                             cell.btnLink.setTitle(responseText, for: .normal)
-                            cell.btnLink.layer.cornerRadius = GlobalSize().heightScreen*0.04
                             cell.btnLink.alpha = 1
                             
                             if responseText == "Show needs" {
                                 saveData.set(true, forKey: "boolNeed")
                                 cell.btnLink.addTarget(self, action: #selector(self.goToNeeds), for: .touchUpInside)
-                            } else if responseText == "Show shopping list" {
+                            } else if responseText == "Your shopping list" {
                                 cell.btnLink.addTarget(self, action: #selector(self.goToShoppingList), for: .touchUpInside)
                             }
                             
@@ -324,7 +364,6 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
                 }
             }
         }
-        
         return cell
     }
     
@@ -346,7 +385,12 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             var heightChat = estimatedFrame.height + 50
             if ((messagesTypeChatBot?.count)!-1) == indexPath.row {
                 if responseNeedBtn {
-                    heightChat = estimatedFrame.height*2 + GlobalSize().heightScreen*0.08 + 40
+                    if responseText == "check_recipe" {
+                        heightChat = estimatedFrame.height*2 + GlobalSize().heightScreen*0.25 + 40
+                    }
+                    else {
+                        heightChat = estimatedFrame.height*2 + GlobalSize().heightScreen*0.08 + 40
+                    }
                 }
             }
             return CGSize(width: view.frame.width, height: heightChat)
@@ -379,7 +423,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
                     "lat": saveData.double(forKey: "latitudeHistory"),
                     "long": saveData.double(forKey: "longitudeHistory"),
                     "list_id": saveData.string(forKey: "shopping_list")!
-                ] as [String : Any]
+                    ] as [String : Any]
             } else {
                 parameter = [
                     "chat": textTrimmed,
@@ -395,6 +439,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             
             Alamofire.request("https://api.mhint.eu/chat", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
                 if response.response?.statusCode == 200 {
+                    print((response.value! as AnyObject))
                     print("V: ", (response.value! as AnyObject)["obj"]! as! [String: Any])
                     self.responseNeedBtn = false
                     let type = (response.value! as AnyObject)["model"]! as! String
@@ -406,8 +451,18 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
                             if let user = obj["user_receiver"] as? [String: Any] {
                                 self.responseImg = user["image_profile"] as! String
                             }
-                        } else if type == "shopping_list" {
-                            self.responseText = "Show shopping list"
+                        } else if type == "shopping_list" || type == "add_item" || type == "remove_item" {
+                            print(1)
+                            self.responseText = "Your shopping list"
+                        } else if type == "check_recipe" {
+                            self.responseText = type
+                            self.responseTypeMeal = obj["type"] as! String
+                            self.responseIndexImage = 0
+                            if let date = obj["date"] {
+                                self.responseIndexImage = date as! Int
+                            }
+                            self.dailyMealRecipesImage = saveData.array(forKey: "recipesImage") as! [String]
+                            self.dailyMealRecipesTitle = saveData.array(forKey: "recipesTitle") as! [String]
                         } else {
                             self.responseNeedBtn = false
                             self.responseText = ""
@@ -518,7 +573,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
     func speechRecognitionTaskFinishedReadingAudio(_ task: SFSpeechRecognitionTask) {
         print("speechRecognitionTaskFinishedReadingAudio")
     }
-
+    
     
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -577,11 +632,11 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         messagesChatBot?.append(text)
         messagesTypeChatBot?.append(who)
         collectionView?.reloadData()
-    
+        
         let itemA = self.collectionView(self.collectionView!, numberOfItemsInSection: 0) - 1
         let lastItemIndex = NSIndexPath(item: itemA, section: 0)
         self.collectionView?.scrollToItem(at: lastItemIndex as IndexPath, at: UICollectionViewScrollPosition.top, animated: true)
     }
     
-
+    
 }

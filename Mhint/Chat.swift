@@ -45,8 +45,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     let collectionVWeight = UICollectionView(frame: CGRect(x: 0, y: GlobalSize().heightScreen*0.8, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1), collectionViewLayout: layout)
     
     var player: AVAudioPlayer?
-    var xAccessHealth = 0
-    
+//    var xAccessHealth = 0
+//    var xAccessHealthDown = 0
     let viewOverlay = UIButton()
     
     let cellId = "cellId"
@@ -286,11 +286,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     //FOOD SECTION
     func requestHealth() {
-        saveData.set(true, forKey: "loginHealth")
         ChatController.boolResponeWithoutButton = true
-        if self.xAccessHealth == -1 {
-            archiveMessages?.remove(at: 0)
-        }
+        archiveMessages?.remove(at: 0)
         archiveMessages?.insert("I'll give you", at: 0)
         archiveMessages?.insert("Let's start,\nHow tall are you (cm) ?", at: 1)
         self.heightResponse()
@@ -348,49 +345,11 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             self.activateResponse()
             
             if error == nil {
-                
-                if let type = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.height) {
-                    let authorizationStatus = self.healthManager.authorizationStatus(for: type)
-                    switch authorizationStatus {
-                    case .sharingAuthorized: self.xAccessHealth += 1
-                    default: break
-                    }
-                }
-                
-                if let type = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass) {
-                    let authorizationStatus = self.healthManager.authorizationStatus(for: type)
-                    switch authorizationStatus {
-                    case .sharingAuthorized: self.xAccessHealth += 1
-                    default: break
-                    }
-                }
-                
-                if let type = HKObjectType.characteristicType(forIdentifier: HKCharacteristicTypeIdentifier.dateOfBirth) {
-                    let authorizationStatus = self.healthManager.authorizationStatus(for: type)
-                    switch authorizationStatus {
-                    case .sharingAuthorized: self.xAccessHealth += 1
-                    default: break
-                    }
-                }
-                
-                if let type = HKObjectType.characteristicType(forIdentifier: HKCharacteristicTypeIdentifier.biologicalSex) {
-                    let authorizationStatus = self.healthManager.authorizationStatus(for: type)
-                    switch authorizationStatus {
-                    case .sharingAuthorized: self.xAccessHealth += 1
-                    default: break
-                    }
-                }
-                
-                if self.xAccessHealth == 4 {
-                    GlobalFunc().getBodyData(hM: self.healthManager)
-                    saveData.set(true, forKey: "loginHealth")
-                    self.heightResponseTimer()
-                } else {
-                    self.requestHealth()
-                }
+                GlobalFunc().getBodyData(hM: self.healthManager)
+                self.heightResponseTimer()
             } else {
-                self.xAccessHealth = -1
                 self.requestHealth()
+                saveData.set(true, forKey: "loginHealth")
             }
             GlobalFunc().removeLoadingChat(s: self)
         }

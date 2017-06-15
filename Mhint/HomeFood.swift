@@ -340,14 +340,6 @@ class HomeFoodController: UICollectionViewController, UICollectionViewDelegateFl
         titleListView.font = UIFont(name: "AvenirLTStd-Medium", size: GlobalSize().widthScreen*0.028)
         titleListView.frame = CGRect(x: GlobalSize().widthScreen*0.06, y: GlobalSize().heightScreen*0.22, width: GlobalSize().widthScreen, height: GlobalSize().widthScreen*0.1)
         self.view.addSubview(titleListView)
-        
-//        let btnShopNow = UIButton()
-//        btnShopNow.setTitle("Shopping List".uppercased(), for: .normal)
-//        btnShopNow.setTitleColor(.black, for: .normal)
-//        btnShopNow.titleLabel?.font = UIFont(name: "AvenirLTStd-Heavy", size: GlobalSize().widthScreen*0.028)
-//        btnShopNow.frame = CGRect(x: GlobalSize().widthScreen*0.72, y: GlobalSize().heightScreen*0.22, width: GlobalSize().widthScreen*0.25, height: GlobalSize().widthScreen*0.1)
-//        btnShopNow.addTarget(self, action: #selector(goToShoppingList), for: .touchUpInside)
-//        self.view.addSubview(btnShopNow)
     }
     
     func goToShoppingList() {
