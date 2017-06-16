@@ -303,6 +303,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
                 if messagesTypeText {
                     if ((messagesTypeChatBot?.count)!-1) == indexPath.row {
                         if responseNeedBtn {
+                            
                             var t:String = ""
                             if self.responseTypeMeal == "breakfast" {
                                 index = 1+(4*responseIndexImage)

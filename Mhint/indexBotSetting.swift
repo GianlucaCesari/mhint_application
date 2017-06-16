@@ -132,13 +132,16 @@ class botController: UIViewController, UITextFieldDelegate, SKStoreProductViewCo
     }
     
     func verifyCode() {
+        UITapGestureRecognizer(target: self, action: #selector(textFieldShouldReturn))
         let mail = saveData.string(forKey: "email")
         let chat_id = textInputTelegram?.text
-        print(chat_id!)
+        textInputTelegram?.text = ""
         let parameter = [
             "mail": mail!,
             "chat_id" : chat_id!
             ] as [String : Any]
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         Alamofire.request("https://api.mhint.eu/botverify", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
             UIApplication.shared.statusBarView?.backgroundColor = .clear
