@@ -230,6 +230,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
         if application.applicationState == UIApplicationState.inactive || application.applicationState == UIApplicationState.background {
             var navigationController = UINavigationController()
             
+            saveData.set(false, forKey: "boolNeed")
             let layoutChat = UICollectionViewFlowLayout.init()
             layoutChat.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
             layoutChat.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
@@ -256,6 +257,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
             let announcement = Announcement(title: String(describing:data["user"]!), subtitle: String(describing:data["text"]!),image: UIImage(named: "iconChat"), duration: 4, action: {
                 var navigationController = UINavigationController()
                 
+                saveData.set(false, forKey: "boolNeed")
                 let layoutChat = UICollectionViewFlowLayout.init()
                 layoutChat.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
                 layoutChat.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)
@@ -445,6 +447,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate, AKSide
                 
                 var navigationController = UINavigationController()
                 
+                saveData.set(false, forKey: "boolNeed")
                 let layoutChat = UICollectionViewFlowLayout.init()
                 layoutChat.sectionInset = UIEdgeInsetsMake(8, 0, 0, 0)
                 layoutChat.itemSize = CGSize(width: GlobalSize().widthScreen, height: 100)

@@ -10,12 +10,13 @@ import Foundation
 import UIKit
 import StoreKit
 import Alamofire
-
+import AVFoundation
 
 class botController: UIViewController, UITextFieldDelegate, SKStoreProductViewControllerDelegate{
     
     var textInputTelegram: UITextField?
     var keyboardOpen = false
+    var player: AVAudioPlayer?
     
     override func viewDidLoad() {
         
@@ -131,8 +132,6 @@ class botController: UIViewController, UITextFieldDelegate, SKStoreProductViewCo
     }
     
     func verifyCode() {
-    // /botverify
-//        mail e chat_id
         let mail = saveData.string(forKey: "email")
         let chat_id = textInputTelegram?.text
         print(chat_id!)
@@ -142,9 +141,9 @@ class botController: UIViewController, UITextFieldDelegate, SKStoreProductViewCo
             ] as [String : Any]
         
         Alamofire.request("https://api.mhint.eu/botverify", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
-            print(response)
+            UIApplication.shared.statusBarView?.backgroundColor = .clear
+            self.animationImage(i: "ok-popup", n: "Perfect you are updated!")
         }
-
     }
     
     func back(sender: UIBarButtonItem) {
@@ -199,6 +198,71 @@ class botController: UIViewController, UITextFieldDelegate, SKStoreProductViewCo
     
     func productViewControllerDidFinish(_ viewController: SKStoreProductViewController) {
         viewController.dismiss(animated: true, completion: nil)
+    }
+    func animationImage(i: String, n: String) {
+        guard let url = Bundle.main.url(forResource: "bamboo", withExtension: "mp3") else {
+            print("error")
+            return
+        }
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            player = try AVAudioPlayer(contentsOf: url)
+            guard let player = player else { return }
+        } catch let error { }
+        let viewOverlay = UIView()
+        viewOverlay.backgroundColor = .black
+        viewOverlay.alpha = 0
+        viewOverlay.frame = CGRect(x: 0, y: 0, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen)
+        self.navigationController?.view.addSubview(viewOverlay)
+        
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+            viewOverlay.alpha = 0.6
+        }, completion: nil)
+        
+        let v = UIView()
+        v.frame = CGRect(x: GlobalSize().widthScreen*0.4, y: GlobalSize().heightScreen*1.5, width: GlobalSize().widthScreen*0.2, height: GlobalSize().widthScreen*0.2)
+        v.backgroundColor = .white
+        v.layer.cornerRadius = GlobalSize().widthScreen*0.1
+        v.layer.masksToBounds = true
+        v.alpha = 1
+        v.layer.shadowColor = UIColor.black.cgColor
+        v.layer.shadowOpacity = 0.6
+        v.layer.shadowRadius = GlobalSize().widthScreen*0.1
+        self.navigationController?.view.addSubview(v)
+        
+        let imgProfile = UIImageView()
+        imgProfile.frame = CGRect(x: GlobalSize().widthScreen*0.43, y: GlobalSize().heightScreen*1.5, width: GlobalSize().widthScreen*0.14, height: GlobalSize().widthScreen*0.14)
+        let img = UIImage(named: i)
+        imgProfile.image = img
+        self.navigationController?.view.addSubview(imgProfile)
+        
+        let label = UILabel()
+        label.text = n.uppercased()
+        label.alpha = 0
+        label.addTextSpacing()
+        label.textColor = .white
+        label.font = UIFont(name: "AvenirLTStd-Black", size: GlobalSize().widthScreen*0.03)
+        label.textAlignment = .center
+        label.frame = CGRect(x: 0, y: GlobalSize().heightScreen*0.475, width: GlobalSize().widthScreen, height: GlobalSize().heightScreen*0.1)
+        self.navigationController?.view.addSubview(label)
+        
+        UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 1, initialSpringVelocity: 4, options: .curveEaseInOut, animations: {
+            imgProfile.frame.origin.y = GlobalSize().heightScreen*0.39
+            v.frame.origin.y = GlobalSize().heightScreen*0.37
+        }, completion: { (finished: Bool) -> Void in
+            self.player?.play()
+        })
+        UIView.animate(withDuration: 0.5, delay: 1, options: .curveLinear, animations: {
+            label.alpha = 1
+        }, completion: { (finished: Bool) -> Void in
+            UIView.animate(withDuration: 0.2, delay: 1, options: .curveLinear, animations: {
+                label.alpha = 0
+                imgProfile.alpha = 0
+                viewOverlay.alpha = 0
+                v.alpha = 0
+            }, completion: nil)
+        })
     }
     
 }

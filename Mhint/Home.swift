@@ -26,6 +26,8 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
     var keyboardOpen = false
     var button : UIButton!
     
+    var index = 0
+    
     var responseNeedBtn:Bool = false
     var responseText:String = ""
     var responseImg:String = ""
@@ -33,6 +35,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
     var responseIndexImage:Int = 0
     var dailyMealRecipesImage = [String]()
     var dailyMealRecipesTitle = [String]()
+    var dailyMealRecipesId = [String]()
     
     let ball = UIView()
     
@@ -121,7 +124,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         self.view.backgroundColor = .white
         self.imgWave = UIImageView (image: self.imgUrlLogo)
         self.imgWave.alpha = 0.8
-        self.imgWave.frame = CGRect(x: -self.view.frame.width*0.6, y: self.view.frame.height*0.55, width: self.view.frame.width*2, height: self.view.frame.width)
+        self.imgWave.frame = CGRect(x: -self.view.frame.width*0.5, y: self.view.frame.height*0.55, width: self.view.frame.width*2, height: self.view.frame.width)
         self.view.addSubview(self.imgWave)
         
         self.inputText = UITextField(frame: CGRect(x: 0, y: self.view.frame.height*0.92, width: self.view.frame.width, height: self.view.frame.height*0.08))
@@ -300,6 +303,17 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
                 if messagesTypeText {
                     if ((messagesTypeChatBot?.count)!-1) == indexPath.row {
                         if responseNeedBtn {
+                            var t:String = ""
+                            if self.responseTypeMeal == "breakfast" {
+                                index = 1+(4*responseIndexImage)
+                            } else if self.responseTypeMeal == "lunch" {
+                                index = 2+(4*responseIndexImage)
+                            } else if self.responseTypeMeal == "dinner" {
+                                index = 3+(4*responseIndexImage)
+                            } else {
+                                index = 3+(4*responseIndexImage)
+                            }
+                            
                             let estimatedFrameText = NSString(string: responseText).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 16)], context: nil)
                             if responseText == "Show needs" {
                                 cell.imgNeed.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: cell.messageTextView.frame.height+5, width: GlobalSize().heightScreen*0.08, height: GlobalSize().heightScreen*0.08)
@@ -310,27 +324,23 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
                                 cell.btnLink.layer.cornerRadius = GlobalSize().heightScreen*0.04
                             } else if responseText == "check_recipe" {
                                 
-                                cell.imgNeed.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: cell.messageTextView.frame.height+5, width: estimatedFrameText.width+100, height: GlobalSize().heightScreen*0.18)
+                                cell.imgNeed.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: cell.messageTextView.frame.height+5, width: estimatedFrameText.width+150, height: GlobalSize().heightScreen*0.23)
                                 cell.imgNeed.alpha = 1
                                 
-                                print(self.responseTypeMeal)
-                                
-                                var index = 0
-                                if self.responseTypeMeal == "breakfast" {
-                                    index = 1+(4*responseIndexImage)
-                                } else if self.responseTypeMeal == "lunch" {
-                                    index = 2+(4*responseIndexImage)
-                                } else if self.responseTypeMeal == "dinner" {
-                                    index = 3+(4*responseIndexImage)
-                                } else {
-                                    index = 3+(4*responseIndexImage)
-                                }
-                                print(index)
-                                
-                                cell.imgNeed.sd_setImage(with: URL(string: dailyMealRecipesImage[index]), placeholderImage: UIImage(named: "default"))
+                                cell.imgNeed.sd_setImage(with: URL(string: dailyMealRecipesImage[index]), placeholderImage: UIImage(named: "default-recipes"))
                                 cell.imgNeed.layer.cornerRadius = 0
-                                responseText = dailyMealRecipesTitle[index]
-                                cell.btnLink.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: cell.messageTextView.frame.height+5+(GlobalSize().heightScreen*0.18), width: estimatedFrameText.width+100, height: GlobalSize().heightScreen*0.08)
+                                
+                                
+                                var amount = String(describing: dailyMealRecipesTitle[index])
+                                if amount.characters.count > 30 {
+                                    let index = amount.index(amount.startIndex, offsetBy: 30)
+                                    responseText = amount.substring(to: index) + "..."
+                                } else {
+                                    responseText = dailyMealRecipesTitle[index]
+                                }
+                                t = dailyMealRecipesTitle[index]
+                                
+                                cell.btnLink.frame = CGRect(x: GlobalSize().widthScreen*0.08, y: cell.messageTextView.frame.height+5+(GlobalSize().heightScreen*0.23), width: estimatedFrameText.width+150, height: GlobalSize().heightScreen*0.08)
                                 
                                 let rectShape = CAShapeLayer()
                                 rectShape.bounds = cell.btnLink.frame
@@ -357,6 +367,8 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
                                 cell.btnLink.addTarget(self, action: #selector(self.goToNeeds), for: .touchUpInside)
                             } else if responseText == "Your shopping list" {
                                 cell.btnLink.addTarget(self, action: #selector(self.goToShoppingList), for: .touchUpInside)
+                            } else if t == dailyMealRecipesTitle[index] {
+                                cell.btnLink.addTarget(self, action: #selector(self.goToRecipes), for: .touchUpInside)
                             }
                             
                         }
@@ -377,6 +389,14 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
         self.navigationController?.pushViewController(newViewController, animated: true)
     }
     
+    func goToRecipes() {
+        idDetailsRecipes = dailyMealRecipesId[index]
+        imgDetailsRecipes = dailyMealRecipesImage[index]
+        titleDetailsRecipes = dailyMealRecipesTitle[index]
+        let newViewController = DetailsRecipesController(collectionViewLayout: layout)
+        self.navigationController?.pushViewController(newViewController, animated: true)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if let messageText = messagesChatBot?[indexPath.row] {
             let size = CGSize(width: 300, height: 1000)
@@ -386,7 +406,7 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             if ((messagesTypeChatBot?.count)!-1) == indexPath.row {
                 if responseNeedBtn {
                     if responseText == "check_recipe" {
-                        heightChat = estimatedFrame.height*2 + GlobalSize().heightScreen*0.25 + 40
+                        heightChat = estimatedFrame.height*2 + GlobalSize().heightScreen*0.3 + 40
                     }
                     else {
                         heightChat = estimatedFrame.height*2 + GlobalSize().heightScreen*0.08 + 40
@@ -440,7 +460,6 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
             Alamofire.request("https://api.mhint.eu/chat", method: .post, parameters: parameter, encoding: JSONEncoding.default).responseJSON { response in
                 if response.response?.statusCode == 200 {
                     print((response.value! as AnyObject))
-                    print("V: ", (response.value! as AnyObject)["obj"]! as! [String: Any])
                     self.responseNeedBtn = false
                     let type = (response.value! as AnyObject)["model"]! as! String
                     let obj = (response.value! as AnyObject)["obj"]! as! [String: Any]
@@ -452,17 +471,19 @@ class ChatBotController: UICollectionViewController, UICollectionViewDelegateFlo
                                 self.responseImg = user["image_profile"] as! String
                             }
                         } else if type == "shopping_list" || type == "add_item" || type == "remove_item" {
-                            print(1)
                             self.responseText = "Your shopping list"
                         } else if type == "check_recipe" {
                             self.responseText = type
                             self.responseTypeMeal = obj["type"] as! String
                             self.responseIndexImage = 0
-                            if let date = obj["date"] {
+                            if String(describing: obj["date"]) == "" {
+                                self.responseIndexImage = 0
+                            } else if let date = obj["date"] {
                                 self.responseIndexImage = date as! Int
                             }
                             self.dailyMealRecipesImage = saveData.array(forKey: "recipesImage") as! [String]
                             self.dailyMealRecipesTitle = saveData.array(forKey: "recipesTitle") as! [String]
+                            self.dailyMealRecipesId = saveData.array(forKey: "recipesId") as! [String]
                         } else {
                             self.responseNeedBtn = false
                             self.responseText = ""

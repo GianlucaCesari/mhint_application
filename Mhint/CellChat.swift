@@ -68,7 +68,7 @@ class ChatControllerCell: BaseCell {
     
     let imgNeed: UIImageView = {
         let img: UIImageView!
-        img = UIImageView(image: UIImage(named: "default"))
+        img = UIImageView(image: UIImage(named: "default-recipes"))
         img.alpha = 0
         img.layer.masksToBounds = true
         img.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.15).cgColor
